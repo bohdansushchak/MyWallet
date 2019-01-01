@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/settingsFragment">
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="bohdan.sushchak.mywallet.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="bohdan.sushchak.mywallet.ui.calendar.CalendarFragment"
+        android:label="calendar_fragment"
+        tools:layout="@layout/calendar_fragment" />
+    <fragment
+        android:id="@+id/createOrderFragment"
+        android:name="bohdan.sushchak.mywallet.ui.order.CreateOrderFragment"
+        android:label="create_order_fragment"
+        tools:layout="@layout/create_order_fragment" />
+    <fragment
+        android:id="@+id/diagramFragment"
+        android:name="bohdan.sushchak.mywallet.ui.diagram.DiagramFragment"
+        android:label="diagram_fragment"
+        tools:layout="@layout/diagram_fragment" />
+</navigation>
