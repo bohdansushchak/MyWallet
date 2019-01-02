@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceScreen
+        android:title="Category"
+        android:summary="Add or delete categories">
+        <intent android:action="com.example.myapp.activities.MyActivity"/>
+    </PreferenceScreen>
+
 </PreferenceScreen>
