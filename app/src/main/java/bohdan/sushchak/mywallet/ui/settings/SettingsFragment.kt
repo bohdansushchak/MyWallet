@@ -1,23 +1,33 @@
 package bohdan.sushchak.mywallet.ui.settings
 
-import androidx.lifecycle.ViewModelProviders
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.adapters.CategoryAdapter
+import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.ui.base.ScoptedFragment
+import kotlinx.android.synthetic.main.settings_fragment.*
+import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
 class SettingsFragment : ScoptedFragment(), KodeinAware {
 
     override val kodein: Kodein by closestKodein()
 
+    private val viewModelFactory: SettingsViewModelFactory by instance()
     private lateinit var viewModel: SettingsViewModel
+
+    private lateinit var categoryAdapter : CategoryAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -26,8 +36,47 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(SettingsViewModel::class.java)
+
+        bindUI()
+
+        var categoryList = MutableList<Category>(1) { Category(
+                title = "Producty",
+                color = 3342130) }
+
+        categoryList.add(Category(
+                title = "Kosmetyki",
+                color = 3342130
+        ))
+
+        categoryList.add(Category(
+                title = "Bilety",
+                color = 3289830
+        ))
+        updateCategoryList(categoryList)
+    }
+
+    private fun bindUI() = launch {
+  /*      val categoryList = viewModel.categories.await()
+
+        categoryList.observe(this@SettingsFragment, Observer { categories ->
+            if (categories == null) return@Observer
+            updateCategoryList(categories)
+        })
+*/
+    }
+
+
+    private fun updateCategoryList(categories: List<Category>) {
+
+        val linearLayout = LinearLayoutManager(context!!)
+        linearLayout.orientation = RecyclerView.VERTICAL
+        categoryAdapter = CategoryAdapter(context!!, categories)
+
+        recyclerViewCategory.layoutManager = linearLayout
+        recyclerViewCategory.adapter = categoryAdapter
+
     }
 
 }

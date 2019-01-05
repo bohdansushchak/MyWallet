@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.data.db.entity
 
+
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -15,5 +16,5 @@ data class Category (
         var title: String,
 
         @ColumnInfo(name = "color")
-        var color: String
+        var color: Int
 )
