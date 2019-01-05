@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "orders")
 data class Order(
         @PrimaryKey(autoGenerate = true)
-        val id: Int?,
-        val date: Long,
-        val price: Double
+        var id: Int,
+        var date: Long,
+        var price: Double
 )

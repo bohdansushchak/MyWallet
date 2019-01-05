@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setSupportActionBar(toolbar)
 
         toolbar.setNavigationOnClickListener {
-            navController.currentDestination?.id
+            navController.popBackStack()
         }
 
         navController = Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment)

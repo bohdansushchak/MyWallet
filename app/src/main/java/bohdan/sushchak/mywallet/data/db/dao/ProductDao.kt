@@ -1,7 +1,10 @@
 package bohdan.sushchak.mywallet.data.db.dao
 
 import androidx.room.Dao
+import bohdan.sushchak.mywallet.data.db.entity.Product
 
 @Dao
-interface ProductDao {
+abstract class ProductDao : BaseDao<Product> {
+
+
 }

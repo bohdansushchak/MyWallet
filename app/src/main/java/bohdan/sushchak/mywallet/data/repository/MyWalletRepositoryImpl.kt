@@ -5,7 +5,11 @@ import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
 import bohdan.sushchak.mywallet.data.db.dao.OrderDao
 import bohdan.sushchak.mywallet.data.db.dao.ProductDao
 import bohdan.sushchak.mywallet.data.db.entity.Category
+import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.data.db.entity.Product
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MyWalletRepositoryImpl(
@@ -19,5 +23,16 @@ class MyWalletRepositoryImpl(
             return@withContext categoryDao.getAllCategories()
         }
     }
+
+    override suspend fun createOrderWithProducts(order: Order, products: List<Product>) {
+        GlobalScope.launch {
+            orderDao.insertOrderWithProducts(order, products)
+        }
+    }
+
+    override suspend fun addCategory(category: Category) {
+        GlobalScope.launch { categoryDao.insert(category) }
+    }
+
 
 }

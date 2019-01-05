@@ -9,13 +9,18 @@ import androidx.room.PrimaryKey
 ForeignKey(entity = Order::class, parentColumns = ["id"], childColumns = ["order_id"], onDelete = ForeignKey.CASCADE)])
 data class Product (
         @PrimaryKey(autoGenerate = true)
-        val id: Int? = null,
-        val title: String,
-        val price: Double,
+        @ColumnInfo(name = "id")
+        var id: Int? = null,
+
+        @ColumnInfo(name = "title")
+        var title: String,
+
+        @ColumnInfo(name = "price")
+        var price: Double,
 
         @ColumnInfo(name = "category_id")
-        val categoryId: Int?,
+        var categoryId: Int?,
 
         @ColumnInfo(name = "order_id")
-        val orderId: Int
+        var orderId: Int
 )

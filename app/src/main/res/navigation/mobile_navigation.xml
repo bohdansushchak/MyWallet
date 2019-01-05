@@ -6,8 +6,8 @@
     app:startDestination="@id/orderListFragment">
 
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="bohdan.sushchak.mywallet.ui.settings.SettingsFragment"
+        android:id="@+id/preferencesFragment"
+        android:name="bohdan.sushchak.mywallet.ui.preferences.PreferencesFragment"
         android:label="@string/settings_fragment_title" />
     <fragment
         android:id="@+id/calendarFragment"
@@ -33,4 +33,10 @@
             android:id="@+id/action_orderListFragment_to_createOrderFragment"
             app:destination="@id/createOrderFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="bohdan.sushchak.mywallet.ui.settings.SettingsFragment"
+        android:label="@string/settings_fragment_title"
+        tools:layout="@layout/settings_fragment" />
 </navigation>
