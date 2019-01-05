@@ -2,19 +2,22 @@ package bohdan.sushchak.mywallet.ui.order
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.ui.base.ScoptedFragment
+import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
-class CreateOrderFragment : Fragment() {
+class CreateOrderFragment : ScoptedFragment(), KodeinAware {
 
-    companion object {
-        fun newInstance() = CreateOrderFragment()
-    }
+    override val kodein by closestKodein()
 
+    private val viewModelFactory: CreateOrderViewModelFactory by instance()
     private lateinit var viewModel: CreateOrderViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -24,8 +27,15 @@ class CreateOrderFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(CreateOrderViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(CreateOrderViewModel::class.java)
+
+        bindUI()
+    }
+
+    private fun bindUI() = launch {
+
+
     }
 
 }

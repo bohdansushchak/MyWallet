@@ -1,4 +1,4 @@
-package bohdan.sushchak.mywallet.data.db
+package bohdan.sushchak.mywallet.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
