@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MyWallet</string>
+
+    <!-- fragment title -->
+    <string name="create_order_fragment_title">Create order</string>
+    <string name="list_order_fragment_title">Order list</string>
+    <string name="calendar_fragment_title">Calendar</string>
+    <string name="settings_fragment_title">Settings</string>
+    <string name="diagram_fragment_title">Statistic</string>
+
 </resources>

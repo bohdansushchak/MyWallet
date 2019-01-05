@@ -3,25 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/settingsFragment">
+    app:startDestination="@id/orderListFragment">
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="bohdan.sushchak.mywallet.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="@string/settings_fragment_title" />
     <fragment
         android:id="@+id/calendarFragment"
         android:name="bohdan.sushchak.mywallet.ui.calendar.CalendarFragment"
-        android:label="calendar_fragment"
+        android:label="@string/calendar_fragment_title"
         tools:layout="@layout/calendar_fragment" />
     <fragment
         android:id="@+id/createOrderFragment"
-        android:name="bohdan.sushchak.mywallet.ui.order.CreateOrderFragment"
-        android:label="create_order_fragment"
+        android:name="bohdan.sushchak.mywallet.ui.create_order.CreateOrderFragment"
+        android:label="@string/create_order_fragment_title"
         tools:layout="@layout/create_order_fragment" />
     <fragment
         android:id="@+id/diagramFragment"
         android:name="bohdan.sushchak.mywallet.ui.diagram.DiagramFragment"
-        android:label="diagram_fragment"
+        android:label="@string/diagram_fragment_title"
         tools:layout="@layout/diagram_fragment" />
+    <fragment
+        android:id="@+id/orderListFragment"
+        android:name="bohdan.sushchak.mywallet.ui.list_orders.OrderListFragment"
+        android:label="@string/list_order_fragment_title"
+        tools:layout="@layout/order_list_fragment">
+        <action
+            android:id="@+id/action_orderListFragment_to_createOrderFragment"
+            app:destination="@id/createOrderFragment" />
+    </fragment>
 </navigation>

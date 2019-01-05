@@ -1,10 +1,11 @@
-package bohdan.sushchak.mywallet.ui.order
+package bohdan.sushchak.mywallet.ui.create_order
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.ui.base.ScoptedFragment
@@ -27,6 +28,7 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(CreateOrderViewModel::class.java)
 
@@ -35,7 +37,8 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
 
     private fun bindUI() = launch {
 
-
     }
+
+
 
 }
