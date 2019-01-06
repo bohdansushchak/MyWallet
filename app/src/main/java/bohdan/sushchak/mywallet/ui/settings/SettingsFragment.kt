@@ -1,6 +1,7 @@
 package bohdan.sushchak.mywallet.ui.settings
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,16 +44,16 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
 
         var categoryList = MutableList<Category>(1) { Category(
                 title = "Producty",
-                color = 3342130) }
+                color = Color.parseColor("#E8EA2C")) }
 
         categoryList.add(Category(
                 title = "Kosmetyki",
-                color = 3342130
+                color = Color.parseColor("#602AE7")
         ))
 
         categoryList.add(Category(
                 title = "Bilety",
-                color = 3289830
+                color = Color.parseColor("#F922DA")
         ))
         updateCategoryList(categoryList)
     }

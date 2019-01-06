@@ -5,24 +5,16 @@ import android.os.Build
 import androidx.room.TypeConverter
 
 object Converters {
-
+/*
     @TypeConverter
     @JvmStatic
-    fun fromColorToInt(value: Color): Int{
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            value.toArgb()
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
+    fun fromColorToInt(value: Color): String{
+        return value.toString()
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromIntToColor(value: Int): Color {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Color.valueOf(value)
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
-    }
+    fun fromIntToColor(value: String): Color {
+        return Color.parseColor(value)
+    }*/
 }

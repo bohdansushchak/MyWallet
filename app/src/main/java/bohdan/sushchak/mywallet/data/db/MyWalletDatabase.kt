@@ -15,7 +15,7 @@ import bohdan.sushchak.mywallet.internal.Converters
 
 
 @Database(entities = [Product::class, Order::class, Category::class], version = 1, exportSchema = false)
-@TypeConverters(Converters::class)
+
 abstract class MyWalletDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
