@@ -1,7 +1,5 @@
 package bohdan.sushchak.mywallet.ui.settings
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,43 +39,24 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
                 .get(SettingsViewModel::class.java)
 
         bindUI()
-
-        var categoryList = MutableList<Category>(1) { Category(
-                title = "Producty",
-                color = Color.parseColor("#E8EA2C")) }
-
-        categoryList.add(Category(
-                title = "Kosmetyki",
-                color = Color.parseColor("#602AE7")
-        ))
-
-        categoryList.add(Category(
-                title = "Bilety",
-                color = Color.parseColor("#F922DA")
-        ))
-        updateCategoryList(categoryList)
     }
 
     private fun bindUI() = launch {
-  /*      val categoryList = viewModel.categories.await()
+        val categoryList = viewModel.categories.await()
 
         categoryList.observe(this@SettingsFragment, Observer { categories ->
             if (categories == null) return@Observer
             updateCategoryList(categories)
         })
-*/
     }
 
-
     private fun updateCategoryList(categories: List<Category>) {
-
         val linearLayout = LinearLayoutManager(context!!)
         linearLayout.orientation = RecyclerView.VERTICAL
         categoryAdapter = CategoryAdapter(context!!, categories)
 
         recyclerViewCategory.layoutManager = linearLayout
         recyclerViewCategory.adapter = categoryAdapter
-
     }
 
 }

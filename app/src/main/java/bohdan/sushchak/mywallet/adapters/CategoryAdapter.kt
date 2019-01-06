@@ -34,6 +34,5 @@ class CategoryAdapter(
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val tvCategory = itemView.tvCategory
-
     }
 }
