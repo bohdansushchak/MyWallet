@@ -11,5 +11,7 @@ interface MyWalletRepository {
 
     suspend fun addCategory(category: Category)
 
+    suspend fun removeCategory(category: Category)
+
     suspend fun createOrderWithProducts(order : Order, products: List<Product>)
 }

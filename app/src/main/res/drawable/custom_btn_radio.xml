@@ -20,5 +20,5 @@
         android:drawable="@null" />
 -->
     <item android:state_checked="false" android:drawable="@color/fui_transparent" />
-    <item android:state_checked="true" android:drawable="@drawable/ic_check_on" />
+    <item android:state_checked="true" android:drawable="@drawable/ic_check_circle" />
 </selector>

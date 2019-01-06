@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.ui.settings
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.CategoryAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.ui.base.ScoptedFragment
+import bohdan.sushchak.mywallet.ui.dialogs.CreateCategoryDialogFragment
 import kotlinx.android.synthetic.main.settings_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
@@ -38,6 +40,14 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(SettingsViewModel::class.java)
 
+        btnAddCategory.setOnClickListener {
+            val ft = fragmentManager?.beginTransaction()
+            val fragment = CreateCategoryDialogFragment()
+            fragment.show(ft,"")
+
+            fragment.onResult = {title, color -> createCategory(title, color) }
+        }
+
         bindUI()
     }
 
@@ -59,4 +69,9 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
         recyclerViewCategory.adapter = categoryAdapter
     }
 
+    private fun createCategory(title: String, color: String){
+        val category = Category(title = title, color = Color.parseColor(color))
+        viewModel.addCategory(category)
+        
+    }
 }

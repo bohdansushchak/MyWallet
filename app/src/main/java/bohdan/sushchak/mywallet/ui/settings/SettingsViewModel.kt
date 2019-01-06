@@ -16,11 +16,11 @@ class SettingsViewModel(val myWalletRepository: MyWalletRepository) : ViewModel(
             myWalletRepository.addCategory(category)
         }
     }
-  /*
+
     fun removeCategory(category: Category) {
         GlobalScope.launch {
-            myWalletRepository.
+            myWalletRepository.removeCategory(category)
         }
     }
-*/
+
 }

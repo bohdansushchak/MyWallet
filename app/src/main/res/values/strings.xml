@@ -8,4 +8,30 @@
     <string name="settings_fragment_title">Settings</string>
     <string name="diagram_fragment_title">Statistic</string>
 
+    <string-array name="colorArray">
+        <item>#F83F2B</item>
+        <item>#E41761</item>
+        <item>#9C1AB2</item>
+        <item>#6734B4</item>
+        <item>#3E4CB7</item>
+
+        <item>#43B048</item>
+        <item>#009687</item>
+        <item>#00BCD5</item>
+        <item>#00A6F4</item>
+        <item>#0F93F8</item>
+
+        <item>#88C440</item>
+        <item>#CCDD1D</item>
+        <item>#FDEC1A</item>
+        <item>#FFC100</item>
+        <item>#FF9107</item>
+
+        <item>#000000</item>
+        <item>#5E7C8F</item>
+        <item>#9D9D9D</item>
+        <item>#7A5447</item>
+        <item>#EF5B25</item>
+    </string-array>
+
 </resources>

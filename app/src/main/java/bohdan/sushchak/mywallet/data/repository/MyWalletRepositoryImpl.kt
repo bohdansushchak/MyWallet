@@ -34,5 +34,10 @@ class MyWalletRepositoryImpl(
         GlobalScope.launch { categoryDao.insert(category) }
     }
 
+    override suspend fun removeCategory(category: Category) {
+        GlobalScope.launch {
+            categoryDao.delete(category)
+        }
+    }
 
 }
