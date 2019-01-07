@@ -12,11 +12,9 @@ import kotlinx.android.synthetic.main.category_item.view.*
 import org.jetbrains.anko.textColor
 
 class CategoryAdapter(
-        private val context : Context,
-        private val items : List<Category>
-) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
-
-    var onLongClick: ((view: View, position: Int) -> Unit)? = null
+        private val context: Context,
+        private val items: List<Category>
+) : RecyclerAdapterClick<CategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.ViewHolder {
         return ViewHolder(LayoutInflater.from(context)
@@ -28,18 +26,16 @@ class CategoryAdapter(
     }
 
     override fun onBindViewHolder(holder: CategoryAdapter.ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+
         holder.tvCategory.text = items[position].title
         holder.tvCategory.textColor = items[position].color
 
         Log.d("TAG", "${items[position].title} and ${items[position].color}")
 
-        holder.itemView.setOnLongClickListener {
-            onLongClick?.invoke(it, position)
-            return@setOnLongClickListener true
-        }
     }
 
-    class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvCategory = itemView.tvCategory
     }
 }

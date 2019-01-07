@@ -8,7 +8,16 @@
     <string name="settings_fragment_title">Settings</string>
     <string name="diagram_fragment_title">Statistic</string>
 
-    <string-array name="colorArray">
+    <!--buttons text-->
+    <string name="btn_text_save_order">Save order</string>
+    <string name="btn_text_clear_all">Clear all</string>
+
+    <!-- editText hints-->
+    <string name="ed_hint_write_product_name">Write product name</string>
+    <string name="ed_hint_enter_price">Enter price</string>
+
+
+    <string-array name="colorCategoryArray">
         <item>#F83F2B</item>
         <item>#E41761</item>
         <item>#9C1AB2</item>

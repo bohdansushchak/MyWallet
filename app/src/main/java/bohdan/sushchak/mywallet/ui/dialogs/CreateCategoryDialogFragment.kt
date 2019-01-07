@@ -2,7 +2,6 @@ package bohdan.sushchak.mywallet.ui.dialogs
 
 import android.graphics.Color
 import android.os.Bundle
-import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,7 @@ class CreateCategoryDialogFragment(var category: Category?) : DialogFragment() {
 
     private fun bindUI() {
 
-        val colorList = convertStringToIntList(activity!!.resources.getStringArray(R.array.colorArray))
+        val colorList = convertStringToIntList(activity!!.resources.getStringArray(R.array.colorCategoryArray))
         adapter = PickColorAdapter(context!!, colorList)
 
         if (category != null) {

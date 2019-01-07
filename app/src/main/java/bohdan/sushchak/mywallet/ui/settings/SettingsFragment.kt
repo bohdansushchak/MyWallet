@@ -90,18 +90,10 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
                 }
 
                 R.id.popupRemove -> {
-                    val alertDialog = AlertDialog.Builder(context)
-                    alertDialog.setTitle("Remove category")
-                    alertDialog.setMessage("Are you sure to delete?")
-                    alertDialog.setPositiveButton("Yes") { _, _ ->
-                        viewModel.removeCategory(category)
-                    }
-                    alertDialog.setNegativeButton("Cancel") { _, _ ->
-                        return@setNegativeButton
-                    }
 
-                    val dialog = alertDialog.create()
-                    dialog.show()
+                    showDialog("Remove category", "Are you sure to remove category", yes = {
+                        viewModel.removeCategory(category)
+                    })
 
                     return@setOnMenuItemClickListener true
                 }

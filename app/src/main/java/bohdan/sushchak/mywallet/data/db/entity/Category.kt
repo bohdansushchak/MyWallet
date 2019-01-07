@@ -24,4 +24,8 @@ data class Category(
                 return Category(null, "", 0)
             }
     }
+
+    override fun toString(): String {
+        return title
+    }
 }
