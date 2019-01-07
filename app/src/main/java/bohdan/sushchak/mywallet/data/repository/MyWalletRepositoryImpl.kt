@@ -36,13 +36,11 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun removeCategory(category: Category) {
-            categoryDao.delete(category)
-
+        categoryDao.delete(category)
     }
 
     override suspend fun updateCategory(category: Category) {
-            categoryDao.update(category)
-
+        categoryDao.update(category)
     }
     //endregion
 }

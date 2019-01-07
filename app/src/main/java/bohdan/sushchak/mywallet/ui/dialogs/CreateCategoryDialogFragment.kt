@@ -2,6 +2,7 @@ package bohdan.sushchak.mywallet.ui.dialogs
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,19 +43,17 @@ class CreateCategoryDialogFragment(var category: Category?) : DialogFragment() {
             category = Category(null, "", 0)
         }
 
-
         val gridLayoutManager = GridLayoutManager(context!!, 5)
         recyclerViewColors.layoutManager = gridLayoutManager
         recyclerViewColors.adapter = adapter
 
         btnCancel.setOnClickListener { dismiss() }
-
         btnSave.setOnClickListener {
             if (!isValidate())
                 return@setOnClickListener
 
             category!!.color = colorList[adapter.mSelectedItem]
-            category!!.title = edCategoryTitle.text.toString()
+            category!!.title = edCategoryTitle.text.toString().trim()
 
             onResult?.invoke(category!!)
             dismiss()

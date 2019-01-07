@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.ui.settings
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
+import org.kodein.di.direct
 import org.kodein.di.generic.instance
 
 class SettingsFragment : ScoptedFragment(), KodeinAware {
@@ -28,7 +30,7 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
     private val viewModelFactory: SettingsViewModelFactory by instance()
     private lateinit var viewModel: SettingsViewModel
 
-    private lateinit var categoryAdapter : CategoryAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,9 +46,9 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
             val ft = fragmentManager?.beginTransaction()
             val category = Category.emptyCategory
             val fragment = CreateCategoryDialogFragment(category)
-            fragment.show(ft,"")
+            fragment.show(ft, "")
 
-            fragment.onResult = {newCategory -> viewModel.addCategory(newCategory) }
+            fragment.onResult = { newCategory -> viewModel.addCategory(newCategory) }
         }
 
         bindUI()
@@ -74,30 +76,44 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
         }
     }
 
-    private fun showPopup(view: View, category: Category){
+    private fun showPopup(view: View, category: Category) {
         val popupMenu = PopupMenu(context, view)
         val inflater = popupMenu.menuInflater
         inflater.inflate(R.menu.category_popup_menu, popupMenu.menu)
         popupMenu.show()
 
         popupMenu.setOnMenuItemClickListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.popupEdit -> {
                     editCategory(category)
-                    return@setOnMenuItemClickListener true }
+                    return@setOnMenuItemClickListener true
+                }
 
                 R.id.popupRemove -> {
-                    viewModel.removeCategory(category)
-                    return@setOnMenuItemClickListener true}
+                    val alertDialog = AlertDialog.Builder(context)
+                    alertDialog.setTitle("Remove category")
+                    alertDialog.setMessage("Are you sure to delete?")
+                    alertDialog.setPositiveButton("Yes") { _, _ ->
+                        viewModel.removeCategory(category)
+                    }
+                    alertDialog.setNegativeButton("Cancel") { _, _ ->
+                        return@setNegativeButton
+                    }
+
+                    val dialog = alertDialog.create()
+                    dialog.show()
+
+                    return@setOnMenuItemClickListener true
+                }
             }
             return@setOnMenuItemClickListener false
         }
     }
 
-    private fun editCategory(category: Category){
+    private fun editCategory(category: Category) {
         val ft = fragmentManager?.beginTransaction()
         val fragment = CreateCategoryDialogFragment(category)
-        fragment.show(ft,"")
+        fragment.show(ft, "")
 
         fragment.onResult = { newCategory -> viewModel.updateCategory(newCategory) }
     }
