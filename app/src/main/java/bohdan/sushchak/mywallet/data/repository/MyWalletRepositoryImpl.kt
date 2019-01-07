@@ -18,26 +18,31 @@ class MyWalletRepositoryImpl(
         private val productDao: ProductDao
 ) : MyWalletRepository {
 
-    override suspend fun getCategories(): LiveData<List<Category>> {
-        return withContext(Dispatchers.IO) {
-            return@withContext categoryDao.getAllCategories()
-        }
-    }
-
     override suspend fun createOrderWithProducts(order: Order, products: List<Product>) {
         GlobalScope.launch {
             orderDao.insertOrderWithProducts(order, products)
         }
     }
 
-    override suspend fun addCategory(category: Category) {
-        GlobalScope.launch { categoryDao.insert(category) }
-    }
-
-    override suspend fun removeCategory(category: Category) {
-        GlobalScope.launch {
-            categoryDao.delete(category)
+    //region category
+    override suspend fun getCategories(): LiveData<List<Category>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext categoryDao.getAllCategories()
         }
     }
 
+    override suspend fun addCategory(category: Category) {
+        categoryDao.insert(category)
+    }
+
+    override suspend fun removeCategory(category: Category) {
+            categoryDao.delete(category)
+
+    }
+
+    override suspend fun updateCategory(category: Category) {
+            categoryDao.update(category)
+
+    }
+    //endregion
 }

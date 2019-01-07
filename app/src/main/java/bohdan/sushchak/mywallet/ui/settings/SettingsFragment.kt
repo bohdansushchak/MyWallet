@@ -1,10 +1,10 @@
 package bohdan.sushchak.mywallet.ui.settings
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,10 +42,11 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
 
         btnAddCategory.setOnClickListener {
             val ft = fragmentManager?.beginTransaction()
-            val fragment = CreateCategoryDialogFragment()
+            val category = Category.emptyCategory
+            val fragment = CreateCategoryDialogFragment(category)
             fragment.show(ft,"")
 
-            fragment.onResult = {title, color -> createCategory(title, color) }
+            fragment.onResult = {newCategory -> viewModel.addCategory(newCategory) }
         }
 
         bindUI()
@@ -67,11 +68,38 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
 
         recyclerViewCategory.layoutManager = linearLayout
         recyclerViewCategory.adapter = categoryAdapter
+
+        categoryAdapter.onLongClick = { view, position ->
+            showPopup(view, categories[position])
+        }
     }
 
-    private fun createCategory(title: String, color: String){
-        val category = Category(title = title, color = Color.parseColor(color))
-        viewModel.addCategory(category)
-        
+    private fun showPopup(view: View, category: Category){
+        val popupMenu = PopupMenu(context, view)
+        val inflater = popupMenu.menuInflater
+        inflater.inflate(R.menu.category_popup_menu, popupMenu.menu)
+        popupMenu.show()
+
+        popupMenu.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.popupEdit -> {
+                    editCategory(category)
+                    return@setOnMenuItemClickListener true }
+
+                R.id.popupRemove -> {
+                    viewModel.removeCategory(category)
+                    return@setOnMenuItemClickListener true}
+            }
+            return@setOnMenuItemClickListener false
+        }
     }
+
+    private fun editCategory(category: Category){
+        val ft = fragmentManager?.beginTransaction()
+        val fragment = CreateCategoryDialogFragment(category)
+        fragment.show(ft,"")
+
+        fragment.onResult = { newCategory -> viewModel.updateCategory(newCategory) }
+    }
+
 }

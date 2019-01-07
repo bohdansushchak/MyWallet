@@ -16,6 +16,8 @@ class CategoryAdapter(
         private val items : List<Category>
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
+    var onLongClick: ((view: View, position: Int) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.ViewHolder {
         return ViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.category_item, parent, false))
@@ -30,6 +32,11 @@ class CategoryAdapter(
         holder.tvCategory.textColor = items[position].color
 
         Log.d("TAG", "${items[position].title} and ${items[position].color}")
+
+        holder.itemView.setOnLongClickListener {
+            onLongClick?.invoke(it, position)
+            return@setOnLongClickListener true
+        }
     }
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){

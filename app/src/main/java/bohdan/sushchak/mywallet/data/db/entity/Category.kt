@@ -1,16 +1,14 @@
 package bohdan.sushchak.mywallet.data.db.entity
 
-
-import android.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "categories")
-data class Category (
+data class Category(
 
         @PrimaryKey(autoGenerate = true)
-        @ColumnInfo(name ="id")
+        @ColumnInfo(name = "id")
         var id: Int? = null,
 
         @ColumnInfo(name = "title")
@@ -18,4 +16,12 @@ data class Category (
 
         @ColumnInfo(name = "color")
         var color: Int
-)
+
+) {
+    companion object {
+        val emptyCategory: Category
+            get() {
+                return Category(null, "", 0)
+            }
+    }
+}

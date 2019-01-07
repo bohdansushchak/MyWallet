@@ -7,7 +7,7 @@ import bohdan.sushchak.mywallet.internal.lazyDeffered
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(val myWalletRepository: MyWalletRepository) : ViewModel() {
+class SettingsViewModel(private val myWalletRepository: MyWalletRepository) : ViewModel() {
 
     val categories by lazyDeffered { myWalletRepository.getCategories() }
 
@@ -20,6 +20,12 @@ class SettingsViewModel(val myWalletRepository: MyWalletRepository) : ViewModel(
     fun removeCategory(category: Category) {
         GlobalScope.launch {
             myWalletRepository.removeCategory(category)
+        }
+    }
+
+    fun updateCategory(category: Category){
+        GlobalScope.launch {
+            myWalletRepository.updateCategory(category)
         }
     }
 
