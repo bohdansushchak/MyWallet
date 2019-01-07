@@ -2,14 +2,16 @@ package bohdan.sushchak.mywallet.ui.list_orders
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
+import bohdan.sushchak.mywallet.data.db.entity.Order
 
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.adapters.OrderAdapter
 import bohdan.sushchak.mywallet.ui.base.ScoptedFragment
 import kotlinx.android.synthetic.main.order_list_fragment.*
 import kotlinx.coroutines.launch
@@ -38,18 +40,22 @@ class OrderListFragment : ScoptedFragment(), KodeinAware {
 
         fabCreateOrder.setOnClickListener(Navigation
                         .createNavigateOnClickListener(R.id.createOrderFragment))
-
-        /*fabCreateOrder.setOnClickListener {
-            NavHostFragment.findNavController(this).navigate(R.id.createOrderFragment)
-        }*/
     }
 
     private fun bindUI() = launch {
 
-        viewModel.orderList.await().observe(this@OrderListFragment, Observer {
-            Log.d("TAG", it.toString())
+        viewModel.orderList.await().observe(this@OrderListFragment, Observer { orders ->
+            updateOrderList(orders)
         })
     }
 
+    private fun updateOrderList(orders: List<Order>){
+
+        val adapter = OrderAdapter(context!!, orders)
+        val linearManager = LinearLayoutManager(context)
+
+        recyclerViewOrders.adapter = adapter
+        recyclerViewOrders.layoutManager = linearManager
+    }
 
 }

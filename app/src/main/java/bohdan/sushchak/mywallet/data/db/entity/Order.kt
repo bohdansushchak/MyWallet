@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class Order(
         @PrimaryKey(autoGenerate = true)
         var id: Long?,
+        var title: String,
         var date: Long,
         var price: Double
 ) {

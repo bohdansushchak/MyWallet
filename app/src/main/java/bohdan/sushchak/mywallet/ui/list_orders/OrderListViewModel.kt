@@ -9,5 +9,4 @@ class OrderListViewModel(myWalletRepository: MyWalletRepository) : ViewModel() {
     val orderList by lazyDeffered { myWalletRepository.getOrders() }
 
 
-
 }

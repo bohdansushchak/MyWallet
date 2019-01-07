@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
@@ -17,12 +18,18 @@ import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.ProductAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.internal.Constants
+import bohdan.sushchak.mywallet.internal.EmptyProductListException
+import bohdan.sushchak.mywallet.internal.parseDate
 import bohdan.sushchak.mywallet.ui.base.ScoptedFragment
 import kotlinx.android.synthetic.main.create_order_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class CreateOrderFragment : ScoptedFragment(), KodeinAware {
 
@@ -47,11 +54,17 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
         ibtnAddProduct.setOnClickListener { addProduct() }
         btnClearAll.setOnClickListener { clearProductList() }
         btnSaveOrder.setOnClickListener { saveOrder() }
+        tvOrderDate.setOnClickListener {
+            val date = tvOrderDate.text
+            pickDate(date)
+        }
 
         bindUI()
     }
 
     private fun bindUI() = launch {
+
+        setDate(Date()) //set current date
 
         viewModel.productList.observe(this@CreateOrderFragment, Observer { products ->
             updateCategoryList(products.toList())
@@ -118,9 +131,14 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
     }
 
     private fun saveOrder() {
-
-        val date = System.currentTimeMillis()
-        viewModel.addOrder(date)
+        try {
+            val date = parseDate(tvOrderDate.text.toString())
+            viewModel.addOrder(date.time)
+            fragmentManager?.popBackStack()
+        }
+        catch (e: EmptyProductListException){
+            makeToast("Product list can't be empty")
+        }
     }
 
     private fun spinnerUpdate(categories: List<Category>) {
@@ -204,6 +222,7 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
         //TODO add spCategory nothing selection
         //spCategory.setSelection(-1)
     }
+
     //TODO edit product ???
     /*
     private fun setDataViewOfProduct(product: Product){
@@ -218,5 +237,36 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
         false
     } catch (e: Exception) {
         true
+    }
+
+    private fun pickDate(dateCharSequence: CharSequence) {
+        val calendar = Calendar.getInstance()
+
+        if (dateCharSequence.isNotEmpty()) {
+            val date = parseDate(dateCharSequence.toString())
+            calendar.time = date
+        }
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+
+        val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
+
+            calendar.set(Calendar.YEAR, year_)
+            calendar.set(Calendar.MONTH, monthOfYear)
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            setDate(calendar.time)
+
+        }, year, month, day)
+        dpd.show()
+    }
+
+    private fun setDate(date: Date) {
+        val sdf = SimpleDateFormat(Constants.DATE_FORMAT)
+        val formattedDate = sdf.format(date)
+
+        tvOrderDate.text = formattedDate
     }
 }
