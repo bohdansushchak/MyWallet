@@ -10,7 +10,7 @@ ForeignKey(entity = Order::class, parentColumns = ["id"], childColumns = ["order
 data class Product (
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "id")
-        var id: Int? = null,
+        var id: Long? = null,
 
         @ColumnInfo(name = "title")
         var title: String,
@@ -19,8 +19,8 @@ data class Product (
         var price: Double,
 
         @ColumnInfo(name = "category_id")
-        var categoryId: Int?,
+        var categoryId: Long?,
 
         @ColumnInfo(name = "order_id")
-        var orderId: Int
+        var orderId: Long?
 )

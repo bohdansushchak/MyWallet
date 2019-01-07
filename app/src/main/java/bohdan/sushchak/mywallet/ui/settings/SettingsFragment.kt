@@ -1,6 +1,6 @@
 package bohdan.sushchak.mywallet.ui.settings
 
-import android.app.AlertDialog
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
-import org.kodein.di.direct
 import org.kodein.di.generic.instance
 
 class SettingsFragment : ScoptedFragment(), KodeinAware {

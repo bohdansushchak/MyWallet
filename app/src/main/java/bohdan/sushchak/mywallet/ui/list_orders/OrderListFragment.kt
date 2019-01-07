@@ -2,20 +2,17 @@ package bohdan.sushchak.mywallet.ui.list_orders
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.ui.base.ScoptedFragment
 import kotlinx.android.synthetic.main.order_list_fragment.*
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
@@ -39,8 +36,6 @@ class OrderListFragment : ScoptedFragment(), KodeinAware {
 
         bindUI()
 
-
-
         fabCreateOrder.setOnClickListener(Navigation
                         .createNavigateOnClickListener(R.id.createOrderFragment))
 
@@ -51,6 +46,9 @@ class OrderListFragment : ScoptedFragment(), KodeinAware {
 
     private fun bindUI() = launch {
 
+        viewModel.orderList.await().observe(this@OrderListFragment, Observer {
+            Log.d("TAG", it.toString())
+        })
     }
 
 

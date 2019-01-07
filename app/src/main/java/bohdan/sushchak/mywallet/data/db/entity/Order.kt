@@ -6,7 +6,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "orders")
 data class Order(
         @PrimaryKey(autoGenerate = true)
-        var id: Int,
+        var id: Long?,
         var date: Long,
         var price: Double
-)
+) {
+    override fun toString(): String {
+        return "OrderId: ${id.toString()}"
+    }
+}

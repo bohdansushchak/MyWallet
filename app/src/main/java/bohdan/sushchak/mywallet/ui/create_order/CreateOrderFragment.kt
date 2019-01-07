@@ -90,7 +90,7 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
         val price = try {
             edProductPrice.text.toString().toDouble()
         } catch (e: Exception) {
-            0.0
+            ZERO
         }
 
         val categoryId = viewModel.selectedCategory.id
@@ -119,6 +119,8 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
 
     private fun saveOrder() {
 
+        val date = System.currentTimeMillis()
+        viewModel.addOrder(date)
     }
 
     private fun spinnerUpdate(categories: List<Category>) {
@@ -179,7 +181,7 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.popupEdit -> {
-
+                    //setDataViewOfProduct(product)
                     return@setOnMenuItemClickListener true
                 }
 
@@ -202,7 +204,13 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
         //TODO add spCategory nothing selection
         //spCategory.setSelection(-1)
     }
-
+    //TODO edit product ???
+    /*
+    private fun setDataViewOfProduct(product: Product){
+        edProductTitle.setText(product.title)
+        edProductPrice.setText(product.price.toString())
+        viewModel.categories.await().value
+    }*/
     private fun makeToast(msg: String) = Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 
     private fun cantParsePrice(price: Editable) = try {

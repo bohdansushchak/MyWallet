@@ -1,6 +1,7 @@
 package bohdan.sushchak.mywallet.data.repository
 
 import androidx.lifecycle.LiveData
+import bohdan.sushchak.mywallet.data.db.OrderWithProducts
 import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
 import bohdan.sushchak.mywallet.data.db.dao.OrderDao
 import bohdan.sushchak.mywallet.data.db.dao.ProductDao
@@ -17,12 +18,6 @@ class MyWalletRepositoryImpl(
         private val orderDao: OrderDao,
         private val productDao: ProductDao
 ) : MyWalletRepository {
-
-    override suspend fun createOrderWithProducts(order: Order, products: List<Product>) {
-        GlobalScope.launch {
-            orderDao.insertOrderWithProducts(order, products)
-        }
-    }
 
     //region category
     override suspend fun getCategories(): LiveData<List<Category>> {
@@ -42,5 +37,26 @@ class MyWalletRepositoryImpl(
     override suspend fun updateCategory(category: Category) {
         categoryDao.update(category)
     }
+    //endregion
+
+    //region Order
+    override suspend fun createOrderWithProducts(order: Order, products: List<Product>) {
+        GlobalScope.launch {
+            orderDao.insertOrderWithProducts(productDao, order, products)
+        }
+    }
+
+    override suspend fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext orderDao.getOrdersWithProducts()
+        }
+    }
+
+    override suspend fun getOrders(): LiveData<List<Order>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext orderDao.getOrders()
+        }
+    }
+
     //endregion
 }

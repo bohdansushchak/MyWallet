@@ -13,4 +13,8 @@ class OrderWithProducts {
     @Relation(parentColumn = "id",
             entityColumn = "order_id")
     var products: List<Product> = ArrayList()
+
+    override fun toString(): String {
+        return "${order.toString()} :{ $products }"
+    }
 }

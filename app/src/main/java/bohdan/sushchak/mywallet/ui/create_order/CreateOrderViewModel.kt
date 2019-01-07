@@ -1,11 +1,16 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel
+import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.lazyDeffered
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
+const val ZERO = 0.0
 
 class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
     : ViewModel() {
@@ -18,7 +23,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
 
     init {
         productList.value = mutableListOf()
-        totalPrice.value = 0.0
+        totalPrice.value = ZERO
     }
 
     fun addProduct(product: Product){
@@ -44,7 +49,15 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
 
     fun clearProductList() {
         productList.postValue(mutableListOf())
-        totalPrice.postValue(0.0)
+        totalPrice.postValue(ZERO)
+    }
+
+    fun addOrder(date: Long){
+        GlobalScope.launch {
+            val order = Order( null, date, totalPrice.value ?: ZERO)
+
+            myWalletRepository.createOrderWithProducts(order, productList.value?.toList() ?: listOf() )
+        }
     }
 
 

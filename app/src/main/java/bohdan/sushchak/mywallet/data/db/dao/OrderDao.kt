@@ -5,6 +5,7 @@ import androidx.room.*
 import bohdan.sushchak.mywallet.data.db.OrderWithProducts
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.internal.setOrderId
 
 @Dao
 abstract class OrderDao : BaseDao<Order> {
@@ -16,12 +17,15 @@ abstract class OrderDao : BaseDao<Order> {
     abstract fun getOrder(id: Int): LiveData<Order>
 
     @Query("select * from orders")
-    abstract fun getOrders(): LiveData<OrderWithProducts>
+    abstract fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>>
+
+    @Query("select * from orders")
+    abstract fun getOrders(): LiveData<List<Order>>
 
     @Transaction
-    open fun insertOrderWithProducts(order: Order, products: List<Product>){
-        //val idOrder = addOrder(order)
-        //products.setOrderId(idOrder.)
-       // productDao.insert(products)
+    open fun insertOrderWithProducts(productDao: ProductDao, order: Order, products: List<Product>){
+        val idOrder = insert(order)
+        products.setOrderId(idOrder)
+        productDao.insert(products)
     }
 }
