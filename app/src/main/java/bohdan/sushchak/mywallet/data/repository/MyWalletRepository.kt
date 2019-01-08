@@ -24,5 +24,7 @@ interface MyWalletRepository {
     suspend fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>>
 
     suspend fun getOrders(): LiveData<List<Order>>
+
+    suspend fun removeOrder(order: Order)
     //endregion
 }

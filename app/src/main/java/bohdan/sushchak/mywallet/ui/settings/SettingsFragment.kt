@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.CategoryAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.ui.base.ScoptedFragment
+import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import bohdan.sushchak.mywallet.ui.dialogs.CreateCategoryDialogFragment
 import kotlinx.android.synthetic.main.settings_fragment.*
 import kotlinx.coroutines.launch
@@ -22,7 +21,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-class SettingsFragment : ScoptedFragment(), KodeinAware {
+class SettingsFragment : BaseFragment(), KodeinAware {
 
     override val kodein: Kodein by closestKodein()
 
@@ -71,33 +70,12 @@ class SettingsFragment : ScoptedFragment(), KodeinAware {
         recyclerViewCategory.adapter = categoryAdapter
 
         categoryAdapter.onLongClick = { view, position ->
-            showPopup(view, categories[position])
-        }
-    }
-
-    private fun showPopup(view: View, category: Category) {
-        val popupMenu = PopupMenu(context, view)
-        val inflater = popupMenu.menuInflater
-        inflater.inflate(R.menu.category_popup_menu, popupMenu.menu)
-        popupMenu.show()
-
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.popupEdit -> {
-                    editCategory(category)
-                    return@setOnMenuItemClickListener true
-                }
-
-                R.id.popupRemove -> {
-
-                    showDialog("Remove category", "Are you sure to remove category", yes = {
-                        viewModel.removeCategory(category)
+            showPopupEditRemove(view,
+                    edit = { editCategory(categories[position]) },
+                    remove = {
+                        showDialog("Remove category", "Are you sure to remove category",
+                                yes = { viewModel.removeCategory(categories[position]) })
                     })
-
-                    return@setOnMenuItemClickListener true
-                }
-            }
-            return@setOnMenuItemClickListener false
         }
     }
 

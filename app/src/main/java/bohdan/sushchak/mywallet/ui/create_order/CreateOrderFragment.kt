@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -19,9 +18,8 @@ import bohdan.sushchak.mywallet.adapters.ProductAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.internal.Constants
-import bohdan.sushchak.mywallet.internal.EmptyProductListException
 import bohdan.sushchak.mywallet.internal.parseDate
-import bohdan.sushchak.mywallet.ui.base.ScoptedFragment
+import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.create_order_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -30,8 +28,7 @@ import org.kodein.di.generic.instance
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-class CreateOrderFragment : ScoptedFragment(), KodeinAware {
+class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     override val kodein by closestKodein()
 
@@ -68,6 +65,7 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
 
         viewModel.productList.observe(this@CreateOrderFragment, Observer { products ->
             updateCategoryList(products.toList())
+
         })
 
         val categoryList = viewModel.categories.await()
@@ -88,7 +86,16 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
         adapter = ProductAdapter(context!!, products)
 
         adapter.onLongClick = { view, position ->
-            showPopup(view, products[position])
+            showPopupEditRemove(view,
+                    edit = {
+                        //TODO add removing product
+                    },
+                    remove = {
+                        showDialog("Remove product", "Are sure you to remove product", yes = {
+                            viewModel.removeProduct(products[position])
+                        })
+
+                    })
         }
 
         recyclerViewProducts.adapter = adapter
@@ -131,13 +138,16 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
     }
 
     private fun saveOrder() {
-        try {
-            val date = parseDate(tvOrderDate.text.toString())
-            viewModel.addOrder(date.time)
-            fragmentManager?.popBackStack()
-        }
-        catch (e: EmptyProductListException){
+
+        val date = parseDate(tvOrderDate.text.toString())
+
+        if (viewModel.isProductListEmpty())
             makeToast("Product list can't be empty")
+        else {
+            showEntryDialog("Order title", "Enter order title", yes = { strMsg ->
+                viewModel.addOrder(date.time, strMsg)
+                fragmentManager?.popBackStack()
+            })
         }
     }
 
@@ -187,33 +197,6 @@ class CreateOrderFragment : ScoptedFragment(), KodeinAware {
         }
 
         return true
-    }
-
-    private fun showPopup(view: View, product: Product) {
-
-        val popupMenu = PopupMenu(context, view)
-        val inflater = popupMenu.menuInflater
-        inflater.inflate(R.menu.category_popup_menu, popupMenu.menu)
-        popupMenu.show()
-
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.popupEdit -> {
-                    //setDataViewOfProduct(product)
-                    return@setOnMenuItemClickListener true
-                }
-
-                R.id.popupRemove -> {
-
-                    showDialog("Remove product", "Are sure you to remove product", yes = {
-                        viewModel.removeProduct(product)
-                    })
-
-                    return@setOnMenuItemClickListener true
-                }
-            }
-            return@setOnMenuItemClickListener false
-        }
     }
 
     private fun clearDataInViews() {

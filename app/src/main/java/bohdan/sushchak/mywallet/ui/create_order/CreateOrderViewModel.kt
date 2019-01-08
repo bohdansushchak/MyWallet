@@ -53,21 +53,21 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
         totalPrice.postValue(ZERO)
     }
 
-    fun addOrder(date: Long) {
-        if (productList.value!!.isEmpty())
+    fun addOrder(date: Long, title: String) {
+        if (isProductListEmpty())
             throw EmptyProductListException()
 
             GlobalScope.launch {
                 val order = Order(id = null,
-                        title = "",
+                        title = title,
                         date = date,
                         price = totalPrice.value ?: ZERO)
 
                 myWalletRepository.createOrderWithProducts(order, productList.value?.toList()
                         ?: listOf())
-
             }
     }
 
+    fun isProductListEmpty() = productList.value!!.isEmpty()
 
 }

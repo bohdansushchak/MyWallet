@@ -11,6 +11,8 @@
     <!--buttons text-->
     <string name="btn_text_save_order">Save order</string>
     <string name="btn_text_clear_all">Clear all</string>
+    <string name="btn_text_yes">Yes</string>
+    <string name="btn_text_cancel">Cancel</string>
 
     <!-- editText hints-->
     <string name="ed_hint_write_product_name">Write product name</string>
