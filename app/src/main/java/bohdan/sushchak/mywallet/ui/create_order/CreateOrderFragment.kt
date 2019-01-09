@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.ExpandableListProductAdapter
+import bohdan.sushchak.mywallet.adapters.MySpinnerAdapter
 
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
@@ -160,8 +161,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     private fun spinnerUpdate(categories: List<Category>) {
 
-        val adapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, categories)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = MySpinnerAdapter(context!!, R.layout.category_item_spinner, categories)
+        //adapter.setDropDownViewResource(R.layout.category_item_spinner)
 
         spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {

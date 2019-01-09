@@ -20,13 +20,11 @@
         android:id="@+id/expListViewProducts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="0dp"
+        android:footerDividersEnabled="true"
         android:groupIndicator="@null"
         app:layout_constraintBottom_toTopOf="@+id/dividerBottom"
         app:layout_constraintTop_toBottomOf="@+id/dividerTop"
-        tools:layout_editor_absoluteX="0dp">
-
-    </ExpandableListView>
+        tools:layout_editor_absoluteX="0dp"/>
 
     <Button
         android:id="@+id/btnSaveOrder"
@@ -71,8 +69,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:layoutMode="clipBounds"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ibtnAddProduct" />
+        app:layout_constraintTop_toBottomOf="@+id/ibtnAddProduct"
+        tools:listitem="@layout/category_item_spinner" />
 
     <EditText
         android:id="@+id/edProductPrice"
