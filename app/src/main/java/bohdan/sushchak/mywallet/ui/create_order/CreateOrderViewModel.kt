@@ -7,10 +7,8 @@ import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
-import bohdan.sushchak.mywallet.internal.EmptyProductListException
-import bohdan.sushchak.mywallet.internal.containCategory
-import bohdan.sushchak.mywallet.internal.indexOfCategory
-import bohdan.sushchak.mywallet.internal.lazyDeffered
+import bohdan.sushchak.mywallet.internal.*
+import com.squareup.okhttp.Dispatcher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -57,13 +55,18 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
     }
 
     fun removeProduct(product: Product) {
-        val list = productList.value
-        list?.remove(product)
+        GlobalScope.launch {
+            val list = productList.value
+            list?.remove(product)
 
-        val price = totalPrice.value!! - product.price
+            val price = totalPrice.value!! - product.price
 
-        productList.postValue(list)
-        totalPrice.postValue(price)
+            val newCategoryProductList = categoryProductList.value!!
+            newCategoryProductList.removeProduct(product)
+
+            productList.postValue(list)
+            totalPrice.postValue(price)
+            categoryProductList.postValue(newCategoryProductList)  }
     }
 
     fun clearProductList() {
@@ -87,6 +90,5 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
     }
 
     fun isProductListEmpty() = productList.value!!.isEmpty()
-
 
 }

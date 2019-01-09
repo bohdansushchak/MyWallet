@@ -3,12 +3,10 @@ package bohdan.sushchak.mywallet.ui.create_order
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -107,6 +105,18 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     private fun updateCategoryList(categoryWithProduct: MutableList<CategoryWithProducts>){
 
         adapter = ExpandableListProductAdapter(context!!, categoryWithProduct)
+
+        adapter.onLongClick = { view, product ->
+            showPopupEditRemove(view,
+                edit = {
+                    //TODO add removing product
+                },
+                remove = {
+                    showDialog("Remove product", "Are sure you to remove product", yes = {
+                        viewModel.removeProduct(product)
+                    })
+
+                }) }
 
         expListViewProducts.setAdapter(adapter)
     }
@@ -221,7 +231,6 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         edProductPrice.setText(product.price.toString())
         viewModel.categories.await().value
     }*/
-    private fun makeToast(msg: String) = Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 
     private fun cantParsePrice(price: Editable) = try {
         price.toString().toDouble()

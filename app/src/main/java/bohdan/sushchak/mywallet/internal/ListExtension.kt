@@ -32,3 +32,16 @@ fun MutableList<CategoryWithProducts>.indexOfCategory(category: Category): Int {
 
     return index
 }
+
+fun MutableList<CategoryWithProducts>.removeProduct(product: Product) {
+    var categoryToRemove: CategoryWithProducts? = null
+
+    this.forEach { categoryWithProducts ->
+        categoryWithProducts.products.remove(product)
+        if(categoryWithProducts.products.size == 0)
+            categoryToRemove = categoryWithProducts
+    }
+
+    if(categoryToRemove != null)
+        this.remove(categoryToRemove!!)
+}

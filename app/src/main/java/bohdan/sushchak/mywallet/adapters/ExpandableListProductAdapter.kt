@@ -14,6 +14,9 @@ import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
 class ExpandableListProductAdapter(
         val context: Context,
         val items: MutableList<CategoryWithProducts>) : BaseExpandableListAdapter() {
+
+    var onLongClick: ((view: View, product: Product) -> Unit)? = null
+
     override fun getGroup(groupPosition: Int): Category {
         return items[groupPosition].category
     }
@@ -62,6 +65,13 @@ class ExpandableListProductAdapter(
 
         tvProductName.text = getChild(groupPosition, childPosition).title
         tvProductPrice.text = getChild(groupPosition, childPosition).price.toString()
+
+        convertView.setOnLongClickListener { view ->
+
+            onLongClick?.invoke(view, getChild(groupPosition, childPosition))
+
+            return@setOnLongClickListener (onLongClick != null)
+        }
 
         return convertView
     }

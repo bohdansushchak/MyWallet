@@ -2,10 +2,12 @@ package bohdan.sushchak.mywallet.ui.base
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import bohdan.sushchak.mywallet.R
 import kotlinx.coroutines.CoroutineScope
@@ -66,7 +68,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
         entryDialogBuilder.setPositiveButton(R.string.btn_text_yes) { _, _ ->
             val inputStr = input.text.toString().trim()
-            if (msg.isNotBlank())
+            if (inputStr.isNotEmpty() && inputStr.isNotBlank())
                 yes?.invoke(inputStr)
         }
         entryDialogBuilder.setNegativeButton(R.string.btn_text_cancel) { _, _ ->
@@ -75,6 +77,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
         val entryDialog = entryDialogBuilder.create()
         entryDialog.show()
+
     }
 
     protected fun showPopupEditRemove(view: View, edit: (() -> Unit)? = null, remove: (() -> Unit)? = null) {
@@ -99,5 +102,9 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
             return@setOnMenuItemClickListener false
         }
     }
+
+    protected fun makeToast(msg: String) = Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+
+    protected fun makeToast(msg: Int) = Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 
 }
