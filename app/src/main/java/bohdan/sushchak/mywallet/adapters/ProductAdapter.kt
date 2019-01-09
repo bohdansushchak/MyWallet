@@ -30,6 +30,11 @@ class ProductAdapter(private val context: Context,
 
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+
+
+    }
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
     {
         val tvProductTitle = view.tvProductTitle

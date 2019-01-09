@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.EmptyProductListException
+import bohdan.sushchak.mywallet.internal.containCategory
+import bohdan.sushchak.mywallet.internal.indexOfCategory
 import bohdan.sushchak.mywallet.internal.lazyDeffered
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -20,10 +23,13 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
     val categories by lazyDeffered { myWalletRepository.getCategories() }
     val totalPrice: MutableLiveData<Double> = MutableLiveData()
 
+    val categoryProductList: MutableLiveData<MutableList<CategoryWithProducts>> = MutableLiveData()
+
     var selectedCategory = Category.emptyCategory
 
     init {
         productList.value = mutableListOf()
+        categoryProductList.value = mutableListOf()
         totalPrice.value = ZERO
     }
 
@@ -34,8 +40,20 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
 
         val price = totalPrice.value!! + product.price
 
+        val newCategoryProductList = categoryProductList.value!!
+
+        if (!newCategoryProductList.containCategory(selectedCategory)){
+            val categoryProductObj = CategoryWithProducts(selectedCategory, mutableListOf(product))
+            newCategoryProductList.add(categoryProductObj)
+        }
+        else{
+            val index = newCategoryProductList.indexOfCategory(selectedCategory)
+            newCategoryProductList[index].products.add(product)
+        }
+
         productList.postValue(list)
         totalPrice.postValue(price)
+        categoryProductList.postValue(newCategoryProductList)
     }
 
     fun removeProduct(product: Product) {
@@ -69,5 +87,6 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
     }
 
     fun isProductListEmpty() = productList.value!!.isEmpty()
+
 
 }

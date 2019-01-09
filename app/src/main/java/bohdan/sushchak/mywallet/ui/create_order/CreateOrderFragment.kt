@@ -3,6 +3,7 @@ package bohdan.sushchak.mywallet.ui.create_order
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,12 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.adapters.ProductAdapter
+import bohdan.sushchak.mywallet.adapters.ExpandableListProductAdapter
+
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.parseDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
@@ -32,7 +33,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     override val kodein by closestKodein()
 
-    private lateinit var adapter: ProductAdapter
+    private lateinit var adapter: ExpandableListProductAdapter
 
     private val viewModelFactory: CreateOrderViewModelFactory by instance()
     private lateinit var viewModel: CreateOrderViewModel
@@ -63,9 +64,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         setDate(Date()) //set current date
 
-        viewModel.productList.observe(this@CreateOrderFragment, Observer { products ->
-            updateCategoryList(products.toList())
-
+        viewModel.categoryProductList.observe(this@CreateOrderFragment, Observer { categoryProductList ->
+            updateCategoryList(categoryProductList)
         })
 
         val categoryList = viewModel.categories.await()
@@ -78,7 +78,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             tvTotalPrice.text = "Total: $totalPrice"
         })
     }
-
+/*
     private fun updateCategoryList(products: List<Product>) {
         val linearLayout = LinearLayoutManager(context!!)
         linearLayout.orientation = RecyclerView.VERTICAL
@@ -98,10 +98,17 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                     })
         }
 
-        recyclerViewProducts.adapter = adapter
-        recyclerViewProducts.layoutManager = linearLayout
+        expListViewProducts.adapter = adapter
+        expListViewProducts.layoutManager = linearLayout
     }
+*/
 
+    private fun updateCategoryList(categoryWithProduct: MutableList<CategoryWithProducts>){
+
+        adapter = ExpandableListProductAdapter(context!!, categoryWithProduct)
+
+        expListViewProducts.setAdapter(adapter)
+    }
     private fun addProduct() {
         if (!isValid())
             return

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.Category
-import kotlinx.android.synthetic.main.category_item.view.*
+import kotlinx.android.synthetic.main.category_item_spinner.view.*
 import org.jetbrains.anko.textColor
 
 class CategoryAdapter(
@@ -18,7 +18,7 @@ class CategoryAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.ViewHolder {
         return ViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.category_item, parent, false))
+                .inflate(R.layout.category_item_spinner, parent, false))
     }
 
     override fun getItemCount(): Int {

@@ -1,7 +1,7 @@
 package bohdan.sushchak.mywallet.data.repository
 
 import androidx.lifecycle.LiveData
-import bohdan.sushchak.mywallet.data.db.OrderWithProducts
+import bohdan.sushchak.mywallet.data.db.model.OrderWithProducts
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product

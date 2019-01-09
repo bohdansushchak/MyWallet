@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class OrderListViewModel(val myWalletRepository: MyWalletRepository) : ViewModel() {
 
     val orderList by lazyDeffered { myWalletRepository.getOrders() }
-    
+
     fun removeOrder(order: Order) {
         GlobalScope.launch {
             myWalletRepository.removeOrder(order)

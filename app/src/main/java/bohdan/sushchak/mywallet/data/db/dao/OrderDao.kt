@@ -2,7 +2,7 @@ package bohdan.sushchak.mywallet.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import bohdan.sushchak.mywallet.data.db.OrderWithProducts
+import bohdan.sushchak.mywallet.data.db.model.OrderWithProducts
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.internal.setOrderId
