@@ -110,7 +110,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                     //TODO add removing product
                 },
                 remove = {
-                    showDialog("Remove product", "Are sure you to remove product", yes = {
+                    showDialog(R.string.d_remove_product, R.string.d_remove_product_are_you_sure, yes = {
                         viewModel.removeProduct(product)
                     })
 
@@ -146,11 +146,11 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     private fun clearProductList() {
         if (viewModel.productList.value!!.size > 0)
-            showDialog("Clear all products",
-                    "Are you sure to clear all product from list", yes = {
+            showDialog(R.string.t_clear_products,
+                    R.string.t_clear_products_are_you_sure, yes = {
                 viewModel.clearProductList()
             })
-        else makeToast("Product list is empty")
+        else makeToast(R.string.t_product_list_is_empty)
     }
 
     private fun saveOrder() {
@@ -158,9 +158,9 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         val date = parseDate(tvOrderDate.text.toString())
 
         if (viewModel.isProductListEmpty())
-            makeToast("Product list can't be empty")
+            makeToast(R.string.t_product_list_cant_be_empty)
         else {
-            showEntryDialog("Order title", "Enter order title", yes = { strMsg ->
+            showEntryDialog(R.string.d_order_title, R.string.d_order_title_please_enter, yes = { strMsg ->
                 viewModel.addOrder(date.time, strMsg)
                 fragmentManager?.popBackStack()
             })
@@ -192,22 +192,22 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         when {
             title.isNullOrEmpty() -> {
-                makeToast("Please enter product name")
+                makeToast(R.string.t_please_enter_product_name)
                 return false
             }
 
             price.isNullOrEmpty() -> {
-                makeToast("Please enter product price")
+                makeToast(R.string.t_please_enter_product_price)
                 return false
             }
 
             cantParsePrice(price) -> {
-                makeToast("Price should be a number")
+                makeToast(R.string.t_price_should_be_a_number)
                 return false
             }
 
             (viewModel.selectedCategory == Category.emptyCategory) -> {
-                makeToast("Please select a category")
+                makeToast(R.string.t_please_select_a_category)
                 return false
             }
         }

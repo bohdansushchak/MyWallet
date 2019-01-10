@@ -78,6 +78,10 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         entryDialog.show()
     }
 
+    protected fun showEntryDialog(title: Int, msg: Int, yes: ((str: String) -> Unit)? = null, cancel: (() -> Unit)? = null) {
+        showEntryDialog(getString(title), getString(msg), yes, cancel)
+    }
+
     protected fun showPopupEditRemove(view: View, edit: (() -> Unit)? = null, remove: (() -> Unit)? = null) {
         val popupMenu = PopupMenu(context, view)
         val inflater = popupMenu.menuInflater
