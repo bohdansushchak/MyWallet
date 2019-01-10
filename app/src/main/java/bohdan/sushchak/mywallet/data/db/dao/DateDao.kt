@@ -9,7 +9,7 @@ import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
 @Dao
 abstract class DateDao : BaseDao<Date> {
 
-    @Query("select * from date_table")
+    @Query("select * from date_table order by date asc")
     abstract fun getOrdersByDate(): LiveData<List<OrdersByDate>>
 
     @Query("select * from date_table where id = :id")
@@ -20,5 +20,8 @@ abstract class DateDao : BaseDao<Date> {
 
     @Query("delete from date_table where id = :id")
     abstract fun removeById(id: Long?)
+
+    @Query("select * from date_table order by date asc")
+    abstract fun getDates(): LiveData<List<Date>>
 
 }
