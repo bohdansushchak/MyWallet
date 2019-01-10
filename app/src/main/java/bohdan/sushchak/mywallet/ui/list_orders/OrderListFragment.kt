@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.adapters.OrderAdapter
+import bohdan.sushchak.mywallet.adapters.ExpandableListOrderAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.order_list_fragment.*
 import kotlinx.coroutines.launch
@@ -43,29 +43,27 @@ class OrderListFragment : BaseFragment(), KodeinAware {
 
     private fun bindUI() = launch {
 
-        viewModel.orderList.await().observe(this@OrderListFragment, Observer { orders ->
-            updateOrderList(orders)
+        viewModel.orderList.await().observe(this@OrderListFragment, Observer { ordersByDate ->
+            updateOrderList(ordersByDate)
         })
     }
 
-    private fun updateOrderList(orders: List<Order>) {
+    private fun updateOrderList(ordersByDate: List<OrdersByDate>) {
 
-        val adapter = OrderAdapter(context!!, orders)
-        val linearManager = LinearLayoutManager(context)
+        val adapter = ExpandableListOrderAdapter(context!!,ordersByDate )
 
-        recyclerViewOrders.adapter = adapter
-        recyclerViewOrders.layoutManager = linearManager
+        expListViewOrders.setAdapter(adapter)
 
-        adapter.onLongClick = { view, position ->
+        adapter.onLongClick = { view, order ->
             showPopupEditRemove(view,
-                    edit = { editCategory(orders[position]) },
+                    edit = { editCategory(order) },
                     remove = {
-                        removeCategory(orders[position])
+                        removeCategory(order)
                     })
         }
 
-        adapter.onClick = { _, position ->
-            viewOrder(orders[position])
+        adapter.onClick = { order ->
+            viewOrder(order)
         }
 
     }

@@ -6,6 +6,7 @@ import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
 
 interface MyWalletRepository {
 
@@ -24,7 +25,7 @@ interface MyWalletRepository {
 
     suspend fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>>
 
-    suspend fun getOrders(): LiveData<List<Order>>
+    suspend fun getOrders(): LiveData<List<OrdersByDate>>
 
     suspend fun removeOrder(order: Order)
     //endregion

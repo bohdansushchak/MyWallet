@@ -16,7 +16,7 @@ import bohdan.sushchak.mywallet.adapters.MySpinnerAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
-import bohdan.sushchak.mywallet.internal.Constants
+import bohdan.sushchak.mywallet.internal.formatDate
 import bohdan.sushchak.mywallet.internal.parseDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.create_order_fragment.*
@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
-import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateOrderFragment : BaseFragment(), KodeinAware {
@@ -60,7 +59,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     private fun bindUI() = launch {
 
-        setDate(Date()) //set current date
+        tvOrderDate.text = formatDate(Date())
 
         viewModel.categoryProductList.observe(this@CreateOrderFragment, Observer { categoryProductList ->
             updateCategoryList(categoryProductList)
@@ -256,16 +255,9 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             calendar.set(Calendar.MONTH, monthOfYear)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            setDate(calendar.time)
+            tvOrderDate.text = formatDate(calendar.time)
 
         }, year, month, day)
         dpd.show()
-    }
-
-    private fun setDate(date: Date) {
-        val sdf = SimpleDateFormat(Constants.DATE_FORMAT)
-        val formattedDate = sdf.format(date)
-
-        tvOrderDate.text = formattedDate
     }
 }

@@ -10,6 +10,7 @@ import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.db.model.OrderWithProducts
+import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -51,14 +52,14 @@ class MyWalletRepositoryImpl(
         }
     }
 
-    override suspend fun getOrders(): LiveData<List<Order>> {
+    override suspend fun getOrders(): LiveData<List<OrdersByDate>> {
         return withContext(Dispatchers.IO) {
-            return@withContext orderDao.getOrders()
+            return@withContext dateDao.getOrdersByDate()
         }
     }
 
     override suspend fun removeOrder(order: Order) {
-        orderDao.delete(order)
+        orderDao.removeOrder(order, dateDao)
     }
 
     //endregion
