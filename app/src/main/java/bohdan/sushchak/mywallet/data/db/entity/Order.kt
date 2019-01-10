@@ -1,14 +1,23 @@
 package bohdan.sushchak.mywallet.data.db.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "orders")
+@Entity(tableName = "orders", foreignKeys = [ForeignKey(entity = Date::class, parentColumns = ["id"], childColumns = ["date_id"], onDelete = ForeignKey.CASCADE)])
 data class Order(
         @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "id")
         var id: Long?,
+
+        @ColumnInfo(name = "title")
         var title: String,
-        var date: Long,
+
+        @ColumnInfo(name = "date_id")
+        var dateId: Long?,
+
+        @ColumnInfo(name = "price")
         var price: Double
 ) {
     override fun toString(): String {

@@ -2,7 +2,6 @@ package bohdan.sushchak.mywallet.ui.base
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -77,7 +76,6 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
         val entryDialog = entryDialogBuilder.create()
         entryDialog.show()
-
     }
 
     protected fun showPopupEditRemove(view: View, edit: (() -> Unit)? = null, remove: (() -> Unit)? = null) {

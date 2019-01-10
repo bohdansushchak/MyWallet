@@ -1,20 +1,23 @@
 package bohdan.sushchak.mywallet.data.repository
 
 import androidx.lifecycle.LiveData
-import bohdan.sushchak.mywallet.data.db.model.OrderWithProducts
 import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
+import bohdan.sushchak.mywallet.data.db.dao.DateDao
 import bohdan.sushchak.mywallet.data.db.dao.OrderDao
 import bohdan.sushchak.mywallet.data.db.dao.ProductDao
 import bohdan.sushchak.mywallet.data.db.entity.Category
+import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.model.OrderWithProducts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class MyWalletRepositoryImpl(
         private val categoryDao: CategoryDao,
         private val orderDao: OrderDao,
-        private val productDao: ProductDao
+        private val productDao: ProductDao,
+        private val dateDao: DateDao
 ) : MyWalletRepository {
 
     //region category
@@ -56,6 +59,18 @@ class MyWalletRepositoryImpl(
 
     override suspend fun removeOrder(order: Order) {
         orderDao.delete(order)
+    }
+
+    //endregion
+
+    //region Date
+    override suspend fun getDateId(date: Long): Long?
+    {
+        return dateDao.getIdByDate(date).firstOrNull()
+    }
+
+    override suspend fun addDate(date: Date): Long {
+        return dateDao.insert(date)
     }
 
     //endregion

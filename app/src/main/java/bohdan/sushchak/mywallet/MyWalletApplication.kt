@@ -26,9 +26,10 @@ class MyWalletApplication() : Application(), KodeinAware{
         bind() from singleton { instance<MyWalletDatabase>().categoryDao() }
         bind() from singleton { instance<MyWalletDatabase>().productDao() }
         bind() from singleton { instance<MyWalletDatabase>().orderDao() }
+        bind() from singleton { instance<MyWalletDatabase>().dateDao() }
         //endregion
 
-        bind<MyWalletRepository>() with singleton { MyWalletRepositoryImpl(instance(), instance(), instance()) }
+        bind<MyWalletRepository>() with singleton { MyWalletRepositoryImpl(instance(), instance(), instance(), instance()) }
 
         //region viewmodels
         bind() from provider { CreateOrderViewModelFactory(instance()) }
