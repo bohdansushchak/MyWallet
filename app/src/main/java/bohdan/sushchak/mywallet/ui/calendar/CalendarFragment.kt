@@ -22,6 +22,9 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import java.util.*
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+
 
 class CalendarFragment : BaseFragment(), KodeinAware {
 
@@ -47,6 +50,10 @@ class CalendarFragment : BaseFragment(), KodeinAware {
     @SuppressLint("SetTextI18n")
     private fun bindUI() = launch {
         initCalendar()
+
+        val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
+        dividerItemDecoration.setDrawable(context!!.getDrawable(R.drawable.divider))
+        recyclerViewOrders.addItemDecoration(dividerItemDecoration)
 
         viewModel.orders.observe(this@CalendarFragment, Observer {
             updateListOrder(it)
