@@ -6,6 +6,7 @@ import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.model.CategoryCount
 import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
 
 interface MyWalletRepository {
@@ -18,7 +19,14 @@ interface MyWalletRepository {
     suspend fun removeCategory(category: Category)
 
     suspend fun updateCategory(category: Category)
+
+    suspend fun getCategoryCountByProductTitle(categoryTitle: String): List<CategoryCount>
+
+    suspend fun getCategoryById(id: Long): Category
+
     //endregion
+
+
 
     //region Order
     suspend fun createOrderWithProducts(order : Order, products: List<Product>)

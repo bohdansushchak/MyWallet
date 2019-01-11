@@ -3,10 +3,12 @@ package bohdan.sushchak.mywallet.ui.create_order
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bohdan.sushchak.mywallet.R
@@ -61,6 +63,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         tvOrderDate.text = formatDate(Date())
 
+        initTextWatcher(edProductTitle)
+
         viewModel.categoryProductList.observe(this@CreateOrderFragment, Observer { categoryProductList ->
             updateCategoryList(categoryProductList)
         })
@@ -72,7 +76,12 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         })
 
         viewModel.totalPrice.observe(this@CreateOrderFragment, Observer { totalPrice ->
-            tvTotalPrice.text = "Total: $totalPrice"
+            tvTotalPrice.text = "${getString(R.string.total)} $totalPrice"
+        })
+
+        viewModel.foundedCategory.observe(this@CreateOrderFragment, Observer {category ->
+            if (category != null)
+                updateSpinner(category)
         })
     }
 /*
@@ -99,6 +108,21 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         expListViewProducts.layoutManager = linearLayout
     }
 */
+
+    private fun initTextWatcher(editText: EditText){
+
+        editText.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s.toString()
+                if(str.length > 0)
+                    viewModel.searchCategoryCount(s.toString())
+            }
+        })
+    }
 
     private fun updateCategoryList(categoryWithProduct: MutableList<CategoryWithProducts>){
 
@@ -142,6 +166,13 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         viewModel.addProduct(product)
 
         clearDataInViews()
+    }
+
+    private fun updateSpinner(category: Category) = launch{
+
+        val index = viewModel.categories.await().value?.indexOf(category)
+        if(index != null)
+            spCategory.setSelection(index)
     }
 
     private fun clearProductList() {

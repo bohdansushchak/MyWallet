@@ -11,8 +11,8 @@ abstract class CategoryDao : BaseDao<Category> {
     @Query("select * from categories")
     abstract fun getAllCategories(): LiveData<List<Category>>
 
-    @Query("select * from categories where id = :id")
-    abstract fun getCategoryById(id: Int): LiveData<Category>
+    @Query("SELECT * FROM categories WHERE id = :id")
+    abstract fun getCategoryById(id: Long): Category
 
     @Query("select * from categories")
     abstract fun getCategoriesWithProduct(): LiveData<List<CategoryWithProducts>>

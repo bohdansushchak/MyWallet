@@ -29,6 +29,10 @@ class CalendarFragment : Fragment() {
         (activity as? AppCompatActivity)?.supportActionBar?.subtitle = null
         viewModel = ViewModelProviders.of(this).get(CalendarViewModel::class.java)
         // TODO: Use the ViewModel
+
+
+
+
     }
 
 }

@@ -9,6 +9,7 @@ import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.model.CategoryCount
 import bohdan.sushchak.mywallet.data.db.model.OrderWithProducts
 import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +40,17 @@ class MyWalletRepositoryImpl(
     override suspend fun updateCategory(category: Category) {
         categoryDao.update(category)
     }
+
+    override suspend fun getCategoryCountByProductTitle(categoryTitle: String): List<CategoryCount> {
+        return withContext(Dispatchers.IO) {
+            return@withContext productDao.getCategoriesCountByProductTitle(categoryTitle)
+        }
+    }
+
+    override suspend fun getCategoryById(id: Long): Category {
+        return categoryDao.getCategoryById(id)
+    }
+
     //endregion
 
     //region Order
@@ -65,8 +77,7 @@ class MyWalletRepositoryImpl(
     //endregion
 
     //region Date
-    override suspend fun getDateId(date: Long): Long?
-    {
+    override suspend fun getDateId(date: Long): Long? {
         return dateDao.getIdByDate(date).firstOrNull()
     }
 

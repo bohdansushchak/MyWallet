@@ -1,6 +1,8 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
+
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Date
@@ -20,6 +22,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
     var productList: MutableLiveData<MutableList<Product>> = MutableLiveData()
     val categories by lazyDeffered { myWalletRepository.getCategories() }
     val totalPrice: MutableLiveData<Double> = MutableLiveData()
+    val foundedCategory: MutableLiveData<Category> = MutableLiveData()
 
     val categoryProductList: MutableLiveData<MutableList<CategoryWithProducts>> = MutableLiveData()
 
@@ -29,6 +32,22 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
         productList.value = mutableListOf()
         categoryProductList.value = mutableListOf()
         totalPrice.value = ZERO
+    }
+
+    fun searchCategoryCount(productTitle: String){
+        GlobalScope.launch {
+            if(productTitle.length <= 0)
+                return@launch
+
+            val categoryCountList = myWalletRepository.getCategoryCountByProductTitle(productTitle)
+
+            val categoryCount = categoryCountList.maxBy { it -> it.count }
+
+            if(categoryCount != null){
+                val category = myWalletRepository.getCategoryById(categoryCount.categoryId!!)
+                foundedCategory.postValue(category)
+            }
+        }
     }
 
     fun addProduct(product: Product) {

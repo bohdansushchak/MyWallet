@@ -2,6 +2,7 @@ package bohdan.sushchak.mywallet.internal
 
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.model.CategoryCount
 import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
 import org.jetbrains.anko.collections.forEachWithIndex
 
