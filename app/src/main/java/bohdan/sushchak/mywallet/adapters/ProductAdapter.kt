@@ -27,7 +27,6 @@ class ProductAdapter(private val context: Context,
 
         holder.tvProductTitle.text = products[position].title
         holder.tvProductPrice.text = products[position].price.toString()
-
     }
 
     override fun getItemViewType(position: Int): Int {

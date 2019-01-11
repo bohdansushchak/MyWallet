@@ -74,6 +74,14 @@ class MyWalletRepositoryImpl(
         orderDao.removeOrder(order, dateDao)
     }
 
+    override suspend fun getOrderByDate(dateLong: Long?): List<Order> {
+        return withContext(Dispatchers.IO) {
+            val date = dateDao.getDateById(dateLong)
+
+            return@withContext orderDao.getOrdersByDateId(date?.id)
+        }
+    }
+
     //endregion
 
     //region Date

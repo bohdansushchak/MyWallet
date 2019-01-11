@@ -12,8 +12,9 @@ import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
 
 class ExpandableListProductAdapter(
-        val context: Context,
-        val items: MutableList<CategoryWithProducts>) : BaseExpandableListAdapter() {
+        private val context: Context,
+        private val items: MutableList<CategoryWithProducts>)
+    : BaseExpandableListAdapter() {
 
     var onLongClick: ((view: View, product: Product) -> Unit)? = null
 

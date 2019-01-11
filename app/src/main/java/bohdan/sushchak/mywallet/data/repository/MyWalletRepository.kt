@@ -36,6 +36,8 @@ interface MyWalletRepository {
     suspend fun getOrders(): LiveData<List<OrdersByDate>>
 
     suspend fun removeOrder(order: Order)
+
+    suspend fun getOrderByDate(date: Long?): List<Order>
     //endregion
 
     //region date

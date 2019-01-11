@@ -13,8 +13,8 @@ import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.internal.formatDate
 import java.util.*
 
-class ExpandableListOrderAdapter(val context: Context,
-                                 val listOrderByDate: List<OrdersByDate>): BaseExpandableListAdapter() {
+class ExpandableListOrderAdapter(private val context: Context,
+                                 private val listOrderByDate: List<OrdersByDate>): BaseExpandableListAdapter() {
 
     var onLongClick: ((view: View, order: Order) -> Unit)? = null
     var onClick: ((order: Order) -> Unit)? = null

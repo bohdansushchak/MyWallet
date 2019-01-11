@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import kotlinx.android.synthetic.main.order_item.view.*
 
-class OrderAdapter(val context: Context,
-                   val orders: List<Order>)
+class OrderAdapter(private val context: Context,
+                   private val orders: List<Order>)
     : RecyclerAdapterClick<OrderAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

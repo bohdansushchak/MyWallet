@@ -13,7 +13,7 @@ abstract class DateDao : BaseDao<Date> {
     abstract fun getOrdersByDate(): LiveData<List<OrdersByDate>>
 
     @Query("select * from date_table where id = :id")
-    abstract fun getDateById(id: Long?): List<Date>
+    abstract fun getDateById(id: Long?): Date?
 
     @Query("select id from date_table where date = :dateLong")
     abstract fun getIdByDate(dateLong: Long): List<Long?>

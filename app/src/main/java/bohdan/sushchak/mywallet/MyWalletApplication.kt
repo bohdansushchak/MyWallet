@@ -4,6 +4,7 @@ import android.app.Application
 import bohdan.sushchak.mywallet.data.db.MyWalletDatabase
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepositoryImpl
+import bohdan.sushchak.mywallet.ui.calendar.CalendarViewModelFactory
 import bohdan.sushchak.mywallet.ui.create_order.CreateOrderViewModelFactory
 import bohdan.sushchak.mywallet.ui.list_orders.OrderListViewModelFactory
 import bohdan.sushchak.mywallet.ui.settings.SettingsViewModelFactory
@@ -14,7 +15,6 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
-
 
 class MyWalletApplication() : Application(), KodeinAware{
 
@@ -35,6 +35,7 @@ class MyWalletApplication() : Application(), KodeinAware{
         bind() from provider { CreateOrderViewModelFactory(instance()) }
         bind() from provider { OrderListViewModelFactory(instance()) }
         bind() from provider { SettingsViewModelFactory(instance()) }
+        bind() from provider { CalendarViewModelFactory(instance()) }
 
         //endregion
     }

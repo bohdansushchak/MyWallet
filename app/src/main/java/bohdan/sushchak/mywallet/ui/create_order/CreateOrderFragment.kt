@@ -84,30 +84,6 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                 updateSpinner(category)
         })
     }
-/*
-    private fun updateCategoryList(products: List<Product>) {
-        val linearLayout = LinearLayoutManager(context!!)
-        linearLayout.orientation = RecyclerView.VERTICAL
-
-        adapter = ProductAdapter(context!!, products)
-
-        adapter.onLongClick = { view, position ->
-            showPopupEditRemove(view,
-                    edit = {
-                        //TODO add removing product
-                    },
-                    remove = {
-                        showDialog("Remove product", "Are sure you to remove product", yes = {
-                            viewModel.removeProduct(products[position])
-                        })
-
-                    })
-        }
-
-        expListViewProducts.adapter = adapter
-        expListViewProducts.layoutManager = linearLayout
-    }
-*/
 
     private fun initTextWatcher(editText: EditText){
 
@@ -177,8 +153,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     private fun clearProductList() {
         if (viewModel.productList.value!!.size > 0)
-            showDialog(R.string.t_clear_products,
-                    R.string.t_clear_products_are_you_sure, yes = {
+            showDialog(R.string.d_clear_products,
+                    R.string.d_clear_products_are_you_sure, yes = {
                 viewModel.clearProductList()
             })
         else makeToast(R.string.t_product_list_is_empty)
@@ -200,7 +176,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     private fun spinnerUpdate(categories: List<Category>) {
 
-        val adapter = MySpinnerAdapter(context!!, R.layout.category_item_spinner, categories)
+        val adapter = MySpinnerAdapter(context!!, categories)
         //adapter.setDropDownViewResource(R.layout.category_item_spinner)
 
         spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

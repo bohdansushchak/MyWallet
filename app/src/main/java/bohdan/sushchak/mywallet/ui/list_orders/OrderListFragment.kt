@@ -70,7 +70,7 @@ class OrderListFragment : BaseFragment(), KodeinAware {
 
     private fun removeCategory(order: Order) {
 
-        showDialog(title = "Remove order", msg = "Are you sure to remove order?",
+        showDialog(title = R.string.d_remove_order, msg = R.string.d_remove_order_are_you_sure,
                 yes = { viewModel.removeOrder(order) },
                 cancel = {})
 

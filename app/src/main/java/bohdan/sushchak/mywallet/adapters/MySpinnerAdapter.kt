@@ -9,9 +9,8 @@ import android.widget.TextView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.Category
 
-class MySpinnerAdapter(val context: Context,
-                       val layout: Int,
-                       val categories: List<Category>)
+class MySpinnerAdapter(private val context: Context,
+                       private val categories: List<Category>)
     : BaseAdapter() {
 
     override fun getItem(position: Int): Category? {
