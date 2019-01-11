@@ -7,6 +7,8 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.annotation.LayoutRes
+import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.fragment.app.Fragment
 import bohdan.sushchak.mywallet.R
 import kotlinx.coroutines.CoroutineScope

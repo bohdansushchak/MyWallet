@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
 import bohdan.sushchak.mywallet.data.db.dao.DateDao
 import bohdan.sushchak.mywallet.data.db.dao.OrderDao
@@ -12,10 +13,11 @@ import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.internal.Converters
 
 
 @Database(entities = [Product::class, Order::class, Category::class, Date::class], version = 1, exportSchema = false)
-
+@TypeConverters(Converters::class)
 abstract class MyWalletDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao

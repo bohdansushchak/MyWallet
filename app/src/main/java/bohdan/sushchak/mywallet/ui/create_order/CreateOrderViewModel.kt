@@ -33,17 +33,17 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
         totalPrice.value = ZERO
     }
 
-    fun searchCategoryCount(productTitle: String){
+    fun searchCategoryCount(productTitle: String) {
         GlobalScope.launch {
-            if(productTitle.length <= 0)
+            if (productTitle.isEmpty())
                 return@launch
 
             val categoryCountList = myWalletRepository.getCategoryCountByProductTitle(productTitle)
 
-            val categoryCount = categoryCountList.maxBy { it -> it.count }
+            val categoryCount = categoryCountList.maxBy { it.count }
 
-            if(categoryCount != null){
-                val category = myWalletRepository.getCategoryById(categoryCount.categoryId!!)
+            if (categoryCount?.categoryId != null) {
+                val category = let { myWalletRepository.getCategoryById(categoryCount.categoryId!!) }
                 foundedCategory.postValue(category)
             }
         }
@@ -58,11 +58,10 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
 
         val newCategoryProductList = categoryProductList.value!!
 
-        if (!newCategoryProductList.containCategory(selectedCategory)){
+        if (!newCategoryProductList.containCategory(selectedCategory)) {
             val categoryProductObj = CategoryWithProducts(selectedCategory, mutableListOf(product))
             newCategoryProductList.add(categoryProductObj)
-        }
-        else{
+        } else {
             val index = newCategoryProductList.indexOfCategory(selectedCategory)
             newCategoryProductList[index].products.add(product)
         }
@@ -84,7 +83,8 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
 
             productList.postValue(list)
             totalPrice.postValue(price)
-            categoryProductList.postValue(newCategoryProductList)  }
+            categoryProductList.postValue(newCategoryProductList)
+        }
     }
 
     fun clearProductList() {
@@ -96,20 +96,20 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
         if (isProductListEmpty())
             throw EmptyProductListException()
 
-            GlobalScope.launch {
-                var dateId = myWalletRepository.getDateId(date = date)
-                if(dateId == null){
-                    dateId = myWalletRepository.addDate(Date(null, date))
-                }
-
-                val order = Order(id = null,
-                        title = title,
-                        dateId = dateId,
-                        price = totalPrice.value ?: ZERO)
-
-                myWalletRepository.createOrderWithProducts(order, productList.value?.toList()
-                        ?: listOf())
+        GlobalScope.launch {
+            var dateId = myWalletRepository.getDateId(date = date)
+            if (dateId == null) {
+                dateId = myWalletRepository.addDate(Date(null, date))
             }
+
+            val order = Order(id = null,
+                    title = title,
+                    dateId = dateId,
+                    price = totalPrice.value ?: ZERO)
+
+            myWalletRepository.createOrderWithProducts(order, productList.value?.toList()
+                    ?: listOf())
+        }
     }
 
     fun isProductListEmpty() = productList.value!!.isEmpty()

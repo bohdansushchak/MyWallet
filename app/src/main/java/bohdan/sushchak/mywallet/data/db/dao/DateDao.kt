@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
+import com.github.sundeepk.compactcalendarview.domain.Event
 
 @Dao
 abstract class DateDao : BaseDao<Date> {
@@ -22,6 +23,9 @@ abstract class DateDao : BaseDao<Date> {
     abstract fun removeById(id: Long?)
 
     @Query("select * from date_table order by date asc")
-    abstract fun getDates(): LiveData<List<Date>>
+    abstract fun getDatesOrderBy(): LiveData<List<Date>>
+
+    @Query("select date from date_table")
+    abstract fun getAllDates(): LiveData<List<Event>>
 
 }

@@ -10,6 +10,7 @@ import bohdan.sushchak.mywallet.R
 
 import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
 import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.formatDate
 import java.util.*
 
@@ -41,7 +42,7 @@ class ExpandableListOrderAdapter(private val context: Context,
         val date = Date()
         date.time = getGroup(groupPosition).date
 
-        convertView!!.findViewById<TextView>(R.id.tvDate).text = formatDate(date)
+        convertView!!.findViewById<TextView>(R.id.tvDate).text = formatDate(date, Constants.DATE_FORMAT)
 
         return convertView
     }

@@ -8,6 +8,8 @@ import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.db.model.CategoryCount
 import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
+import com.github.sundeepk.compactcalendarview.domain.Event
+
 
 interface MyWalletRepository {
 
@@ -26,6 +28,9 @@ interface MyWalletRepository {
 
     //endregion
 
+    //region Date
+    suspend fun getDates(): LiveData<List<Event>>
+    //endregion
 
 
     //region Order
@@ -37,7 +42,7 @@ interface MyWalletRepository {
 
     suspend fun removeOrder(order: Order)
 
-    suspend fun getOrderByDate(date: Long?): List<Order>
+    suspend fun getOrdersByDate(date: Long?): List<Order>
     //endregion
 
     //region date

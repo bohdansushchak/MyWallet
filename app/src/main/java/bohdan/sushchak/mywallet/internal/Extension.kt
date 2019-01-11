@@ -5,6 +5,8 @@ import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.db.model.CategoryCount
 import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
 import org.jetbrains.anko.collections.forEachWithIndex
+import java.time.DayOfWeek
+import java.util.*
 
 fun List<Product>.setOrderId(orderId: Long) {
     forEachIndexed { index, product ->
@@ -45,4 +47,20 @@ fun MutableList<CategoryWithProducts>.removeProduct(product: Product) {
 
     if(categoryToRemove != null)
         this.remove(categoryToRemove!!)
+}
+
+fun Calendar.onlyDateInMillis(result: (time: Long) -> Unit){
+    val year = this.get(Calendar.YEAR)
+    val month = this.get(Calendar.MONTH)
+    val dayOfMonth = this.get(Calendar.DAY_OF_MONTH)
+
+    val cal = Calendar.getInstance()
+    cal.clear()
+
+    cal.set(Calendar.YEAR, year)
+    cal.set(Calendar.MONTH, month)
+    cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+    result.invoke(cal.timeInMillis)
+
 }

@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.ui.calendar
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.OrderAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.internal.Constants
+import bohdan.sushchak.mywallet.internal.formatDate
+import bohdan.sushchak.mywallet.internal.onlyDateInMillis
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
+import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import kotlinx.android.synthetic.main.calendar_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -32,22 +37,27 @@ class CalendarFragment : BaseFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        /*
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "Calendar"
-        (activity as? AppCompatActivity)?.supportActionBar?.subtitle = null*/
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(CalendarViewModel::class.java)
 
-
         bindUI()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindUI() = launch {
         initCalendar()
 
         viewModel.orders.observe(this@CalendarFragment, Observer {
             updateListOrder(it)
+        })
+
+        viewModel.calendarDates.await().observe(this@CalendarFragment, Observer { events ->
+            calendarView.addEvents(events.toMutableList())
+        })
+
+        viewModel.totalPrice.observe(this@CalendarFragment, Observer{ totalPrice->
+            tvTotal.text = "${getString(R.string.total)} $totalPrice"
         })
     }
 
@@ -74,27 +84,22 @@ class CalendarFragment : BaseFragment(), KodeinAware {
     private fun initCalendar() {
 
         val cal = Calendar.getInstance()
+        cal.onlyDateInMillis { viewModel.updateOrders(it) }
 
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.get(Calendar.MONTH)
-        val dayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
+        tvMonthTitle.text = formatDate(Date(), Constants.MONTH_FORMAT)
 
-        updateOrder(year, month, dayOfMonth)
+        calendarView.setListener(object : CompactCalendarView.CompactCalendarViewListener {
+            override fun onDayClick(dateClicked: Date?) {
+                cal.time = dateClicked
+                cal.onlyDateInMillis { viewModel.updateOrders(it) }
+            }
 
-        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            updateOrder(year, month, dayOfMonth)
-        }
+            override fun onMonthScroll(firstDayOfNewMonth: Date?) {
+                tvMonthTitle.text = formatDate(firstDayOfNewMonth, Constants.MONTH_FORMAT)
+            }
+        })
     }
 
-    private fun updateOrder(year: Int, month: Int, dayOfMonth: Int) {
-
-        val calendar = Calendar.getInstance()
-        calendar.clear()
-
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.MONTH, month)
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-        viewModel.updateOrders(calendar.time.time)
-    }
 }
+
+

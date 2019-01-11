@@ -1,9 +1,11 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,7 @@ import bohdan.sushchak.mywallet.adapters.MySpinnerAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.formatDate
 import bohdan.sushchak.mywallet.internal.parseDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
@@ -59,9 +62,10 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         bindUI()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindUI() = launch {
 
-        tvOrderDate.text = formatDate(Date())
+        tvOrderDate.text = formatDate(Date(), Constants.DATE_FORMAT)
 
         initTextWatcher(edProductTitle)
 
@@ -94,7 +98,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s.toString()
-                if(str.length > 0)
+                if(str.isNotEmpty())
                     viewModel.searchCategoryCount(s.toString())
             }
         })
@@ -162,12 +166,15 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     private fun saveOrder() {
 
-        val date = parseDate(tvOrderDate.text.toString())
+        val date = parseDate(tvOrderDate.text.toString(), Constants.DATE_FORMAT)
 
         if (viewModel.isProductListEmpty())
             makeToast(R.string.t_product_list_cant_be_empty)
         else {
             showEntryDialog(R.string.d_order_title, R.string.d_order_title_please_enter, yes = { strMsg ->
+
+                Log.d("DATE", date.time.toString())
+
                 viewModel.addOrder(date.time, strMsg)
                 fragmentManager?.popBackStack()
             })
@@ -248,7 +255,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         val calendar = Calendar.getInstance()
 
         if (dateCharSequence.isNotEmpty()) {
-            val date = parseDate(dateCharSequence.toString())
+            val date = parseDate(dateCharSequence.toString(), Constants.DATE_FORMAT)
+            calendar.clear()
             calendar.time = date
         }
         val year = calendar.get(Calendar.YEAR)
@@ -258,11 +266,14 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
 
+            calendar.clear()
             calendar.set(Calendar.YEAR, year_)
             calendar.set(Calendar.MONTH, monthOfYear)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            tvOrderDate.text = formatDate(calendar.time)
+            tvOrderDate.text = formatDate(calendar.time, Constants.DATE_FORMAT)
+
+            Log.d("DATE", calendar.time.time.toString())
 
         }, year, month, day)
         dpd.show()

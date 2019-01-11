@@ -1,5 +1,7 @@
 package bohdan.sushchak.mywallet.internal
 
+import android.graphics.Color
+
 object Constants {
     /*
     "yyyy.MM.dd G 'at' HH:mm:ss z" ---- 2001.07.04 AD at 12:08:56 PDT
@@ -12,4 +14,8 @@ object Constants {
     "EEE, MMM d, ''yy" ---------------- Wed, Jul 4, '01
      */
     const val DATE_FORMAT = "EEE, d MMM yyyy"
+
+    const val COLOR_EVENT = Color.BLACK
+
+    const val MONTH_FORMAT = "MMMM yyyy"
 }
