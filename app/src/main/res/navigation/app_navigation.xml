@@ -13,7 +13,12 @@
         android:id="@+id/calendarFragment"
         android:name="bohdan.sushchak.mywallet.ui.calendar.CalendarFragment"
         android:label="@string/calendar_fragment_title"
-        tools:layout="@layout/calendar_fragment" />
+        tools:layout="@layout/calendar_fragment" >
+        <argument
+            android:name="isStart"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
     <fragment
         android:id="@+id/createOrderFragment"
         android:name="bohdan.sushchak.mywallet.ui.create_order.CreateOrderFragment"
@@ -23,7 +28,12 @@
         android:id="@+id/diagramFragment"
         android:name="bohdan.sushchak.mywallet.ui.diagram.DiagramFragment"
         android:label="@string/diagram_fragment_title"
-        tools:layout="@layout/diagram_fragment" />
+        tools:layout="@layout/diagram_fragment" >
+        <argument
+            android:name="isStart"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
     <fragment
         android:id="@+id/orderListFragment"
         android:name="bohdan.sushchak.mywallet.ui.list_orders.OrderListFragment"
@@ -32,11 +42,20 @@
         <action
             android:id="@+id/action_orderListFragment_to_createOrderFragment"
             app:destination="@id/createOrderFragment" />
+        <argument
+            android:name="isStart"
+            app:argType="boolean"
+            android:defaultValue="true" />
     </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="bohdan.sushchak.mywallet.ui.settings.SettingsFragment"
         android:label="@string/settings_fragment_title"
-        tools:layout="@layout/settings_fragment" />
+        tools:layout="@layout/settings_fragment" >
+        <argument
+            android:name="isStart"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
 </navigation>

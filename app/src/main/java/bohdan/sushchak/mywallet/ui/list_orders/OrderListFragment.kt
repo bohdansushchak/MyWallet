@@ -38,7 +38,7 @@ class OrderListFragment : BaseFragment(), KodeinAware {
         bindUI()
 
         fabCreateOrder.setOnClickListener(Navigation
-                .createNavigateOnClickListener(R.id.createOrderFragment))
+                .createNavigateOnClickListener(R.id.action_orderListFragment_to_createOrderFragment))
     }
 
     private fun bindUI() = launch {
