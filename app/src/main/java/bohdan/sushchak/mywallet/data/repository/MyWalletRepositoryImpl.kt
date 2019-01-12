@@ -24,9 +24,9 @@ class MyWalletRepositoryImpl(
 ) : MyWalletRepository {
 
     override suspend fun getDates(): LiveData<List<Event>> {
-       return withContext(Dispatchers.IO) {
-           return@withContext dateDao.getAllDates()
-       }
+        return withContext(Dispatchers.IO) {
+            return@withContext dateDao.getAllDates()
+        }
     }
 
     //region category
@@ -78,7 +78,7 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun removeOrder(order: Order) {
-        orderDao.removeOrder(order, dateDao)
+        withContext(Dispatchers.IO) { orderDao.removeOrder(order, dateDao) }
     }
 
     override suspend fun getOrdersByDate(date: Long?): List<Order> {

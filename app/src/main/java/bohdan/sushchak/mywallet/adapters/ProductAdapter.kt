@@ -10,8 +10,8 @@ import bohdan.sushchak.mywallet.data.db.entity.Product
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class ProductAdapter(private val context: Context,
-                     private val products: List<Product>)
-    : RecyclerAdapterClick<ProductAdapter.ViewHolder>() {
+                     products: List<Product>)
+    : RecyclerAdapterClick<ProductAdapter.ViewHolder, Product>(products) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ProductAdapter.ViewHolder(LayoutInflater.from(context)
@@ -19,21 +19,16 @@ class ProductAdapter(private val context: Context,
     }
 
     override fun getItemCount(): Int {
-        return products.size
+        return items.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
 
-        holder.tvProductTitle.text = products[position].title
-        holder.tvProductPrice.text = products[position].price.toString()
+        holder.tvProductTitle.text = items[position].title
+        holder.tvProductPrice.text = items[position].price.toString()
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-
-
-    }
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
     {
         val tvProductTitle = view.tvProductTitle

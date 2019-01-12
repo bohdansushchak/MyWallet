@@ -88,5 +88,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
+/** component arch */
+    implementation "android.arch.lifecycle:runtime:$archVersion"
+    implementation "android.arch.lifecycle:extensions:$archVersion"
+    kapt "android.arch.lifecycle:compiler:$archVersion"
+
+    /** end of arch */
 
 }

@@ -9,7 +9,7 @@ data class Category(
 
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "id")
-        var id: Long? = null,
+        override val id: Long? = null,
 
         @ColumnInfo(name = "title")
         var title: String,
@@ -17,7 +17,7 @@ data class Category(
         @ColumnInfo(name = "color")
         var color: Int
 
-) {
+): BaseEntity() {
     companion object {
         val emptyCategory: Category
             get() {
@@ -27,5 +27,12 @@ data class Category(
 
     override fun toString(): String {
         return title
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Category
+                && this.id == other.id
+                && this.title == other.title
+                && this.color == other.color
     }
 }

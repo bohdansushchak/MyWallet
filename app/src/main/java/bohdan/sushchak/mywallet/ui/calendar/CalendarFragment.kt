@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.OrderAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Order
@@ -22,13 +24,13 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import java.util.*
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 
 
 class CalendarFragment : BaseFragment(), KodeinAware {
 
     override val kodein by closestKodein()
+
+    private lateinit var adapter: OrderAdapter
 
     private val viewModelFactory: CalendarViewModelFactory by instance()
     private lateinit var viewModel: CalendarViewModel
@@ -52,7 +54,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         initCalendar()
 
         val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
-        dividerItemDecoration.setDrawable(context!!.getDrawable(R.drawable.divider))
+        dividerItemDecoration.setDrawable(context!!.getDrawable(R.drawable.divider_white)!!)
         recyclerViewOrders.addItemDecoration(dividerItemDecoration)
 
         viewModel.orders.observe(this@CalendarFragment, Observer {
@@ -63,19 +65,27 @@ class CalendarFragment : BaseFragment(), KodeinAware {
             calendarView.addEvents(events.toMutableList())
         })
 
-        viewModel.totalPrice.observe(this@CalendarFragment, Observer{ totalPrice->
+        viewModel.totalPrice.observe(this@CalendarFragment, Observer { totalPrice ->
             tvTotal.text = "${getString(R.string.total)} $totalPrice"
         })
     }
 
     private fun updateListOrder(orders: List<Order>) {
+        if (::adapter.isInitialized) {
+            adapter.update(orders)
+            initLongClick(orders)
+            return
+        }
 
-        val adapter = OrderAdapter(context!!, orders)
+        adapter = OrderAdapter(context!!, orders)
         val layoutManager = LinearLayoutManager(context)
 
         recyclerViewOrders.adapter = adapter
         recyclerViewOrders.layoutManager = layoutManager
+        initLongClick(orders)
+    }
 
+    private fun initLongClick(orders: List<Order>) {
         adapter.onLongClick = { view, position ->
             showPopupEditRemove(view,
                     edit = {},

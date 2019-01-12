@@ -9,9 +9,9 @@ import androidx.room.PrimaryKey
 data class Date(
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "id")
-        val id: Long?,
+        override val id: Long?,
 
         @ColumnInfo(name = "date")
         val date: Long
-)
+): BaseEntity()
 

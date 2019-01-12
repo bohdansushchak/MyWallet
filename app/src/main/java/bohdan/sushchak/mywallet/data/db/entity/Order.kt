@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class Order(
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "id")
-        var id: Long?,
+        override var id: Long?,
 
         @ColumnInfo(name = "title")
         var title: String,
@@ -19,7 +19,7 @@ data class Order(
 
         @ColumnInfo(name = "price")
         var price: Double
-) {
+): BaseEntity() {
     override fun toString(): String {
         return "OrderId: ${id.toString()}"
     }

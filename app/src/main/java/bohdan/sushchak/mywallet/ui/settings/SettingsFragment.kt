@@ -1,12 +1,12 @@
 package bohdan.sushchak.mywallet.ui.settings
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
@@ -53,30 +53,29 @@ class SettingsFragment : BaseFragment(), KodeinAware {
     }
 
     private fun bindUI() = launch {
-        val categoryList = viewModel.categories.await()
+        val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
+        dividerItemDecoration.setDrawable(context!!.getDrawable(R.drawable.divider_black)!!)
+        recyclerViewCategory.addItemDecoration(dividerItemDecoration)
 
+        val categoryList = viewModel.categories.await()
         categoryList.observe(this@SettingsFragment, Observer { categories ->
-            if (categories == null) return@Observer
-            updateCategoryList(categories)
+            updateCategory(categories)
         })
     }
 
-    private fun updateCategoryList(categories: List<Category>) {
+    private fun updateCategory(categories: List<Category>) {
+        if (::categoryAdapter.isInitialized) {
+            categoryAdapter.update( categories)
+            initLongClick(categories)
+            return
+        }
+
         val linearLayout = LinearLayoutManager(context!!)
-        linearLayout.orientation = RecyclerView.VERTICAL
         categoryAdapter = CategoryAdapter(context!!, categories)
 
         recyclerViewCategory.layoutManager = linearLayout
         recyclerViewCategory.adapter = categoryAdapter
-
-        categoryAdapter.onLongClick = { view, position ->
-            showPopupEditRemove(view,
-                    edit = { editCategory(categories[position]) },
-                    remove = {
-                        showDialog(R.string.d_remove_category, R.string.d_remove_category_are_you_sure,
-                                yes = { viewModel.removeCategory(categories[position]) })
-                    })
-        }
+        initLongClick(categories)
     }
 
     private fun editCategory(category: Category) {
@@ -87,4 +86,15 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         fragment.onResult = { newCategory -> viewModel.updateCategory(newCategory) }
     }
 
+    private fun initLongClick(categories: List<Category>) {
+        if (::categoryAdapter.isInitialized)
+            categoryAdapter.onLongClick = { view, position ->
+                showPopupEditRemove(view,
+                        edit = { editCategory(categories[position]) },
+                        remove = {
+                            showDialog(R.string.d_remove_category, R.string.d_remove_category_are_you_sure,
+                                    yes = { viewModel.removeCategory(categories[position]) })
+                        })
+            }
+    }
 }

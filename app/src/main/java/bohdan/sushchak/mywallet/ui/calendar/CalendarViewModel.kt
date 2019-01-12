@@ -8,13 +8,13 @@ import bohdan.sushchak.mywallet.internal.lazyDeffered
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
 class CalendarViewModel(private val myWalletRepository: MyWalletRepository) : ViewModel() {
 
-    val orders: MutableLiveData<List<Order>> = MutableLiveData()
+    val orders:MutableLiveData<List<Order>> = MutableLiveData()
 
     val calendarDates by lazyDeffered { myWalletRepository.getDates() }
     val totalPrice: MutableLiveData<Double> = MutableLiveData()
+    private var lastDate: Long = -1
 
     init {
         orders.postValue(listOf())
@@ -32,12 +32,15 @@ class CalendarViewModel(private val myWalletRepository: MyWalletRepository) : Vi
 
             orders.postValue(orderList)
             totalPrice.postValue(tPrice)
+
+            lastDate = date
         }
     }
 
     fun removeOrder(order: Order) {
         GlobalScope.launch {
             myWalletRepository.removeOrder(order)
+            updateOrders(lastDate)
         }
     }
 

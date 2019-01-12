@@ -7,6 +7,7 @@ buildscript {
     ext.navigation_version = '1.0.0-alpha09'
     ext.room_version = '2.1.0-alpha03'
     ext.anko_version='0.10.4'
+    ext.archVersion='1.1.1'
     repositories {
         google()
         jcenter()

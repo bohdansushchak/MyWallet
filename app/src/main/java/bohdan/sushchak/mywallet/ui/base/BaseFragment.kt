@@ -7,8 +7,6 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.annotation.LayoutRes
-import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.fragment.app.Fragment
 import bohdan.sushchak.mywallet.R
 import kotlinx.coroutines.CoroutineScope
@@ -78,6 +76,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
         val entryDialog = entryDialogBuilder.create()
         entryDialog.show()
+
     }
 
     protected fun showEntryDialog(title: Int, msg: Int, yes: ((str: String) -> Unit)? = null, cancel: (() -> Unit)? = null) {
