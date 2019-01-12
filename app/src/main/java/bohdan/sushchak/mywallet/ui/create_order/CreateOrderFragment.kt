@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
+
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +23,7 @@ import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
 import bohdan.sushchak.mywallet.internal.Constants
+import bohdan.sushchak.mywallet.internal.DecimalDigitsInputFilter
 import bohdan.sushchak.mywallet.internal.formatDate
 import bohdan.sushchak.mywallet.internal.parseDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
@@ -30,6 +33,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import java.util.*
+
 
 class CreateOrderFragment : BaseFragment(), KodeinAware {
 
@@ -67,6 +71,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         tvOrderDate.text = formatDate(Date(), Constants.DATE_FORMAT)
 
+        edProductPrice.filters = arrayOf(DecimalDigitsInputFilter(5,2))
         initTextWatcher(edProductTitle)
 
         viewModel.categoryProductList.observe(this@CreateOrderFragment, Observer { categoryProductList ->
@@ -126,7 +131,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         if (!isValid())
             return
 
-        val title = edProductTitle.text.toString()
+        val title = edProductTitle.text.toString().trim()
         val price = try {
             edProductPrice.text.toString().toDouble()
         } catch (e: Exception) {
