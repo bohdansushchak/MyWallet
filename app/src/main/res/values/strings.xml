@@ -8,6 +8,10 @@
     <string name="settings_fragment_title">Settings</string>
     <string name="diagram_fragment_title">Statistic</string>
 
+
+    <!-- textview-->
+    <string name="tv_no_categories">No categories</string>
+
     <!--buttons text-->
     <string name="btn_text_save_order">Save order</string>
     <string name="btn_text_clear_all">Clear all</string>
@@ -20,7 +24,6 @@
     <string name="ed_hint_enter_price">Enter price</string>
 
     <!-- toasts -->
-
     <string name="t_product_list_is_empty">Product list is already empty</string>
     <string name="t_product_list_cant_be_empty">Product list can\'t be empty</string>
     <string name="t_please_enter_product_name">Please enter product name</string>

@@ -59,13 +59,14 @@ class SettingsFragment : BaseFragment(), KodeinAware {
 
         val categoryList = viewModel.categories.await()
         categoryList.observe(this@SettingsFragment, Observer { categories ->
+            tvNoCategories.visibility = if(categories.isEmpty()) View.VISIBLE else View.GONE
             updateCategory(categories)
         })
     }
 
     private fun updateCategory(categories: List<Category>) {
         if (::categoryAdapter.isInitialized) {
-            categoryAdapter.update( categories)
+            categoryAdapter.update(categories)
             initLongClick(categories)
             return
         }
