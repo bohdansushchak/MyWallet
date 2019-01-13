@@ -2,16 +2,15 @@ package bohdan.sushchak.mywallet.data.repository
 
 import androidx.lifecycle.LiveData
 import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
-import bohdan.sushchak.mywallet.data.db.dao.DateDao
 import bohdan.sushchak.mywallet.data.db.dao.OrderDao
 import bohdan.sushchak.mywallet.data.db.dao.ProductDao
 import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
-import bohdan.sushchak.mywallet.data.db.model.CategoryCount
-import bohdan.sushchak.mywallet.data.db.model.OrderWithProducts
-import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
+import bohdan.sushchak.mywallet.data.model.CategoryCount
+import bohdan.sushchak.mywallet.data.model.OrderWithProducts
+import bohdan.sushchak.mywallet.data.model.OrdersByDate
+import bohdan.sushchak.mywallet.internal.convertOrdersByDate
 import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -19,13 +18,12 @@ import kotlinx.coroutines.withContext
 class MyWalletRepositoryImpl(
         private val categoryDao: CategoryDao,
         private val orderDao: OrderDao,
-        private val productDao: ProductDao,
-        private val dateDao: DateDao
+        private val productDao: ProductDao
 ) : MyWalletRepository {
 
     override suspend fun getDates(): LiveData<List<Event>> {
         return withContext(Dispatchers.IO) {
-            return@withContext dateDao.getAllDates()
+            return@withContext orderDao.getAllDates()
         }
     }
 
@@ -71,34 +69,22 @@ class MyWalletRepositoryImpl(
         }
     }
 
-    override suspend fun getOrders(): LiveData<List<OrdersByDate>> {
+    override suspend fun getOrders(): LiveData<List<Order>> {
         return withContext(Dispatchers.IO) {
-            return@withContext dateDao.getOrdersByDate()
+            return@withContext orderDao.getOrders()
         }
     }
 
     override suspend fun removeOrder(order: Order) {
-        withContext(Dispatchers.IO) { orderDao.removeOrder(order, dateDao) }
+        withContext(Dispatchers.IO) { orderDao.delete(order) }
     }
 
-    override suspend fun getOrdersByDate(date: Long?): List<Order> {
+    override suspend fun getOrdersByDate(date: Long): List<Order> {
         return withContext(Dispatchers.IO) {
-            val dateDB = dateDao.getDateById(date)
-
-            return@withContext orderDao.getOrdersByDateId(dateDB?.id)
+            return@withContext orderDao.getOrdersByDate(date)
         }
     }
 
     //endregion
 
-    //region Date
-    override suspend fun getDateId(date: Long): Long? {
-        return dateDao.getIdByDate(date).firstOrNull()
-    }
-
-    override suspend fun addDate(date: Date): Long {
-        return dateDao.insert(date)
-    }
-
-    //endregion
 }

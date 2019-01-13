@@ -13,5 +13,4 @@ class OrderListViewModelFactory(
         return OrderListViewModel(myWalletRepository) as T
     }
 
-
 }

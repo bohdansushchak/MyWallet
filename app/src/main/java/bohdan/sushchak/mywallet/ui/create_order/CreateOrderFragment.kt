@@ -20,7 +20,7 @@ import bohdan.sushchak.mywallet.adapters.MySpinnerAdapter
 
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
-import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.DecimalDigitsInputFilter
 import bohdan.sushchak.mywallet.internal.formatDate

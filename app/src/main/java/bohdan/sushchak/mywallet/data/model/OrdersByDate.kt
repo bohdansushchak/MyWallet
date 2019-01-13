@@ -1,13 +1,13 @@
-package bohdan.sushchak.mywallet.data.db.model
+package bohdan.sushchak.mywallet.data.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 
-data class OrdersByDate(
+class OrdersByDate(
+
         @Embedded
-        var date: Date,
+        var date: Long,
 
         @Relation(parentColumn = "id",
                 entityColumn = "date_id")

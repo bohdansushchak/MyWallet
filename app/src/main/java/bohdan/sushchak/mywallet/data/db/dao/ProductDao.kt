@@ -1,10 +1,9 @@
 package bohdan.sushchak.mywallet.data.db.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import bohdan.sushchak.mywallet.data.db.entity.Product
-import bohdan.sushchak.mywallet.data.db.model.CategoryCount
+import bohdan.sushchak.mywallet.data.model.CategoryCount
 
 @Dao
 abstract class ProductDao : BaseDao<Product> {

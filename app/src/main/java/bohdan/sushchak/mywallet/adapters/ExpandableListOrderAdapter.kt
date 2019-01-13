@@ -8,7 +8,7 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import bohdan.sushchak.mywallet.R
 
-import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
+import bohdan.sushchak.mywallet.data.model.OrdersByDate
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.formatDate
@@ -20,7 +20,7 @@ class ExpandableListOrderAdapter(private val context: Context,
     var onLongClick: ((view: View, order: Order) -> Unit)? = null
     var onClick: ((order: Order) -> Unit)? = null
 
-    override fun getGroup(groupPosition: Int): bohdan.sushchak.mywallet.data.db.entity.Date {
+    override fun getGroup(groupPosition: Int): Long {
         return listOrderByDate[groupPosition].date
     }
 
@@ -40,7 +40,7 @@ class ExpandableListOrderAdapter(private val context: Context,
         }
 
         val date = Date()
-        date.time = getGroup(groupPosition).date
+        date.time = getGroup(groupPosition)
 
         convertView!!.findViewById<TextView>(R.id.tvDate).text = formatDate(date, Constants.DATE_FORMAT)
 

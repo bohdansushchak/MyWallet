@@ -6,6 +6,7 @@ import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepositoryImpl
 import bohdan.sushchak.mywallet.ui.calendar.CalendarViewModelFactory
 import bohdan.sushchak.mywallet.ui.create_order.CreateOrderViewModelFactory
+import bohdan.sushchak.mywallet.ui.graph.GraphViewModelFactory
 import bohdan.sushchak.mywallet.ui.list_orders.OrderListViewModelFactory
 import bohdan.sushchak.mywallet.ui.settings.SettingsViewModelFactory
 import org.kodein.di.Kodein
@@ -26,17 +27,16 @@ class MyWalletApplication() : Application(), KodeinAware{
         bind() from singleton { instance<MyWalletDatabase>().categoryDao() }
         bind() from singleton { instance<MyWalletDatabase>().productDao() }
         bind() from singleton { instance<MyWalletDatabase>().orderDao() }
-        bind() from singleton { instance<MyWalletDatabase>().dateDao() }
         //endregion
 
-        bind<MyWalletRepository>() with singleton { MyWalletRepositoryImpl(instance(), instance(), instance(), instance()) }
+        bind<MyWalletRepository>() with singleton { MyWalletRepositoryImpl(instance(), instance(), instance()) }
 
         //region viewmodels
         bind() from provider { CreateOrderViewModelFactory(instance()) }
         bind() from provider { OrderListViewModelFactory(instance()) }
         bind() from provider { SettingsViewModelFactory(instance()) }
         bind() from provider { CalendarViewModelFactory(instance()) }
-
+        bind() from provider { GraphViewModelFactory(instance()) }
         //endregion
     }
 

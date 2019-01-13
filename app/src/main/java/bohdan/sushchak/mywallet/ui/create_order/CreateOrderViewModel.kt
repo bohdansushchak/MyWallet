@@ -4,10 +4,9 @@ package bohdan.sushchak.mywallet.ui.create_order
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
-import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.*
 import kotlinx.coroutines.GlobalScope
@@ -97,14 +96,9 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
             throw EmptyProductListException()
 
         GlobalScope.launch {
-            var dateId = myWalletRepository.getDateId(date = date)
-            if (dateId == null) {
-                dateId = myWalletRepository.addDate(Date(null, date))
-            }
-
             val order = Order(id = null,
                     title = title,
-                    dateId = dateId,
+                    date = date,
                     price = totalPrice.value ?: ZERO)
 
             myWalletRepository.createOrderWithProducts(order, productList.value?.toList()
@@ -113,5 +107,4 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
     }
 
     fun isProductListEmpty() = productList.value!!.isEmpty()
-
 }

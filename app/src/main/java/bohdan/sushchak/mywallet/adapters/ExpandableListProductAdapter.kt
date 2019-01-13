@@ -9,7 +9,7 @@ import android.widget.TextView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
-import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
 
 class ExpandableListProductAdapter(
         private val context: Context,

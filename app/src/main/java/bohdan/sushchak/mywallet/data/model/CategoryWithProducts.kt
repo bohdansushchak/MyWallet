@@ -1,4 +1,4 @@
-package bohdan.sushchak.mywallet.data.db.model
+package bohdan.sushchak.mywallet.data.model
 
 import androidx.room.Embedded
 import androidx.room.Relation

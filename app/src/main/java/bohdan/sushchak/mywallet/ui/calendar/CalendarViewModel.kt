@@ -22,8 +22,7 @@ class CalendarViewModel(private val myWalletRepository: MyWalletRepository) : Vi
 
     fun updateOrders(date: Long){
         GlobalScope.launch {
-            val dateId = myWalletRepository.getDateId(date)
-            val orderList = myWalletRepository.getOrdersByDate(dateId)
+            val orderList = myWalletRepository.getOrdersByDate(date)
 
             var tPrice = 0.0
             orderList.forEach { order ->

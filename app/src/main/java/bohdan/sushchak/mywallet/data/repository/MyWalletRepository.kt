@@ -1,13 +1,12 @@
 package bohdan.sushchak.mywallet.data.repository
 
 import androidx.lifecycle.LiveData
-import bohdan.sushchak.mywallet.data.db.model.OrderWithProducts
+import bohdan.sushchak.mywallet.data.model.OrderWithProducts
 import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.data.db.entity.Date
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
-import bohdan.sushchak.mywallet.data.db.model.CategoryCount
-import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
+import bohdan.sushchak.mywallet.data.model.CategoryCount
+import bohdan.sushchak.mywallet.data.model.OrdersByDate
 import com.github.sundeepk.compactcalendarview.domain.Event
 
 
@@ -38,16 +37,11 @@ interface MyWalletRepository {
 
     suspend fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>>
 
-    suspend fun getOrders(): LiveData<List<OrdersByDate>>
+    suspend fun getOrders(): LiveData<List<Order>>
 
     suspend fun removeOrder(order: Order)
 
-    suspend fun getOrdersByDate(date: Long?): List<Order>
+    suspend fun getOrdersByDate(date: Long): List<Order>
     //endregion
 
-    //region date
-    suspend fun getDateId(date: Long): Long?
-
-    suspend fun addDate(date: Date): Long
-    //endregion
 }

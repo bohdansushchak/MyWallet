@@ -10,7 +10,8 @@ import androidx.navigation.Navigation
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.ExpandableListOrderAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Order
-import bohdan.sushchak.mywallet.data.db.model.OrdersByDate
+import bohdan.sushchak.mywallet.data.model.OrdersByDate
+import bohdan.sushchak.mywallet.internal.convertOrdersByDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.order_list_fragment.*
 import kotlinx.coroutines.launch
@@ -43,7 +44,8 @@ class OrderListFragment : BaseFragment(), KodeinAware {
 
     private fun bindUI() = launch {
 
-        viewModel.orderList.await().observe(this@OrderListFragment, Observer { ordersByDate ->
+        viewModel.orders.await().observe(this@OrderListFragment, Observer { orders ->
+            val ordersByDate = convertOrdersByDate(orders)
             updateOrderList(ordersByDate)
         })
     }
@@ -73,7 +75,6 @@ class OrderListFragment : BaseFragment(), KodeinAware {
         showDialog(title = R.string.d_remove_order, msg = R.string.d_remove_order_are_you_sure,
                 yes = { viewModel.removeOrder(order) },
                 cancel = {})
-
     }
 
     private fun editCategory(order: Order) {

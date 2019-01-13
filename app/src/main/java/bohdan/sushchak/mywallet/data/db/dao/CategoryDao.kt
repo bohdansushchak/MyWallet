@@ -3,7 +3,7 @@ package bohdan.sushchak.mywallet.data.db.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.data.db.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
 
 @Dao
 abstract class CategoryDao : BaseDao<Category> {
