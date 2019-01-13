@@ -13,6 +13,7 @@
     <string name="btn_text_clear_all">Clear all</string>
     <string name="btn_text_yes">Yes</string>
     <string name="btn_text_cancel">Cancel</string>
+    <string name="btn_text_ok">OK</string>
 
     <!-- editText hints-->
     <string name="ed_hint_write_product_name">Write product name</string>
@@ -35,12 +36,13 @@
     <string name="d_remove_product_are_you_sure">"Are sure you to remove product?"</string>
     <string name="d_remove_category">Remove category</string>
     <string name="d_remove_category_are_you_sure">"Are sure you to remove category?"</string>
-
     <string name="d_remove_order">Remove order</string>
     <string name="d_remove_order_are_you_sure">"Are sure you to remove order?"</string>
-
     <string name="d_clear_products">Clear all products</string>
     <string name="d_clear_products_are_you_sure">Are you sure to clear all product from list?</string>
+
+    <string name="d_title_no_categories">No categories</string>
+    <string name="d_msg_no_categories">Please add a one category</string>
 
 
     <string name="total">Total:</string>

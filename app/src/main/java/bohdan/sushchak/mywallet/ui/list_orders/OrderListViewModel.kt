@@ -14,6 +14,8 @@ class OrderListViewModel(val myWalletRepository: MyWalletRepository) : ViewModel
 
     val orders by lazyDeffered { myWalletRepository.getOrders() }
 
+    val categories by lazyDeffered { myWalletRepository.getCategories() }
+
     fun removeOrder(order: Order) {
         GlobalScope.launch {
             myWalletRepository.removeOrder(order)
