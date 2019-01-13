@@ -26,9 +26,9 @@
         tools:layout="@layout/create_order_fragment" />
     <fragment
         android:id="@+id/diagramFragment"
-        android:name="bohdan.sushchak.mywallet.ui.diagram.DiagramFragment"
+        android:name="bohdan.sushchak.mywallet.ui.graph.GraphFragment"
         android:label="@string/diagram_fragment_title"
-        tools:layout="@layout/diagram_fragment" >
+        tools:layout="@layout/graph_fragment" >
         <argument
             android:name="isStart"
             app:argType="boolean"

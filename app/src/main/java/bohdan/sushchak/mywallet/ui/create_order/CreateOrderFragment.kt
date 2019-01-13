@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputFilter
 
 import android.text.TextWatcher
 import android.util.Log

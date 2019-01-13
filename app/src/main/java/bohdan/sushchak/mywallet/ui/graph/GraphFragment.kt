@@ -1,4 +1,4 @@
-package bohdan.sushchak.mywallet.ui.diagram
+package bohdan.sushchak.mywallet.ui.graph
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -9,22 +9,22 @@ import android.view.ViewGroup
 
 import bohdan.sushchak.mywallet.R
 
-class DiagramFragment : Fragment() {
+class GraphFragment : Fragment() {
 
     companion object {
-        fun newInstance() = DiagramFragment()
+        fun newInstance() = GraphFragment()
     }
 
-    private lateinit var viewModel: DiagramViewModel
+    private lateinit var viewModel: GraphViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.diagram_fragment, container, false)
+        return inflater.inflate(R.layout.graph_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(DiagramViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(GraphViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
