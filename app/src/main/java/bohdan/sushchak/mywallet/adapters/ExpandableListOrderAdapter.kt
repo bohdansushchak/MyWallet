@@ -8,14 +8,14 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import bohdan.sushchak.mywallet.R
 
-import bohdan.sushchak.mywallet.data.model.OrdersByDate
+import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.formatDate
 import java.util.*
-
+/*
 class ExpandableListOrderAdapter(private val context: Context,
-                                 private val listOrderByDate: List<OrdersByDate>): BaseExpandableListAdapter() {
+                                 private val listOrderByDate: List<OrdersByDateGroup>): BaseExpandableListAdapter() {
 
     var onLongClick: ((view: View, order: Order) -> Unit)? = null
     var onClick: ((order: Order) -> Unit)? = null
@@ -33,18 +33,18 @@ class ExpandableListOrderAdapter(private val context: Context,
     }
 
     override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView
-        if(convertView == null){
-            convertView = LayoutInflater.from(context)
+        var view = convertView
+        if(view == null){
+            view = LayoutInflater.from(context)
                     .inflate(R.layout.date_item, null)
         }
 
         val date = Date()
         date.time = getGroup(groupPosition)
 
-        convertView!!.findViewById<TextView>(R.id.tvDate).text = formatDate(date, Constants.DATE_FORMAT)
+        view!!.findViewById<TextView>(R.id.tvDate).text = formatDate(date, Constants.DATE_FORMAT)
 
-        return convertView
+        return view
     }
 
     override fun getChildrenCount(groupPosition: Int): Int {
@@ -60,25 +60,25 @@ class ExpandableListOrderAdapter(private val context: Context,
     }
 
     override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView
-        if(convertView == null){
-            convertView = LayoutInflater.from(context)
+        var view = convertView
+        if(view == null){
+            view = LayoutInflater.from(context)
                     .inflate(R.layout.order_item, null)
         }
 
-        convertView!!.findViewById<TextView>(R.id.tvOrderTitle).text = getChild(groupPosition, childPosition).title
-        convertView.findViewById<TextView>(R.id.tvOrderPrice).text = getChild(groupPosition, childPosition).price.toString()
+        view!!.findViewById<TextView>(R.id.tvOrderTitle).text = getChild(groupPosition, childPosition).title
+        view.findViewById<TextView>(R.id.tvOrderPrice).text = getChild(groupPosition, childPosition).price.toString()
 
-        convertView.setOnLongClickListener {
+        view.setOnLongClickListener {
             onLongClick?.invoke(it, getChild(groupPosition, childPosition))
             return@setOnLongClickListener onLongClick == null
         }
 
-        convertView.setOnClickListener {
+        view.setOnClickListener {
             onClick?.invoke(getChild(groupPosition, childPosition))
         }
 
-        return convertView
+        return view
     }
 
     override fun getChildId(groupPosition: Int, childPosition: Int): Long {
@@ -88,4 +88,4 @@ class ExpandableListOrderAdapter(private val context: Context,
     override fun getGroupCount(): Int {
         return listOrderByDate.size
     }
-}
+}*/

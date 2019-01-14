@@ -1,12 +1,12 @@
 package bohdan.sushchak.mywallet.adapters
 
-import bohdan.sushchak.mywallet.data.db.entity.Order
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.data.db.entity.Order
 import kotlinx.android.synthetic.main.order_item.view.*
 
 class OrderAdapter(private val context: Context,
@@ -24,14 +24,18 @@ class OrderAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-
-        holder.tvOrderTitle.text = items[position].title
-        holder.tvOrderPrice.text = items[position].price.toString()
+        holder.bind(items[position])
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val tvOrderTitle = view.tvOrderTitle
         val tvOrderPrice = view.tvOrderPrice
+
+        fun bind(order: Order) {
+            tvOrderTitle.text = order.title
+            tvOrderPrice.text = order.price.toString()
+        }
     }
 }
+

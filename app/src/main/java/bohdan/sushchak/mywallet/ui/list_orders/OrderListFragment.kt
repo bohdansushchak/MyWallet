@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.adapters.ExpandableListOrderAdapter
+import bohdan.sushchak.mywallet.adapters.OrdersByDateAdapter
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Order
-import bohdan.sushchak.mywallet.data.model.OrdersByDate
+import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import bohdan.sushchak.mywallet.internal.convertOrdersByDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.order_list_fragment.*
@@ -27,6 +28,8 @@ class OrderListFragment : BaseFragment(), KodeinAware {
 
     private val viewModelFactory: OrderListViewModelFactory by instance()
     private lateinit var viewModel: OrderListViewModel
+
+    private lateinit var adapter: OrdersByDateAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -73,12 +76,20 @@ class OrderListFragment : BaseFragment(), KodeinAware {
         }
     }
 
-    private fun updateOrderList(ordersByDate: List<OrdersByDate>) {
+    private fun updateOrderList(ordersByDate: List<OrdersByDateGroup>) {
+/*
+        if(::adapter.isInitialized){
 
-        val adapter = ExpandableListOrderAdapter(context!!,ordersByDate )
 
-        expListViewOrders.setAdapter(adapter)
 
+            return
+        }
+*/
+        adapter = OrdersByDateAdapter(context!!, ordersByDate )
+
+        rcViewOrders.setAdapter(adapter)
+        rcViewOrders.layoutManager = LinearLayoutManager(context)
+/*
         adapter.onLongClick = { view, order ->
             showPopupEditRemove(view,
                     edit = { editCategory(order) },
@@ -90,7 +101,18 @@ class OrderListFragment : BaseFragment(), KodeinAware {
         adapter.onClick = { order ->
             viewOrder(order)
         }
+*/
+    }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        adapter.onSaveInstanceState(outState)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if(::adapter.isInitialized)
+            adapter.onRestoreInstanceState(savedInstanceState)
     }
 
     private fun removeCategory(order: Order) {

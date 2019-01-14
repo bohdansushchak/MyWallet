@@ -9,5 +9,5 @@ import bohdan.sushchak.mywallet.data.model.CategoryCount
 abstract class ProductDao : BaseDao<Product> {
 
     @Query("select category_id, count(category_id) as count from products where title like '%' || :productTitle || '%' group by category_id")
-    abstract fun getCategoriesCountByProductTitle(productTitle: String): List<CategoryCount>
+    abstract fun getCategoriesCountByProductTitle(productTitle: String): List<CategoryCount>?
 }

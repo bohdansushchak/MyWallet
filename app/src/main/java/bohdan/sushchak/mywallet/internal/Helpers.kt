@@ -3,7 +3,7 @@ package bohdan.sushchak.mywallet.internal
 import java.text.SimpleDateFormat
 import java.util.*
 import bohdan.sushchak.mywallet.data.db.entity.Order
-import bohdan.sushchak.mywallet.data.model.OrdersByDate
+import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 
 fun parseDate(date: String, patter: String): Date {
 
@@ -17,13 +17,15 @@ fun formatDate(date: Date?, patter: String): String {
     return sdf.format(date)
 }
 
-fun convertOrdersByDate(orders: List<Order>): List<OrdersByDate> {
+fun convertOrdersByDate(orders: List<Order>): List<OrdersByDateGroup> {
 
-    val ordersByDateList = mutableListOf<OrdersByDate>()
+    val ordersByDateList = mutableListOf<OrdersByDateGroup>()
 
     orders.forEach { order ->
         if(!ordersByDateList.containDate(order.date)){
-            val ordersByDate = OrdersByDate(order.date, mutableListOf(order))
+            val date = Date()
+            date.time = order.date
+            val ordersByDate = OrdersByDateGroup(formatDate(date, Constants.DATE_FORMAT), mutableListOf(order))
             ordersByDateList.add(ordersByDate)
         }else{
             val inx = ordersByDateList.indexBydate(order.date)

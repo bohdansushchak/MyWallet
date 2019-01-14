@@ -3,12 +3,12 @@ package bohdan.sushchak.mywallet.internal
 import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
-import bohdan.sushchak.mywallet.data.model.OrdersByDate
+import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import org.jetbrains.anko.collections.forEachWithIndex
 import java.util.*
 
 fun List<Product>.setOrderId(orderId: Long) {
-    forEachIndexed { index, product ->
+    forEachIndexed { index, _ ->
         this[index].orderId = orderId
     }
 }
@@ -65,11 +65,12 @@ fun Calendar.onlyDateInMillis(result: (time: Long) -> Unit) {
     result.invoke(cal.timeInMillis)
 }
 
-fun List<OrdersByDate>.containDate(date: Long): Boolean {
+fun List<OrdersByDateGroup>.containDate(date: Long): Boolean {
     var isExist = false
 
     loop@ for (ordersByDate in this) {
-        if (ordersByDate.date == date) {
+        val time = parseDate(ordersByDate.date, Constants.DATE_FORMAT).time
+        if (time == date) {
             isExist = true
             break@loop
         }
@@ -78,11 +79,12 @@ fun List<OrdersByDate>.containDate(date: Long): Boolean {
     return isExist
 }
 
-fun List<OrdersByDate>.indexBydate(date: Long): Int {
+fun List<OrdersByDateGroup>.indexBydate(date: Long): Int {
     var index = -1
 
-    this.forEachWithIndex { i, orderіByDate ->
-        if (orderіByDate.date == date){
+    this.forEachWithIndex { i, ordersByDate ->
+        val time = parseDate(ordersByDate.date, Constants.DATE_FORMAT).time
+        if (time == date){
             index = i
             return@forEachWithIndex
         }

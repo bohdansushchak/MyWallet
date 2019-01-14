@@ -24,10 +24,10 @@ abstract class OrderDao : BaseDao<Order> {
     abstract fun getOrders(): LiveData<List<Order>>
 
     @Query("select id from orders where date = :id")
-    abstract fun getOrdersIdByDate(id: Long): List<Long>
+    abstract fun getOrdersIdByDate(id: Long): List<Long>?
 
     @Query("select * from orders where date = :date")
-    abstract fun getOrdersByDate(date: Long): List<Order>
+    abstract fun getOrdersByDate(date: Long): List<Order>?
 
     @Query("select * from orders where date between :startDate and :endDate ")
     abstract fun getOrdersOfDateRange(startDate: Long, endDate: Long): LiveData<List<Order>>

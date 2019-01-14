@@ -7,6 +7,18 @@
     android:padding="5dp"
     tools:context=".ui.list_orders.OrderListFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcViewOrders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--
     <ExpandableListView
         android:id="@+id/expListViewOrders"
         android:layout_width="match_parent"
@@ -20,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </ExpandableListView>
-
+-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCreateOrder"
         android:layout_width="wrap_content"

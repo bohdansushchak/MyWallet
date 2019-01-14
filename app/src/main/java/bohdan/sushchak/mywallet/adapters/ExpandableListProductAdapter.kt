@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -30,16 +31,17 @@ class ExpandableListProductAdapter(
         return false
     }
 
+    @SuppressLint("InflateParams")
     override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView
-        if (convertView == null) {
+        var view = convertView
+        if (view == null) {
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView = inflater.inflate(R.layout.category_item_spinner, null)
+            view = inflater.inflate(R.layout.category_item_spinner, null)
         }
 
-        val tvCategory = convertView!!.findViewById<TextView>(R.id.tvCategory)
+        val tvCategory = view!!.findViewById<TextView>(R.id.tvCategory)
         tvCategory.text = getGroup(groupPosition).title
-        return convertView
+        return view
     }
 
     override fun getChildrenCount(groupPosition: Int): Int {
@@ -54,27 +56,28 @@ class ExpandableListProductAdapter(
         return groupPosition.toLong()
     }
 
+    @SuppressLint("InflateParams")
     override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context)
+        var view = convertView
+        if (view == null) {
+            view = LayoutInflater.from(context)
                     .inflate(R.layout.product_item, null)
         }
 
-        val tvProductName = convertView!!.findViewById<TextView>(R.id.tvProductTitle)
-        val tvProductPrice = convertView!!.findViewById<TextView>(R.id.tvProductPrice)
+        val tvProductName = view!!.findViewById<TextView>(R.id.tvProductTitle)
+        val tvProductPrice = view.findViewById<TextView>(R.id.tvProductPrice)
 
         tvProductName.text = getChild(groupPosition, childPosition).title
         tvProductPrice.text = getChild(groupPosition, childPosition).price.toString()
 
-        convertView.setOnLongClickListener { view ->
+        view.setOnLongClickListener { v ->
 
-            onLongClick?.invoke(view, getChild(groupPosition, childPosition))
+            onLongClick?.invoke(v, getChild(groupPosition, childPosition))
 
             return@setOnLongClickListener (onLongClick != null)
         }
 
-        return convertView
+        return view
     }
 
     override fun getChildId(groupPosition: Int, childPosition: Int): Long {

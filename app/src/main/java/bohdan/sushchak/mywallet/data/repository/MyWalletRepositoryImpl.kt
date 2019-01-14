@@ -9,8 +9,6 @@ import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.model.CategoryCount
 import bohdan.sushchak.mywallet.data.model.OrderWithProducts
-import bohdan.sushchak.mywallet.data.model.OrdersByDate
-import bohdan.sushchak.mywallet.internal.convertOrdersByDate
 import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -48,11 +46,11 @@ class MyWalletRepositoryImpl(
 
     override suspend fun getCategoryCountByProductTitle(categoryTitle: String): List<CategoryCount> {
         return withContext(Dispatchers.IO) {
-            return@withContext productDao.getCategoriesCountByProductTitle(categoryTitle)
+            return@withContext productDao.getCategoriesCountByProductTitle(categoryTitle) ?: listOf()
         }
     }
 
-    override suspend fun getCategoryById(id: Long): Category {
+    override suspend fun getCategoryById(id: Long): Category? {
         return categoryDao.getCategoryById(id)
     }
 
@@ -81,10 +79,9 @@ class MyWalletRepositoryImpl(
 
     override suspend fun getOrdersByDate(date: Long): List<Order> {
         return withContext(Dispatchers.IO) {
-            return@withContext orderDao.getOrdersByDate(date)
+            return@withContext orderDao.getOrdersByDate(date) ?: listOf()
         }
     }
 
     //endregion
-
 }

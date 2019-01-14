@@ -14,7 +14,7 @@ class DecimalDigitsInputFilter(digitsBeforeDot: Int, digitsAfterDot: Int) : Inpu
         val builder = StringBuilder(dest!!)
         builder.replace(dstart, dend, source?.subSequence(start, end).toString())
         return if (!builder.toString().matches((pattern).toRegex())) {
-            if (source?.length === 0) dest.subSequence(dstart, dend) else ""
+            if (source.isNullOrEmpty()) dest.subSequence(dstart, dend) else ""
         } else null
 
     }

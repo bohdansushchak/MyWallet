@@ -92,10 +92,12 @@ dependencies {
     implementation "android.arch.lifecycle:runtime:$archVersion"
     implementation "android.arch.lifecycle:extensions:$archVersion"
     kapt "android.arch.lifecycle:compiler:$archVersion"
-
     /** end of arch */
 
     //graphView
     implementation 'com.jjoe64:graphview:4.2.2'
+
+    //expandable recycler view
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
 
 }
