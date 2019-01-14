@@ -12,5 +12,4 @@ class OrderListViewModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return OrderListViewModel(myWalletRepository) as T
     }
-
 }

@@ -8,6 +8,7 @@ import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.model.CategoryCount
+import bohdan.sushchak.mywallet.data.model.CategoryPrice
 import bohdan.sushchak.mywallet.data.model.OrderWithProducts
 import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.coroutines.Dispatchers
@@ -19,9 +20,9 @@ class MyWalletRepositoryImpl(
         private val productDao: ProductDao
 ) : MyWalletRepository {
 
-    override suspend fun getDates(): LiveData<List<Event>> {
+    override suspend fun getEvents(): LiveData<List<Event>> {
         return withContext(Dispatchers.IO) {
-            return@withContext orderDao.getAllDates()
+            return@withContext orderDao.getAllEvents()
         }
     }
 
@@ -83,5 +84,10 @@ class MyWalletRepositoryImpl(
         }
     }
 
+    override suspend fun getCategoriesPrice(startDate: Long, endDate: Long): List<CategoryPrice> {
+        return withContext(Dispatchers.IO) {
+            return@withContext categoryDao.getTotalPriceCategories(startDate, endDate) ?: listOf()
+        }
+    }
     //endregion
 }

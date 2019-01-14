@@ -32,8 +32,8 @@ abstract class OrderDao : BaseDao<Order> {
     @Query("select * from orders where date between :startDate and :endDate ")
     abstract fun getOrdersOfDateRange(startDate: Long, endDate: Long): LiveData<List<Order>>
 
-    @Query("select date from orders order by date")
-    abstract fun getAllDates(): LiveData<List<Event>>
+    @Query("select date from orders group by date")
+    abstract fun getAllEvents(): LiveData<List<Event>>
 
     @Transaction
     open fun insertOrderWithProducts(productDao: ProductDao, order: Order, products: List<Product>){
@@ -41,15 +41,4 @@ abstract class OrderDao : BaseDao<Order> {
         products.setOrderId(idOrder)
         productDao.insert(products)
     }
-/*
-    @Transaction
-    open fun removeOrder(order: Order, dateDao: DateDao){
-        val dateId = order.dateId
-        delete(order)
-
-        val ordersByDateSize = getOrdersIdByDateId(dateId).size
-        if(ordersByDateSize == 0)
-            dateDao.removeById(dateId)
-    }
-    */
 }

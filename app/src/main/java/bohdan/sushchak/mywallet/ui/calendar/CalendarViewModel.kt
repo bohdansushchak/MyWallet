@@ -12,7 +12,7 @@ class CalendarViewModel(private val myWalletRepository: MyWalletRepository) : Vi
 
     val orders:MutableLiveData<List<Order>> = MutableLiveData()
 
-    val calendarDates by lazyDeffered { myWalletRepository.getDates() }
+    val calendarDates by lazyDeffered { myWalletRepository.getEvents() }
     val totalPrice: MutableLiveData<Double> = MutableLiveData()
     private var lastDate: Long = -1
 

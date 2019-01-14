@@ -1,22 +1,32 @@
 package bohdan.sushchak.mywallet.ui.graph
 
-import android.graphics.Color
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.adapters.LegendAdapter
+import bohdan.sushchak.mywallet.data.model.CategoryPrice
+import bohdan.sushchak.mywallet.internal.CustomLabelFormatter
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import com.jjoe64.graphview.series.BarGraphSeries
 import kotlinx.coroutines.launch
-import com.jjoe64.graphview.series.LineGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import kotlinx.android.synthetic.main.graph_fragment.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
 
-class GraphFragment : BaseFragment() {
+class GraphFragment : BaseFragment(), KodeinAware {
 
+    override val kodein by closestKodein()
+
+    private val viewModelFactory: GraphViewModelFactory by instance()
     private lateinit var viewModel: GraphViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -26,39 +36,44 @@ class GraphFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(GraphViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(GraphViewModel::class.java)
 
         bindUI()
     }
 
     private fun bindUI() = launch {
 
-        val series1 = BarGraphSeries<DataPoint>(arrayOf(DataPoint(1.0, 1.0)))
-        val series2 = BarGraphSeries<DataPoint>(arrayOf(DataPoint(2.0, 5.0)))
-        val series3 = BarGraphSeries<DataPoint>(arrayOf(DataPoint(3.0, 3.0)))
-        val series4 = BarGraphSeries<DataPoint>(arrayOf(DataPoint(4.0, 6.0)))
+        viewModel.updateCategories(1547334000000, 1547506800000)
 
+        viewModel.categoriesTotalPrice.observe(this@GraphFragment, Observer {
 
-        series1.color = Color.RED
-        series2.color = Color.BLUE
-        series3.color = Color.GREEN
-        series4.color = Color.YELLOW
+            Log.d("TAG", it.toString())
+            updateGraph(it)
+        })
+    }
 
-        series1.title = "Produkty"
-        series2.title = "Paliwo"
-        series3.title = "Zabawy"
-        series4.title = "Rachunki"
+    private fun updateGraph(items: List<CategoryPrice>){
+        graphCategoryByMonth.removeAllSeries()
 
-        graphCategoryByMonth.addSeries(series1)
-        graphCategoryByMonth.addSeries(series2)
-        graphCategoryByMonth.addSeries(series3)
-        graphCategoryByMonth.addSeries(series4)
+        items.forEachIndexed { index, categoryPrice ->
+            val dataPoint = DataPoint(index.toDouble() + 1, categoryPrice.totalPrice)
+            val series = BarGraphSeries<DataPoint>(arrayOf(dataPoint))
+
+            series.color = categoryPrice.color
+            series.title = categoryPrice.title
+            series.isAnimated = true
+            graphCategoryByMonth.addSeries(series)
+        }
 
         graphCategoryByMonth.viewport.setMinX(0.0)
-        graphCategoryByMonth.viewport.setMaxX(7.0)
-        graphCategoryByMonth.viewport.isXAxisBoundsManual = true
-        graphCategoryByMonth.legendRenderer.isVisible = true
-        graphCategoryByMonth.legendRenderer.spacing = 42
+        graphCategoryByMonth.viewport.setMaxX((items.size + 2).toDouble())
+        graphCategoryByMonth.gridLabelRenderer.labelFormatter = CustomLabelFormatter()
+
+        val adapter = LegendAdapter(context!!, items)
+
+        rcLegend.adapter = adapter
+        rcLegend.layoutManager = LinearLayoutManager(context)
 
     }
 

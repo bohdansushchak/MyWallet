@@ -6,6 +6,7 @@ import bohdan.sushchak.mywallet.data.db.entity.Category
 import bohdan.sushchak.mywallet.data.db.entity.Order
 import bohdan.sushchak.mywallet.data.db.entity.Product
 import bohdan.sushchak.mywallet.data.model.CategoryCount
+import bohdan.sushchak.mywallet.data.model.CategoryPrice
 import com.github.sundeepk.compactcalendarview.domain.Event
 
 
@@ -24,10 +25,12 @@ interface MyWalletRepository {
 
     suspend fun getCategoryById(id: Long): Category?
 
+    suspend fun getCategoriesPrice(startDate: Long, endDate: Long): List<CategoryPrice>
+
     //endregion
 
     //region Date
-    suspend fun getDates(): LiveData<List<Event>>
+    suspend fun getEvents(): LiveData<List<Event>>
     //endregion
 
 
