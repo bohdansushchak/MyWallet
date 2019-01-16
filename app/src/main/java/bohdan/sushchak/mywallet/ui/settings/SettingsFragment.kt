@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.CategoryAdapter
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import bohdan.sushchak.mywallet.ui.dialogs.CreateCategoryDialogFragment
 import kotlinx.android.synthetic.main.settings_fragment.*
@@ -40,15 +41,6 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(SettingsViewModel::class.java)
 
-        btnAddCategory.setOnClickListener {
-            val ft = fragmentManager?.beginTransaction()
-            val category = CategoryEntity.emptyCategoryEntity
-            val fragment = CreateCategoryDialogFragment(category)
-            fragment.show(ft, "")
-
-            fragment.onResult = { newCategory -> viewModel.addCategory(newCategory) }
-        }
-
         bindUI()
     }
 
@@ -68,6 +60,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         if (::categoryAdapter.isInitialized) {
             categoryAdapter.update(categoryEntities)
             initLongClick(categoryEntities)
+            initButton(categoryEntities)
             return
         }
 
@@ -77,6 +70,23 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         recyclerViewCategory.layoutManager = linearLayout
         recyclerViewCategory.adapter = categoryAdapter
         initLongClick(categoryEntities)
+        initButton(categoryEntities)
+    }
+
+    private fun initButton(list: List<CategoryEntity>){
+        btnAddCategory.setOnClickListener {
+            if(list.size < Constants.MAX_CATAGORIES){
+                val ft = fragmentManager?.beginTransaction()
+                val category = CategoryEntity.emptyCategoryEntity
+                val fragment = CreateCategoryDialogFragment(category)
+                fragment.show(ft, "")
+
+                fragment.onResult = { newCategory -> viewModel.addCategory(newCategory) }
+            }
+            else{
+                showDialog(R.string.d_title_max_categories, R.string.d_msg_max_categories)
+            }
+        }
     }
 
     private fun editCategory(categoryEntity: CategoryEntity) {

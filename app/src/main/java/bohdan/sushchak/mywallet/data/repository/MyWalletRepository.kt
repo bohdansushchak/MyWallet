@@ -46,4 +46,6 @@ interface MyWalletRepository {
     suspend fun getOrdersByDate(date: Long): List<OrderEntity>
     //endregion
 
+    suspend fun viewDataBase()
+
 }

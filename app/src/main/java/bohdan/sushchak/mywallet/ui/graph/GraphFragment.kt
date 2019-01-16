@@ -64,12 +64,15 @@ class GraphFragment : BaseFragment(), KodeinAware {
             series.color = categoryPrice.color ?: Constants.DEFAULT_CATEGORY_COLOR
             series.title = categoryPrice.title
             series.isAnimated = true
+            series.spacing = 50 / items.size
+            series.isDrawValuesOnTop = true
             graphCategoryByMonth.addSeries(series)
         }
 
         graphCategoryByMonth.viewport.setMinX(0.0)
         graphCategoryByMonth.viewport.setMinY(0.0)
         graphCategoryByMonth.viewport.setMaxX((items.size + 2).toDouble())
+        graphCategoryByMonth.viewport.isXAxisBoundsManual = true
 
         graphCategoryByMonth.gridLabelRenderer.labelFormatter = CustomLabelFormatter()
 

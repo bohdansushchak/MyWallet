@@ -48,7 +48,8 @@ class MyWalletRepositoryImpl(
 
     override suspend fun getCategoryCountByProductTitle(categoryTitle: String): List<CategoryCount> {
         return withContext(Dispatchers.IO) {
-            return@withContext productDao.getCategoriesCountByProductTitle(categoryTitle) ?: listOf()
+            return@withContext productDao.getCategoriesCountByProductTitle(categoryTitle)
+                    ?: listOf()
         }
     }
 
@@ -86,8 +87,25 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun getCategoriesPrice(startDate: Long, endDate: Long): List<CategoryPrice> {
+        viewDataBase()
         return withContext(Dispatchers.IO) {
 
+            val categoryPriceAllList = mutableListOf<CategoryPrice>()
+
+            val totalPriceForCategories = categoryDao.getTotalPriceCategories(startDate, endDate)
+                    ?: listOf()
+            val totalPriceCategoryNotSet = categoryDao.getTotalPriceCategoryNotSet(startDate, endDate)
+                    ?: listOf()
+
+            categoryPriceAllList.addAll(totalPriceForCategories)
+            categoryPriceAllList.addAll(totalPriceCategoryNotSet)
+
+            return@withContext categoryPriceAllList.toList()
+        }
+    }
+
+    override suspend fun viewDataBase() {
+        withContext(Dispatchers.IO) {
             Log.d("TAG", "Products")
             productDao.getProducts()?.forEach {
                 Log.d("TAG", it.toString())
@@ -102,16 +120,6 @@ class MyWalletRepositoryImpl(
             categoryDao.getAllCategoriesNonLive()?.forEach {
                 Log.d("TAG", it.toString())
             }
-
-            val categoryPriceAllList= mutableListOf<CategoryPrice>()
-
-            val totalPriceForCategories = categoryDao.getTotalPriceCategories(startDate, endDate) ?: listOf()
-            val totalPriceCategoryNotSet = categoryDao.getTotalPriceCategoryNotSet(startDate, endDate) ?: listOf()
-
-            categoryPriceAllList.addAll(totalPriceForCategories)
-            categoryPriceAllList.addAll(totalPriceCategoryNotSet)
-
-            return@withContext categoryPriceAllList.toList()
         }
     }
     //endregion

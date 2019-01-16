@@ -46,6 +46,8 @@
 
     <string name="d_title_no_categories">No categoryEntities</string>
     <string name="d_msg_no_categories">Please add a one categoryEntity</string>
+    <string name="d_title_max_categories">Max categories</string>
+    <string name="d_msg_max_categories">You can have only 10 categories</string>
 
 
     <string name="total">Total:</string>

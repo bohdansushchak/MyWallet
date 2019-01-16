@@ -38,9 +38,11 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         alertDialog.setPositiveButton(R.string.btn_text_yes) { _, _ ->
             yes?.invoke()
         }
-        alertDialog.setNegativeButton(R.string.btn_text_cancel) { _, _ ->
-            cancel?.invoke()
-        }
+
+        if (cancel != null)
+            alertDialog.setNegativeButton(R.string.btn_text_cancel) { _, _ ->
+                cancel.invoke()
+            }
 
         val dialog = alertDialog.create()
         dialog.show()
@@ -76,7 +78,6 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
         val entryDialog = entryDialogBuilder.create()
         entryDialog.show()
-
     }
 
     protected fun showEntryDialog(title: Int, msg: Int, yes: ((str: String) -> Unit)? = null, cancel: (() -> Unit)? = null) {
@@ -109,5 +110,4 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     protected fun makeToast(msg: String) = Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 
     protected fun makeToast(msg: Int) = Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-
 }

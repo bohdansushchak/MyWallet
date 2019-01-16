@@ -21,4 +21,6 @@ object Constants {
 
     const val DEFAULT_CATEGORY_COLOR = Color.GRAY
 
+    const val MAX_CATAGORIES = 10
+
 }

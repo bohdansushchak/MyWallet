@@ -1,6 +1,5 @@
 package bohdan.sushchak.mywallet.ui.list_orders
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -56,22 +55,17 @@ class OrderListFragment : BaseFragment(), KodeinAware {
         })
     }
 
-    fun initButtonCreateOrder(list: List<CategoryEntity>): Unit {
+    private fun initButtonCreateOrder(list: List<CategoryEntity>): Unit {
 
-        fabCreateOrder.setOnClickListener{
+        fabCreateOrder.setOnClickListener {
             val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
 
-            if(list.isNotEmpty())
+            if (list.isNotEmpty())
                 navigationController.navigate(R.id.action_orderListFragment_to_createOrderFragment)
-            else{
-                val builder = AlertDialog.Builder(context)
-                builder.setTitle(R.string.d_title_no_categories)
-                builder.setMessage(R.string.d_msg_no_categories)
-                builder.setPositiveButton(R.string.btn_text_ok) { _, _ ->
+            else {
+                showDialog(R.string.d_title_no_categories, R.string.d_msg_no_categories, yes = {
                     navigationController.navigate(R.id.action_orderListFragment_to_settingsFragment)
-                }
-                val dialog: AlertDialog = builder.create()
-                dialog.show()
+                })
             }
         }
     }
@@ -85,9 +79,9 @@ class OrderListFragment : BaseFragment(), KodeinAware {
             return
         }
 */
-        adapter = OrdersByDateAdapter(context!!, ordersByDate )
+        adapter = OrdersByDateAdapter(context!!, ordersByDate)
 
-        rcViewOrders.setAdapter(adapter)
+        rcViewOrders.adapter = adapter
         rcViewOrders.layoutManager = LinearLayoutManager(context)
 /*
         adapter.onLongClick = { view, order ->
@@ -111,7 +105,7 @@ class OrderListFragment : BaseFragment(), KodeinAware {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        if(::adapter.isInitialized)
+        if (::adapter.isInitialized)
             adapter.onRestoreInstanceState(savedInstanceState)
     }
 
