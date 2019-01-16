@@ -8,13 +8,13 @@ import androidx.room.TypeConverters
 import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
 import bohdan.sushchak.mywallet.data.db.dao.OrderDao
 import bohdan.sushchak.mywallet.data.db.dao.ProductDao
-import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.data.db.entity.Order
-import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
+import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.internal.Converters
 
 
-@Database(entities = [Product::class, Order::class, Category::class], version = 1, exportSchema = false)
+@Database(entities = [ProductEntity::class, OrderEntity::class, CategoryEntity::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MyWalletDatabase : RoomDatabase() {
 

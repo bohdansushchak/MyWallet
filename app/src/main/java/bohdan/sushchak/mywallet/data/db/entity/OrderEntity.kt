@@ -5,7 +5,7 @@ import android.os.Parcelable
 import androidx.room.*
 
 @Entity(tableName = "orders")
-data class Order(
+data class OrderEntity(
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "id")
         override var id: Long?,
@@ -30,7 +30,7 @@ data class Order(
     }
 
     override fun toString(): String {
-        return "OrderId: ${id.toString()}"
+        return "(id:$id, title:$title, date:$date, price:$price)"
     }
     @Ignore
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -45,14 +45,14 @@ data class Order(
     }
 
 
-    companion object CREATOR : Parcelable.Creator<Order> {
+    companion object CREATOR : Parcelable.Creator<OrderEntity> {
         @Ignore
-        override fun createFromParcel(parcel: Parcel): Order {
-            return Order(parcel)
+        override fun createFromParcel(parcel: Parcel): OrderEntity {
+            return OrderEntity(parcel)
         }
 
         @Ignore
-        override fun newArray(size: Int): Array<Order?> {
+        override fun newArray(size: Int): Array<OrderEntity?> {
             return arrayOfNulls(size)
         }
     }

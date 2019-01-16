@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.model.CategoryPrice
+import bohdan.sushchak.mywallet.internal.Constants
 import kotlinx.android.synthetic.main.legend_item.view.*
 
 class LegendAdapter(val context: Context, var items: List<CategoryPrice>) : RecyclerView.Adapter<LegendAdapter.ViewHolder>() {
@@ -22,16 +23,16 @@ class LegendAdapter(val context: Context, var items: List<CategoryPrice>) : Recy
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(context, items[position])
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val vColor = view.vColor
         val tvTitleLegend = view.tvTitleLegend
 
-        fun bind(item: CategoryPrice) {
-            vColor.setBackgroundColor(item.color)
-            tvTitleLegend.text = item.title
+        fun bind(context: Context, item: CategoryPrice) {
+            vColor.setBackgroundColor(item.color ?: Constants.DEFAULT_CATEGORY_COLOR)
+            tvTitleLegend.text = item.title ?: context.getString(R.string.non_set_category)
         }
     }
 }

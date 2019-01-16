@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "categories")
-data class Category(
+data class CategoryEntity(
 
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "id")
@@ -19,18 +19,18 @@ data class Category(
 
 ): BaseEntity() {
     companion object {
-        val emptyCategory: Category
+        val emptyCategoryEntity: CategoryEntity
             get() {
-                return Category(null, "", 0)
+                return CategoryEntity(null, "", 0)
             }
     }
 
     override fun toString(): String {
-        return title
+        return "(id:$id, title:$title, $color$color)"
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is Category
+        return other is CategoryEntity
                 && this.id == other.id
                 && this.title == other.title
                 && this.color == other.color

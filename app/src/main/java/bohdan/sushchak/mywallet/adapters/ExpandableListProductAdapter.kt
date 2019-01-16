@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
 
 class ExpandableListProductAdapter(
@@ -17,10 +17,10 @@ class ExpandableListProductAdapter(
         private val items: MutableList<CategoryWithProducts>)
     : BaseExpandableListAdapter() {
 
-    var onLongClick: ((view: View, product: Product) -> Unit)? = null
+    var onLongClick: ((view: View, product: ProductEntity) -> Unit)? = null
 
-    override fun getGroup(groupPosition: Int): Category {
-        return items[groupPosition].category
+    override fun getGroup(groupPosition: Int): CategoryEntity {
+        return items[groupPosition].categoryEntity
     }
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
@@ -48,7 +48,7 @@ class ExpandableListProductAdapter(
         return items[groupPosition].products.size
     }
 
-    override fun getChild(groupPosition: Int, childPosition: Int): Product {
+    override fun getChild(groupPosition: Int, childPosition: Int): ProductEntity {
         return items[groupPosition].products[childPosition]
     }
 

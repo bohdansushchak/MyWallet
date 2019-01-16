@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.OrderAdapter
-import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.formatDate
 import bohdan.sushchak.mywallet.internal.onlyDateInMillis
@@ -70,7 +70,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         })
     }
 
-    private fun updateListOrder(orders: List<Order>) {
+    private fun updateListOrder(orders: List<OrderEntity>) {
         if (::adapter.isInitialized) {
             adapter.update(orders)
             initLongClick(orders)
@@ -85,7 +85,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         initLongClick(orders)
     }
 
-    private fun initLongClick(orders: List<Order>) {
+    private fun initLongClick(orders: List<OrderEntity>) {
         adapter.onLongClick = { view, position ->
             showPopupEditRemove(view,
                     edit = {},

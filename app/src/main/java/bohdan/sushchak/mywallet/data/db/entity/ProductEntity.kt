@@ -5,9 +5,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "products", foreignKeys = [ForeignKey(entity = Category::class, parentColumns = ["id"], childColumns = ["category_id"], onDelete = ForeignKey.SET_NULL),
-ForeignKey(entity = Order::class, parentColumns = ["id"], childColumns = ["order_id"], onDelete = ForeignKey.CASCADE)])
-data class Product (
+@Entity(tableName = "products", foreignKeys = [ForeignKey(entity = CategoryEntity::class, parentColumns = ["id"], childColumns = ["category_id"], onDelete = ForeignKey.SET_NULL, onUpdate = ForeignKey.CASCADE),
+ForeignKey(entity = OrderEntity::class, parentColumns = ["id"], childColumns = ["order_id"], onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.RESTRICT)])
+data class ProductEntity (
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "id")
         override var id: Long? = null,
@@ -24,3 +24,8 @@ data class Product (
         @ColumnInfo(name = "order_id")
         var orderId: Long?
 ): BaseEntity()
+{
+        override fun toString(): String {
+                return "(id:$id, title:$title, price:$price, categoryId:$categoryId, orderId:$orderId)"
+        }
+}

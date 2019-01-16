@@ -10,14 +10,14 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.PickColorAdapter
-import bohdan.sushchak.mywallet.data.db.entity.Category
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import kotlinx.android.synthetic.main.create_category_dialog_fragment.*
 
-class CreateCategoryDialogFragment(var category: Category?) : DialogFragment() {
+class CreateCategoryDialogFragment(var categoryEntity: CategoryEntity?) : DialogFragment() {
 
     private lateinit var adapter: PickColorAdapter
 
-    var onResult: ((category: Category) -> Unit)? = null
+    var onResult: ((categoryEntity: CategoryEntity) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.create_category_dialog_fragment, null)
@@ -33,13 +33,13 @@ class CreateCategoryDialogFragment(var category: Category?) : DialogFragment() {
         val colorList = convertStringToIntList(activity!!.resources.getStringArray(R.array.colorCategoryArray))
         adapter = PickColorAdapter(context!!, colorList)
 
-        if (category != null) {
-            edCategoryTitle.setText(category!!.title)
-            val index = colorList.indexOf(category!!.color)
+        if (categoryEntity != null) {
+            edCategoryTitle.setText(categoryEntity!!.title)
+            val index = colorList.indexOf(categoryEntity!!.color)
             adapter.mSelectedItem = index
 
         } else {
-            category = Category(null, "", 0)
+            categoryEntity = CategoryEntity(null, "", 0)
         }
 
         val gridLayoutManager = GridLayoutManager(context!!, 5)
@@ -51,17 +51,17 @@ class CreateCategoryDialogFragment(var category: Category?) : DialogFragment() {
             if (!isValidate())
                 return@setOnClickListener
 
-            category!!.color = colorList[adapter.mSelectedItem]
-            category!!.title = edCategoryTitle.text.toString().trim()
+            categoryEntity!!.color = colorList[adapter.mSelectedItem]
+            categoryEntity!!.title = edCategoryTitle.text.toString().trim()
 
-            onResult?.invoke(category!!)
+            onResult?.invoke(categoryEntity!!)
             dismiss()
         }
     }
 
     private fun isValidate(): Boolean {
         if (edCategoryTitle.text?.toString().isNullOrBlank()) {
-            Toast.makeText(context, "Please enter a category", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please enter a categoryEntity", Toast.LENGTH_SHORT).show()
             return false
         } else if (adapter.mSelectedItem < 0) {
             Toast.makeText(context, "Please pick a color", Toast.LENGTH_SHORT).show()

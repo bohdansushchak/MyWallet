@@ -18,4 +18,7 @@ object Constants {
     const val COLOR_EVENT = Color.BLACK
 
     const val MONTH_FORMAT = "MMMM yyyy"
+
+    const val DEFAULT_CATEGORY_COLOR = Color.GRAY
+
 }

@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.data.db.entity.Category
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 
 class MySpinnerAdapter(private val context: Context,
-                       private val categories: List<Category>)
+                       private val categoryEntities: List<CategoryEntity>)
     : BaseAdapter() {
 
-    override fun getItem(position: Int): Category? {
-        return categories.get(position)
+    override fun getItem(position: Int): CategoryEntity? {
+        return categoryEntities.get(position)
     }
 
     @SuppressLint("InflateParams")
@@ -27,15 +27,15 @@ class MySpinnerAdapter(private val context: Context,
         }
 
 
-        view!!.findViewById<TextView>(R.id.tvCategory).text = categories[position].title
-        view!!.findViewById<TextView>(R.id.tvCategory).setTextColor(categories[position].color)
-        //convertView.findViewById<CardView>(R.id.boxColor).setBackgroundColor(categories[position].color)
+        view!!.findViewById<TextView>(R.id.tvCategory).text = categoryEntities[position].title
+        view!!.findViewById<TextView>(R.id.tvCategory).setTextColor(categoryEntities[position].color)
+        //convertView.findViewById<CardView>(R.id.boxColor).setBackgroundColor(categoryEntities[position].color)
 
         return view
     }
 
     override fun getCount(): Int {
-        return categories.size
+        return categoryEntities.size
     }
 
     override fun getItemId(position: Int): Long {
@@ -50,9 +50,9 @@ class MySpinnerAdapter(private val context: Context,
                     .inflate(R.layout.category_item_spinner, null)
         }
 
-        view!!.findViewById<TextView>(R.id.tvCategory).text = categories[position].title
-        view.findViewById<TextView>(R.id.tvCategory).setTextColor(categories[position].color)
-        //convertView.findViewById<CardView>(R.id.boxColor).setBackgroundColor(categories[position].color)
+        view!!.findViewById<TextView>(R.id.tvCategory).text = categoryEntities[position].title
+        view.findViewById<TextView>(R.id.tvCategory).setTextColor(categoryEntities[position].color)
+        //convertView.findViewById<CardView>(R.id.boxColor).setBackgroundColor(categoryEntities[position].color)
 
         return view
     }

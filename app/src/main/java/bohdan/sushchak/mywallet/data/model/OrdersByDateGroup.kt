@@ -1,10 +1,9 @@
 package bohdan.sushchak.mywallet.data.model
 
-import androidx.recyclerview.widget.DiffUtil
-import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 
 class OrdersByDateGroup(
         var date: String,
-        var orders: MutableList<Order> = mutableListOf()
-) : ExpandableGroup<Order>(date, orders)
+        var orders: MutableList<OrderEntity> = mutableListOf()
+) : ExpandableGroup<OrderEntity>(date, orders)

@@ -3,7 +3,7 @@
 
     <PreferenceScreen
         android:title="Category"
-        android:summary="Add or delete categories">
+        android:summary="Add or delete categoryEntities">
         <intent android:action="com.example.myapp.activities.MyActivity"/>
     </PreferenceScreen>
 

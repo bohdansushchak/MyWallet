@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 
-import bohdan.sushchak.mywallet.data.db.entity.Category
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import kotlinx.android.synthetic.main.category_item_spinner.view.*
 import org.jetbrains.anko.textColor
 
 class CategoryAdapter(private val context: Context,
-                     categories: List<Category>): RecyclerAdapterClick<CategoryAdapter.CategoryViewHolder, Category>(categories) {
+                      categoryEntities: List<CategoryEntity>): RecyclerAdapterClick<CategoryAdapter.CategoryViewHolder, CategoryEntity>(categoryEntities) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.CategoryViewHolder {
         return CategoryViewHolder(LayoutInflater.from(context)

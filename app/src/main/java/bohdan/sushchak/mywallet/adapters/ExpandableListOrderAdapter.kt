@@ -1,24 +1,11 @@
 package bohdan.sushchak.mywallet.adapters
 
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseExpandableListAdapter
-import android.widget.TextView
-import bohdan.sushchak.mywallet.R
-
-import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
-import bohdan.sushchak.mywallet.data.db.entity.Order
-import bohdan.sushchak.mywallet.internal.Constants
-import bohdan.sushchak.mywallet.internal.formatDate
-import java.util.*
 /*
 class ExpandableListOrderAdapter(private val context: Context,
                                  private val listOrderByDate: List<OrdersByDateGroup>): BaseExpandableListAdapter() {
 
-    var onLongClick: ((view: View, order: Order) -> Unit)? = null
-    var onClick: ((order: Order) -> Unit)? = null
+    var onLongClick: ((view: View, order: OrderEntity) -> Unit)? = null
+    var onClick: ((order: OrderEntity) -> Unit)? = null
 
     override fun getGroup(groupPosition: Int): Long {
         return listOrderByDate[groupPosition].date
@@ -51,7 +38,7 @@ class ExpandableListOrderAdapter(private val context: Context,
         return listOrderByDate[groupPosition].orders.size
     }
 
-    override fun getChild(groupPosition: Int, childPosition: Int): Order {
+    override fun getChild(groupPosition: Int, childPosition: Int): OrderEntity {
         return listOrderByDate[groupPosition].orders[childPosition]
     }
 

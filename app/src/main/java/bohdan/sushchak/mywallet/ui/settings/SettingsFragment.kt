@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.CategoryAdapter
-import bohdan.sushchak.mywallet.data.db.entity.Category
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import bohdan.sushchak.mywallet.ui.dialogs.CreateCategoryDialogFragment
 import kotlinx.android.synthetic.main.settings_fragment.*
@@ -42,7 +42,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
 
         btnAddCategory.setOnClickListener {
             val ft = fragmentManager?.beginTransaction()
-            val category = Category.emptyCategory
+            val category = CategoryEntity.emptyCategoryEntity
             val fragment = CreateCategoryDialogFragment(category)
             fragment.show(ft, "")
 
@@ -64,37 +64,37 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         })
     }
 
-    private fun updateCategory(categories: List<Category>) {
+    private fun updateCategory(categoryEntities: List<CategoryEntity>) {
         if (::categoryAdapter.isInitialized) {
-            categoryAdapter.update(categories)
-            initLongClick(categories)
+            categoryAdapter.update(categoryEntities)
+            initLongClick(categoryEntities)
             return
         }
 
         val linearLayout = LinearLayoutManager(context!!)
-        categoryAdapter = CategoryAdapter(context!!, categories)
+        categoryAdapter = CategoryAdapter(context!!, categoryEntities)
 
         recyclerViewCategory.layoutManager = linearLayout
         recyclerViewCategory.adapter = categoryAdapter
-        initLongClick(categories)
+        initLongClick(categoryEntities)
     }
 
-    private fun editCategory(category: Category) {
+    private fun editCategory(categoryEntity: CategoryEntity) {
         val ft = fragmentManager?.beginTransaction()
-        val fragment = CreateCategoryDialogFragment(category)
+        val fragment = CreateCategoryDialogFragment(categoryEntity)
         fragment.show(ft, "")
 
         fragment.onResult = { newCategory -> viewModel.updateCategory(newCategory) }
     }
 
-    private fun initLongClick(categories: List<Category>) {
+    private fun initLongClick(categoryEntities: List<CategoryEntity>) {
         if (::categoryAdapter.isInitialized)
             categoryAdapter.onLongClick = { view, position ->
                 showPopupEditRemove(view,
-                        edit = { editCategory(categories[position]) },
+                        edit = { editCategory(categoryEntities[position]) },
                         remove = {
                             showDialog(R.string.d_remove_category, R.string.d_remove_category_are_you_sure,
-                                    yes = { viewModel.removeCategory(categories[position]) })
+                                    yes = { viewModel.removeCategory(categoryEntities[position]) })
                         })
             }
     }

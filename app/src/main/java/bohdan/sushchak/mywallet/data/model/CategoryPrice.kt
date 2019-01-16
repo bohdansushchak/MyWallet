@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 
 data class CategoryPrice(
         @ColumnInfo(name = "title")
-        val title: String,
+        val title: String?,
         @ColumnInfo(name = "color")
-        val color: Int,
+        val color: Int?,
         @ColumnInfo(name = "total_price")
         val totalPrice: Double
 )

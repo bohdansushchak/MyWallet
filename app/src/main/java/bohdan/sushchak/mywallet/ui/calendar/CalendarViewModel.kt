@@ -3,14 +3,14 @@ package bohdan.sushchak.mywallet.ui.calendar
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
-import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.internal.lazyDeffered
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class CalendarViewModel(private val myWalletRepository: MyWalletRepository) : ViewModel() {
 
-    val orders:MutableLiveData<List<Order>> = MutableLiveData()
+    val orders:MutableLiveData<List<OrderEntity>> = MutableLiveData()
 
     val calendarDates by lazyDeffered { myWalletRepository.getEvents() }
     val totalPrice: MutableLiveData<Double> = MutableLiveData()
@@ -36,7 +36,7 @@ class CalendarViewModel(private val myWalletRepository: MyWalletRepository) : Vi
         }
     }
 
-    fun removeOrder(order: Order) {
+    fun removeOrder(order: OrderEntity) {
         GlobalScope.launch {
             myWalletRepository.removeOrder(order)
             updateOrders(lastDate)

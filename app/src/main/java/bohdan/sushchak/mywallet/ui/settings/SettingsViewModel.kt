@@ -1,7 +1,7 @@
 package bohdan.sushchak.mywallet.ui.settings
 
 import androidx.lifecycle.ViewModel;
-import bohdan.sushchak.mywallet.data.db.entity.Category
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.lazyDeffered
 import kotlinx.coroutines.GlobalScope
@@ -11,21 +11,21 @@ class SettingsViewModel(private val myWalletRepository: MyWalletRepository) : Vi
 
     val categories by lazyDeffered { myWalletRepository.getCategories() }
 
-    fun addCategory(category: Category) {
+    fun addCategory(categoryEntity: CategoryEntity) {
         GlobalScope.launch {
-            myWalletRepository.addCategory(category)
+            myWalletRepository.addCategory(categoryEntity)
         }
     }
 
-    fun removeCategory(category: Category) {
+    fun removeCategory(categoryEntity: CategoryEntity) {
         GlobalScope.launch {
-            myWalletRepository.removeCategory(category)
+            myWalletRepository.removeCategory(categoryEntity)
         }
     }
 
-    fun updateCategory(category: Category){
+    fun updateCategory(categoryEntity: CategoryEntity){
         GlobalScope.launch {
-            myWalletRepository.updateCategory(category)
+            myWalletRepository.updateCategory(categoryEntity)
         }
     }
 

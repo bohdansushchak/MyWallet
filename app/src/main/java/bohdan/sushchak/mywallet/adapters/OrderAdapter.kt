@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import kotlinx.android.synthetic.main.order_item.view.*
 
 class OrderAdapter(private val context: Context,
-                   orders: List<Order>)
-    : RecyclerAdapterClick<OrderAdapter.ViewHolder, Order>(orders) {
+                   orders: List<OrderEntity>)
+    : RecyclerAdapterClick<OrderAdapter.ViewHolder, OrderEntity>(orders) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context)
@@ -32,7 +32,7 @@ class OrderAdapter(private val context: Context,
         val tvOrderTitle = view.tvOrderTitle
         val tvOrderPrice = view.tvOrderPrice
 
-        fun bind(order: Order) {
+        fun bind(order: OrderEntity) {
             tvOrderTitle.text = order.title
             tvOrderPrice.text = order.price.toString()
         }

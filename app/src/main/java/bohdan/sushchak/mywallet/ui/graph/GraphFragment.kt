@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.LegendAdapter
 import bohdan.sushchak.mywallet.data.model.CategoryPrice
+import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.CustomLabelFormatter
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import com.jjoe64.graphview.series.BarGraphSeries
@@ -44,7 +45,7 @@ class GraphFragment : BaseFragment(), KodeinAware {
 
     private fun bindUI() = launch {
 
-        viewModel.updateCategories(1547334000000, 1547506800000)
+        viewModel.updateCategories(1547334000000, 1547593200000)
 
         viewModel.categoriesTotalPrice.observe(this@GraphFragment, Observer {
 
@@ -60,14 +61,16 @@ class GraphFragment : BaseFragment(), KodeinAware {
             val dataPoint = DataPoint(index.toDouble() + 1, categoryPrice.totalPrice)
             val series = BarGraphSeries<DataPoint>(arrayOf(dataPoint))
 
-            series.color = categoryPrice.color
+            series.color = categoryPrice.color ?: Constants.DEFAULT_CATEGORY_COLOR
             series.title = categoryPrice.title
             series.isAnimated = true
             graphCategoryByMonth.addSeries(series)
         }
 
         graphCategoryByMonth.viewport.setMinX(0.0)
+        graphCategoryByMonth.viewport.setMinY(0.0)
         graphCategoryByMonth.viewport.setMaxX((items.size + 2).toDouble())
+
         graphCategoryByMonth.gridLabelRenderer.labelFormatter = CustomLabelFormatter()
 
         val adapter = LegendAdapter(context!!, items)

@@ -18,7 +18,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
         categoriesTotalPrice.value = listOf()
     }
 
-    fun updateCategories(startDate: Long, endDate: Long ): Unit {
+    fun updateCategories(startDate: Long, endDate: Long ) {
         GlobalScope.launch(Dispatchers.IO) {
 
             val categories = myWalletRepository.getCategoriesPrice(startDate, endDate)

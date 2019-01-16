@@ -18,8 +18,8 @@ import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.ExpandableListProductAdapter
 import bohdan.sushchak.mywallet.adapters.MySpinnerAdapter
 
-import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.DecimalDigitsInputFilter
@@ -87,7 +87,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             tvTotalPrice.text = "${getString(R.string.total)} $totalPrice"
         })
 
-        viewModel.foundedCategory.observe(this@CreateOrderFragment, Observer {category ->
+        viewModel.foundedCategoryEntity.observe(this@CreateOrderFragment, Observer { category ->
             if (category != null)
                 updateSpinner(category)
         })
@@ -139,7 +139,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         val categoryId = viewModel.selectedCategory.id
 
-        val product = Product(
+        val product = ProductEntity(
                 id = null,
                 title = title,
                 price = price,
@@ -152,9 +152,9 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         clearDataInViews()
     }
 
-    private fun updateSpinner(category: Category) = launch{
+    private fun updateSpinner(categoryEntity: CategoryEntity) = launch{
 
-        val index = viewModel.categories.await().value?.indexOf(category)
+        val index = viewModel.categories.await().value?.indexOf(categoryEntity)
         if(index != null)
             spCategory.setSelection(index)
     }
@@ -185,23 +185,23 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         }
     }
 
-    private fun spinnerUpdate(categories: List<Category>) {
+    private fun spinnerUpdate(categoryEntities: List<CategoryEntity>) {
 
-        val adapter = MySpinnerAdapter(context!!, categories)
+        val adapter = MySpinnerAdapter(context!!, categoryEntities)
         //adapter.setDropDownViewResource(R.layout.category_item_spinner)
 
         spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                viewModel.selectedCategory = categories[position]
+                viewModel.selectedCategory = categoryEntities[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                viewModel.selectedCategory = Category.emptyCategory
+                viewModel.selectedCategory = CategoryEntity.emptyCategoryEntity
             }
         }
 
         spCategory.adapter = adapter
-        spCategory.setSelection(categories.indexOf(viewModel.selectedCategory))
+        spCategory.setSelection(categoryEntities.indexOf(viewModel.selectedCategory))
     }
 
     private fun isValid(): Boolean {
@@ -224,7 +224,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                 return false
             }
 
-            (viewModel.selectedCategory == Category.emptyCategory) -> {
+            (viewModel.selectedCategory == CategoryEntity.emptyCategoryEntity) -> {
                 makeToast(R.string.t_please_select_a_category)
                 return false
             }
@@ -242,7 +242,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     //TODO edit product ???
     /*
-    private fun setDataViewOfProduct(product: Product){
+    private fun setDataViewOfProduct(product: ProductEntity){
         edProductTitle.setText(product.title)
         edProductPrice.setText(product.price.toString())
         viewModel.categories.await().value

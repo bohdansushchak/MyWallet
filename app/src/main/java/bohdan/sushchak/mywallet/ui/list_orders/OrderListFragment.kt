@@ -11,8 +11,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.OrdersByDateAdapter
-import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import bohdan.sushchak.mywallet.internal.convertOrdersByDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
@@ -56,7 +56,7 @@ class OrderListFragment : BaseFragment(), KodeinAware {
         })
     }
 
-    fun initButtonCreateOrder(list: List<Category>): Unit {
+    fun initButtonCreateOrder(list: List<CategoryEntity>): Unit {
 
         fabCreateOrder.setOnClickListener{
             val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
@@ -115,18 +115,18 @@ class OrderListFragment : BaseFragment(), KodeinAware {
             adapter.onRestoreInstanceState(savedInstanceState)
     }
 
-    private fun removeCategory(order: Order) {
+    private fun removeCategory(order: OrderEntity) {
 
         showDialog(title = R.string.d_remove_order, msg = R.string.d_remove_order_are_you_sure,
                 yes = { viewModel.removeOrder(order) },
                 cancel = {})
     }
 
-    private fun editCategory(order: Order) {
+    private fun editCategory(order: OrderEntity) {
 
     }
 
-    private fun viewOrder(order: Order) {
+    private fun viewOrder(order: OrderEntity) {
 
     }
 }

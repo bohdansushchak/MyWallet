@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.data.db.entity.Order
+import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
@@ -61,7 +61,7 @@ class OrdersByDateAdapter(private val context: Context,
         val tvOrderTitle = view.tvOrderTitle
         val tvOrderPrice = view.tvOrderPrice
 
-        fun bind(order: Order): Unit {
+        fun bind(order: OrderEntity): Unit {
             tvOrderTitle.text = order.title
             tvOrderPrice.text = order.price.toString()
         }

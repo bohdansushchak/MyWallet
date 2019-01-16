@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class ProductAdapter(private val context: Context,
-                     products: List<Product>)
-    : RecyclerAdapterClick<ProductAdapter.ViewHolder, Product>(products) {
+                     products: List<ProductEntity>)
+    : RecyclerAdapterClick<ProductAdapter.ViewHolder, ProductEntity>(products) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ProductAdapter.ViewHolder(LayoutInflater.from(context)

@@ -2,16 +2,16 @@ package bohdan.sushchak.mywallet.data.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import bohdan.sushchak.mywallet.data.db.entity.Category
-import bohdan.sushchak.mywallet.data.db.entity.Product
+import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 
 data class CategoryWithProducts(
 
         @Embedded
-        var category: Category,
+        var categoryEntity: CategoryEntity,
 
         @Relation(parentColumn = "id",
                 entityColumn = "category_id")
-        var products: MutableList<Product> = mutableListOf()
+        var products: MutableList<ProductEntity> = mutableListOf()
 )
 
