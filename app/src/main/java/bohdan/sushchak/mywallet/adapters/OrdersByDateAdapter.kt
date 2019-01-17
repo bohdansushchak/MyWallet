@@ -20,11 +20,11 @@ class OrdersByDateAdapter(private val context: Context,
     : ExpandableRecyclerViewAdapter<OrdersByDateAdapter.DateViewHolder, OrdersByDateAdapter.OrderViewHolder>(items) {
     /*
         fun bind(newItems: List<OrdersByDateGroup>){
-            val categoryDiffCallback = CategoryDiffCallback(items, newItems)
+            val categoryDiffCallback = ItemDiffCallback(legendItems, newItems)
             val diffResult = DiffUtil.calculateDiff(categoryDiffCallback)
             diffResult.dispatchUpdatesTo(this)
 
-            items = newItems
+            legendItems = newItems
         }
     */
     override fun onCreateGroupViewHolder(parent: ViewGroup?, viewType: Int): DateViewHolder {

@@ -21,20 +21,24 @@ class CategoryAdapter(private val context: Context,
                 .inflate(R.layout.category_item_spinner, parent, false))
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
     override fun onBindViewHolder(holder: CategoryAdapter.CategoryViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
 
-        holder.tvCategory.text = items[position].title
-        holder.tvCategory.textColor = items[position].color
+        val item = getItem(position)
 
-        Log.d("TAG", "${items[position].title} and ${items[position].color}")
+        holder.bind(item)
+
+
+
+        Log.d("TAG", "${item.title} and ${item.color}")
     }
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvCategory = itemView.tvCategory
+
+        fun bind(category: CategoryEntity){
+            tvCategory.text = category.title
+            tvCategory.textColor = category.color
+        }
     }
 }

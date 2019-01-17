@@ -1,24 +1,19 @@
 package bohdan.sushchak.mywallet.ui.graph
 
-import android.app.DatePickerDialog
+
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.adapters.LegendAdapter
-import bohdan.sushchak.mywallet.data.model.CategoryPrice
-import bohdan.sushchak.mywallet.internal.Constants
-import bohdan.sushchak.mywallet.internal.CustomLabelFormatter
+import bohdan.sushchak.mywallet.adapters.GraphRecyclerAdapter
+import bohdan.sushchak.mywallet.data.model.GraphItem
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
-import com.jjoe64.graphview.series.BarGraphSeries
 import kotlinx.coroutines.launch
-import com.jjoe64.graphview.series.DataPoint
 import kotlinx.android.synthetic.main.graph_fragment.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -31,6 +26,8 @@ class GraphFragment : BaseFragment(), KodeinAware {
 
     private val viewModelFactory: GraphViewModelFactory by instance()
     private lateinit var viewModel: GraphViewModel
+
+    private lateinit var adapter: GraphRecyclerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -52,10 +49,10 @@ class GraphFragment : BaseFragment(), KodeinAware {
         viewModel.categoriesTotalPrice.observe(this@GraphFragment, Observer {
 
             Log.d("TAG", it.toString())
-            updateGraph(it)
+            //updateGraph(it)
         })
     }
-
+/*
     private fun updateGraph(items: List<CategoryPrice>){
         graphCategoryByMonth.removeAllSeries()
 
@@ -71,7 +68,7 @@ class GraphFragment : BaseFragment(), KodeinAware {
             graphCategoryByMonth.addSeries(series)
         }
 
-        graphCategoryByMonth.viewport.setMinX(0.0)
+        graph.viewport.setMinX(0.0)
         graphCategoryByMonth.viewport.setMinY(0.0)
         graphCategoryByMonth.viewport.setMaxX((items.size + 2).toDouble())
         graphCategoryByMonth.viewport.isXAxisBoundsManual = true
@@ -84,5 +81,18 @@ class GraphFragment : BaseFragment(), KodeinAware {
         rcLegend.layoutManager = LinearLayoutManager(context)
 
     }
+*/
 
+    private fun updateGraphList(graphItems: List<GraphItem>){
+        if(::adapter.isInitialized){
+
+            return
+        }
+
+
+        adapter = GraphRecyclerAdapter(context!!, graphItems)
+
+        rcGraphList.adapter = adapter
+        rcGraphList.layoutManager = LinearLayoutManager(context)
+    }
 }

@@ -18,20 +18,21 @@ class ProductAdapter(private val context: Context,
                 .inflate(R.layout.product_item, parent, false))
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
 
-        holder.tvProductTitle.text = items[position].title
-        holder.tvProductPrice.text = items[position].price.toString()
+        val item = getItem(position)
+        holder.bind(item)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
     {
         val tvProductTitle = view.tvProductTitle
         val tvProductPrice = view.tvProductPrice
+
+        fun bind(item: ProductEntity){
+            tvProductTitle.text = item.title
+            tvProductPrice.text = item.price.toString()
+        }
     }
 }

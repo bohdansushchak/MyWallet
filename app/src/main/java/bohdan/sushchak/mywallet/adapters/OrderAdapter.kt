@@ -13,18 +13,20 @@ class OrderAdapter(private val context: Context,
                    orders: List<OrderEntity>)
     : RecyclerAdapterClick<OrderAdapter.ViewHolder, OrderEntity>(orders) {
 
+    override fun getItemCount(): Int {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.order_item, parent, false))
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-        holder.bind(items[position])
+
+        val item = getItem(position)
+        holder.bind(item)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
