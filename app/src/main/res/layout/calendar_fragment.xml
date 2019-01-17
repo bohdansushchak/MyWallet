@@ -27,11 +27,9 @@
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_marginTop="8dp"
-
         app:compactCalendarBackgroundColor="#FFFFFF"
         app:compactCalendarCurrentDayBackgroundColor="#4ABFE658"
         app:compactCalendarCurrentSelectedDayBackgroundColor="#BFE658"
-
         app:compactCalendarMultiEventIndicatorColor="#fff"
         app:compactCalendarTargetHeight="250dp"
         app:compactCalendarTextColor="#000000"
