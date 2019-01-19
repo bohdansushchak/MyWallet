@@ -10,9 +10,11 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.CategoryCount
 import bohdan.sushchak.mywallet.data.model.CategoryPrice
+import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.model.OrderWithProducts
 import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class MyWalletRepositoryImpl(
@@ -87,25 +89,27 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun getCategoriesPrice(startDate: Long, endDate: Long): List<CategoryPrice> {
-        viewDataBase()
-        return withContext(Dispatchers.IO) {
 
-            val categoryPriceAllList = mutableListOf<CategoryPrice>()
+        val categoryPriceAllList = mutableListOf<CategoryPrice>()
 
-            val totalPriceForCategories = categoryDao.getTotalPriceCategories(startDate, endDate)
-                    ?: listOf()
-            val totalPriceCategoryNotSet = categoryDao.getTotalPriceCategoryNotSet(startDate, endDate)
-                    ?: listOf()
+        val totalPriceForCategories = categoryDao.getTotalPriceCategories(startDate, endDate)
+                ?: listOf()
+        val totalPriceCategoryNotSet = categoryDao.getTotalPriceCategoryNotSet(startDate, endDate)
+                ?: listOf()
 
-            categoryPriceAllList.addAll(totalPriceForCategories)
-            categoryPriceAllList.addAll(totalPriceCategoryNotSet)
+        categoryPriceAllList.addAll(totalPriceForCategories)
+        categoryPriceAllList.addAll(totalPriceCategoryNotSet)
 
-            return@withContext categoryPriceAllList.toList()
-        }
+        return categoryPriceAllList.toList()
+
+    }
+
+    override suspend fun getTotalPriceByDate(startDate: Long, endDate: Long): List<MoneyByDate> {
+        return orderDao.getSpendMoneyByDateNonLive(startDate, endDate)
     }
 
     override suspend fun viewDataBase() {
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.Default) {
             Log.d("TAG", "Products")
             productDao.getProducts()?.forEach {
                 Log.d("TAG", it.toString())

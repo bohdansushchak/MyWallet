@@ -28,24 +28,24 @@
     <string name="t_product_list_cant_be_empty">Product list can\'t be empty</string>
     <string name="t_please_enter_product_name">Please enter product name</string>
     <string name="t_please_enter_product_price">Please enter product price</string>
-    <string name="t_please_select_a_category">Please select a categoryEntity</string>
+    <string name="t_please_select_a_category">Please select a category</string>
     <string name="t_price_should_be_a_number">Price should be a number</string>
 
 
     <!-- dialogs -->
     <string name="d_order_title">Order title</string>
-    <string name="d_order_title_please_enter">Please enter orderEntity title"</string>
+    <string name="d_order_title_please_enter">Please enter order title"</string>
     <string name="d_remove_product">Remove product</string>
     <string name="d_remove_product_are_you_sure">"Are sure you to remove product?"</string>
     <string name="d_remove_category">Remove categoryEntity</string>
-    <string name="d_remove_category_are_you_sure">"Are sure you to remove categoryEntity?"</string>
+    <string name="d_remove_category_are_you_sure">"Are sure you to remove category?"</string>
     <string name="d_remove_order">Remove orderEntity</string>
-    <string name="d_remove_order_are_you_sure">"Are sure you to remove orderEntity?"</string>
+    <string name="d_remove_order_are_you_sure">"Are sure you to remove order?"</string>
     <string name="d_clear_products">Clear all products</string>
     <string name="d_clear_products_are_you_sure">Are you sure to clear all product from list?</string>
 
-    <string name="d_title_no_categories">No categoryEntities</string>
-    <string name="d_msg_no_categories">Please add a one categoryEntity</string>
+    <string name="d_title_no_categories">No category</string>
+    <string name="d_msg_no_categories">Please add a one category</string>
     <string name="d_title_max_categories">Max categories</string>
     <string name="d_msg_max_categories">You can have only 10 categories</string>
 

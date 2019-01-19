@@ -100,7 +100,8 @@ class OrderListFragment : BaseFragment(), KodeinAware {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        adapter.onSaveInstanceState(outState)
+        if (::adapter.isInitialized)
+            adapter.onSaveInstanceState(outState)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

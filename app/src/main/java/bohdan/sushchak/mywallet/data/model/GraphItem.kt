@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.data.model
 
+import com.jjoe64.graphview.LabelFormatter
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.Series
 
@@ -11,7 +12,16 @@ class GraphItem {
 
     var isShowLegend: Boolean = false
 
-    var legendItems: MutableList<LegendItem>? = null
+    var legendItems: List<LegendItem>? = null
+
+    var isXAxisBoundsManual: Boolean = false
+
+    var minX: Double? = null
+    var minY: Double? = null
+    var maxX: Double? = null
+    var maxY: Double? = null
+
+    var labelFormatter: LabelFormatter? = null
 }
 
 

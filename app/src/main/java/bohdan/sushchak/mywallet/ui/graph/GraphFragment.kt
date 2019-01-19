@@ -1,20 +1,19 @@
 package bohdan.sushchak.mywallet.ui.graph
 
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.GraphRecyclerAdapter
 import bohdan.sushchak.mywallet.data.model.GraphItem
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
-import kotlinx.coroutines.launch
 import kotlinx.android.synthetic.main.graph_fragment.*
+import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
@@ -43,52 +42,18 @@ class GraphFragment : BaseFragment(), KodeinAware {
     }
 
     private fun bindUI() = launch {
-
-        viewModel.updateCategories(1547334000000, 1547593200000)
-
-        viewModel.categoriesTotalPrice.observe(this@GraphFragment, Observer {
-
-            Log.d("TAG", it.toString())
-            //updateGraph(it)
+        viewModel.graphItems.observe(this@GraphFragment, Observer {
+            updateGraphList(it)
         })
     }
-/*
-    private fun updateGraph(items: List<CategoryPrice>){
-        graphCategoryByMonth.removeAllSeries()
 
-        items.forEachIndexed { index, categoryPrice ->
-            val dataPoint = DataPoint(index.toDouble() + 1, categoryPrice.totalPrice)
-            val series = BarGraphSeries<DataPoint>(arrayOf(dataPoint))
+    private fun updateGraphList(graphItems: List<GraphItem>) {
 
-            series.color = categoryPrice.color ?: Constants.DEFAULT_CATEGORY_COLOR
-            series.title = categoryPrice.title
-            series.isAnimated = true
-            series.spacing = 50 / items.size
-            series.isDrawValuesOnTop = true
-            graphCategoryByMonth.addSeries(series)
-        }
+        if (::adapter.isInitialized) {
 
-        graph.viewport.setMinX(0.0)
-        graphCategoryByMonth.viewport.setMinY(0.0)
-        graphCategoryByMonth.viewport.setMaxX((items.size + 2).toDouble())
-        graphCategoryByMonth.viewport.isXAxisBoundsManual = true
-
-        graphCategoryByMonth.gridLabelRenderer.labelFormatter = CustomLabelFormatter()
-
-        val adapter = LegendAdapter(context!!, items)
-
-        rcLegend.adapter = adapter
-        rcLegend.layoutManager = LinearLayoutManager(context)
-
-    }
-*/
-
-    private fun updateGraphList(graphItems: List<GraphItem>){
-        if(::adapter.isInitialized){
-
+            adapter.update(graphItems)
             return
         }
-
 
         adapter = GraphRecyclerAdapter(context!!, graphItems)
 
