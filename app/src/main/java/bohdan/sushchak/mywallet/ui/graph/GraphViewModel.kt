@@ -1,7 +1,5 @@
 package bohdan.sushchak.mywallet.ui.graph
 
-import android.provider.ContactsContract
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.model.CategoryPrice
@@ -34,7 +32,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
             val graphItemsList = mutableListOf<GraphItem>()
 
             val listcategoryPrice = myWalletRepository.getCategoriesPrice(startDate, endDate)
-            
+
 
             graphItems.postValue(graphItemsList)
         }
