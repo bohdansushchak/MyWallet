@@ -123,9 +123,7 @@
             android:background="#DBD8D8"
             android:padding="10dp"
             tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="-210dp">
-
-        </androidx.recyclerview.widget.RecyclerView
+            tools:layout_editor_absoluteY="-210dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

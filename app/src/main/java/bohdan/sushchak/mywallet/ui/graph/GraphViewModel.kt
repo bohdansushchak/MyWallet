@@ -33,7 +33,6 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
 
             val listcategoryPrice = myWalletRepository.getCategoriesPrice(startDate, endDate)
 
-
             graphItems.postValue(graphItemsList)
         }
     }
@@ -51,7 +50,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
 
         graphItem.apply {
             series.addAll(listSeries)
-            legendItems = legendItemsList
+            legendItems = legendItemsList.toMutableList()
             isXAxisBoundsManual = true
             minX = 0.0
             minY = 0.0

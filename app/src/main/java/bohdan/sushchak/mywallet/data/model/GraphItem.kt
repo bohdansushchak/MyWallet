@@ -12,7 +12,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.graph_item.*
 
-class GraphItem(private val context: Context) : Item() {
+class GraphItem : Item() {
 
     var title: String = ""
 
