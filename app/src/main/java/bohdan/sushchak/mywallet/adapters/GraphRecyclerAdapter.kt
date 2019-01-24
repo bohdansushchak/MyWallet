@@ -48,7 +48,7 @@ class GraphRecyclerAdapter(val context: Context, items: List<GraphItem>)
         private fun bindGraph(item: GraphItem) {
             graph.removeAllSeries()
 
-            item.series.forEach {
+            item.seriesList.forEach {
                 graph.addSeries(it)
             }
 

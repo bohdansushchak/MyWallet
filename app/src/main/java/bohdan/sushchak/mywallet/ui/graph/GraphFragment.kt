@@ -9,9 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.adapters.GraphRecyclerAdapter
 import bohdan.sushchak.mywallet.data.model.GraphItem
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.graph_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -26,7 +27,7 @@ class GraphFragment : BaseFragment(), KodeinAware {
     private val viewModelFactory: GraphViewModelFactory by instance()
     private lateinit var viewModel: GraphViewModel
 
-    private lateinit var adapter: GraphRecyclerAdapter
+    private lateinit var adapter: GroupAdapter<ViewHolder>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -55,7 +56,8 @@ class GraphFragment : BaseFragment(), KodeinAware {
             return
         }
 
-        adapter = GraphRecyclerAdapter(context!!, graphItems)
+        adapter = GroupAdapter()
+        adapter.addAll(graphItems)
 
         rcGraphList.adapter = adapter
         rcGraphList.layoutManager = LinearLayoutManager(context)

@@ -15,7 +15,7 @@ class GraphItem : Item() {
 
     var title: String = ""
 
-    var series: MutableList<Series<DataPoint>> = mutableListOf()
+    var seriesList: MutableList<Series<DataPoint>> = mutableListOf()
 
     var isShowLegend: Boolean = false
 
@@ -35,7 +35,7 @@ class GraphItem : Item() {
         viewHolder.tvGraphTitle.text = title
 
         viewHolder.graph.apply {
-            if(series.size == 0)
+            if(seriesList.size == 0)
                 removeAllSeries()
 
             viewport.isXAxisBoundsManual = isXAxisBoundsManual
@@ -46,7 +46,7 @@ class GraphItem : Item() {
             viewport.setMinY(minY)
             viewport.setMaxY(maxY)
 
-            series.addAll(series)
+            series.addAll(seriesList)
         }
 
         if (isShowLegend)

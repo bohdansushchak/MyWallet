@@ -32,6 +32,13 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
             val graphItemsList = mutableListOf<GraphItem>()
 
             val listcategoryPrice = myWalletRepository.getCategoriesPrice(startDate, endDate)
+            val listMoneyByDate = myWalletRepository.getTotalPriceByDate(startDate, endDate)
+
+            val categoryPriceItem = getGraphCategoryPrice("Category price", listcategoryPrice)
+            val lineGraphItem = getLineGraph("Line graph", listMoneyByDate)
+
+            graphItemsList.add(categoryPriceItem)
+            graphItemsList.add(lineGraphItem)
 
             graphItems.postValue(graphItemsList)
         }
@@ -49,7 +56,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
         val legendItemsList = getLegendItems(listCategoryPrice)
 
         graphItem.apply {
-            series.addAll(listSeries)
+            seriesList.addAll(listSeries)
             legendItems = legendItemsList.toMutableList()
             isXAxisBoundsManual = true
             minX = 0.0
@@ -112,7 +119,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
 
         graphItem.apply {
             title = graphTitle
-            series.add(lineGraphSeries)
+            seriesList.add(lineGraphSeries)
         }
         return graphItem
     }
