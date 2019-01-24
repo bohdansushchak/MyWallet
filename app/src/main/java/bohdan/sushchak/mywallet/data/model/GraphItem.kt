@@ -1,6 +1,5 @@
 package bohdan.sushchak.mywallet.data.model
 
-import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R

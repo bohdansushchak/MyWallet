@@ -21,7 +21,7 @@ abstract class OrderDao : BaseDao<OrderEntity> {
     @Query("select * from orders")
     abstract fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>>
 
-    @Query("select * from orders")
+    @Query("select * from orders order by date asc")
     abstract fun getOrders(): LiveData<List<OrderEntity>>
 
     @Query("select id from orders where date = :id")
