@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.graph_item.*
 
 class GraphItem : Item() {
 
-    var title: String = ""
+    var titleResId: Int = 0
 
     var seriesList: MutableList<Series<DataPoint>> = mutableListOf()
 
@@ -32,10 +32,11 @@ class GraphItem : Item() {
     var labelFormatter: LabelFormatter? = null
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.tvGraphTitle.text = title
+        if (titleResId != 0)
+            viewHolder.tvGraphTitle.setText(titleResId)
 
         viewHolder.graph.apply {
-            if(seriesList.size == 0)
+            if (seriesList.size == 0)
                 removeAllSeries()
 
             viewport.isXAxisBoundsManual = isXAxisBoundsManual
@@ -45,6 +46,9 @@ class GraphItem : Item() {
             viewport.setMaxX(maxX)
             viewport.setMinY(minY)
             viewport.setMaxY(maxY)
+
+            if (labelFormatter != null)
+                gridLabelRenderer.labelFormatter = labelFormatter
 
             series.addAll(seriesList)
         }

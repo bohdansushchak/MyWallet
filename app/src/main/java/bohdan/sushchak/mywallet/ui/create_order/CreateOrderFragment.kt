@@ -243,7 +243,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     //TODO edit product ???
     /*
     private fun setDataViewOfProduct(product: ProductEntity){
-        edProductTitle.setText(product.title)
+        edProductTitle.setText(product.titleResId)
         edProductPrice.setText(product.price.toString())
         viewModel.categories.await().value
     }*/

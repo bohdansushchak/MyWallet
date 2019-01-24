@@ -32,7 +32,7 @@ class GraphRecyclerAdapter(val context: Context, items: List<GraphItem>)
         val rcLegend = view.rcLegend
 
         fun bind(graphItem: GraphItem) {
-            tvGraphTitle.text = graphItem.title
+            tvGraphTitle.setText(graphItem.titleResId)
 
             bindGraph(graphItem)
 

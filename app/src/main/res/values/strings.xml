@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MyWallet</string>
 
-    <!-- fragment title -->
+    <!-- fragment titleResId -->
     <string name="create_order_fragment_title">Create orderEntity</string>
     <string name="list_order_fragment_title">Order list</string>
     <string name="calendar_fragment_title">Calendar</string>
@@ -52,6 +52,14 @@
 
     <string name="total">Total:</string>
     <string name="non_set_category">Non set</string>
+
+    <string name="graph_title_category_by_month">Spend money for category by month</string>
+    <string name="graph_title_spend_money_for_each_day_in_month">Spend money for each day in month</string>
+
+    <string name="graph_title_category_by_year">Spend money for category by year</string>
+    <string name="graph_title_spend_money_for_each_day_in_year">Spend money for each day in year</string>
+
+
 
     <string-array name="colorCategoryArray">
         <item>#F83F2B</item>

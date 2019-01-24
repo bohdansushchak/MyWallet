@@ -34,7 +34,7 @@ class LegendAdapter(private val context: Context,
 
         fun bind(context: Context, item: LegendItem) {
             //tvColor.setBackgroundColor(item.color)
-            //tvTitleLegend.text = item.title
+            //tvTitleLegend.text = item.titleResId
         }
     }
 }

@@ -2,6 +2,7 @@ package bohdan.sushchak.mywallet.ui.graph
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.model.CategoryPrice
 import bohdan.sushchak.mywallet.data.model.GraphItem
 import bohdan.sushchak.mywallet.data.model.LegendItem
@@ -31,29 +32,31 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
         GlobalScope.launch(Dispatchers.IO) {
             val graphItemsList = mutableListOf<GraphItem>()
 
-            val listcategoryPrice = myWalletRepository.getCategoriesPrice(startDate, endDate)
-            val listMoneyByDate = myWalletRepository.getTotalPriceByDate(startDate, endDate)
+            val listCategoryPriceByMonth = myWalletRepository.getCategoriesPrice(startDate, endDate)
+            val listMoneyByDateByMonth = myWalletRepository.getTotalPriceByDate(startDate, endDate)
 
-            val categoryPriceItem = getGraphCategoryPrice("Category price", listcategoryPrice)
-            val lineGraphItem = getLineGraph("Line graph", listMoneyByDate)
+            val itemCategoryPriceByMonth = getBarGraph(R.string.graph_title_category_by_month, listCategoryPriceByMonth)
+            val itemMoneyByDateByMonth = getLineGraph(R.string.graph_title_spend_money_for_each_day_in_month, listMoneyByDateByMonth)
 
-            graphItemsList.add(categoryPriceItem)
-            graphItemsList.add(lineGraphItem)
+            graphItemsList.apply {
+                add(itemCategoryPriceByMonth)
+                add(itemMoneyByDateByMonth)
+            }
 
             graphItems.postValue(graphItemsList)
         }
     }
 
-    private fun getGraphCategoryPrice(graphTitle: String, listCategoryPrice: List<CategoryPrice>): GraphItem {
+    private fun getBarGraph(graphTitleResId: Int, listCategoryPrice: List<CategoryPrice>): GraphItem {
         val graphItem = GraphItem()
 
         graphItem.apply {
-            title = graphTitle
+            titleResId = graphTitleResId
             isShowLegend = true
         }
 
-        val listSeries = getSeriesCategory(listCategoryPrice)
-        val legendItemsList = getLegendItems(listCategoryPrice)
+        val listSeries = convertToSeries(listCategoryPrice)
+        val legendItemsList = getLegendItemsBarGraph(listCategoryPrice)
 
         graphItem.apply {
             seriesList.addAll(listSeries)
@@ -67,7 +70,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
         return graphItem
     }
 
-    private fun getSeriesCategory(listCategoryPrice: List<CategoryPrice>): List<Series<DataPoint>> {
+    private fun convertToSeries(listCategoryPrice: List<CategoryPrice>): List<Series<DataPoint>> {
         val listSeries = mutableListOf<BarGraphSeries<DataPoint>>()
 
         listCategoryPrice.forEachIndexed { index, categoryPrice ->
@@ -91,7 +94,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
 
         return listSeries
     }
-    private fun getLegendItems(listCategoryPrice: List<CategoryPrice>): List<LegendItem>{
+    private fun getLegendItemsBarGraph(listCategoryPrice: List<CategoryPrice>): List<LegendItem>{
         val legendItemsList = mutableListOf<LegendItem>()
 
         listCategoryPrice.forEachIndexed { index, categoryPrice ->
@@ -106,7 +109,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
         return legendItemsList
     }
 
-    private fun getLineGraph(graphTitle: String, listMoneyByDate: List<MoneyByDate>): GraphItem {
+    private fun getLineGraph(graphTitleResId: Int, listMoneyByDate: List<MoneyByDate>): GraphItem {
         val graphItem = GraphItem()
         val dataPoints: MutableList<DataPoint> = mutableListOf()
         listMoneyByDate.forEach { moneyByDate ->
@@ -118,7 +121,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
         val lineGraphSeries = LineGraphSeries<DataPoint>(dataPoints.toTypedArray())
 
         graphItem.apply {
-            title = graphTitle
+            titleResId = graphTitleResId
             seriesList.add(lineGraphSeries)
         }
         return graphItem

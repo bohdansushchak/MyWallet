@@ -53,7 +53,7 @@ class ExpandableListOrderAdapter(private val context: Context,
                     .inflate(R.layout.order_item, null)
         }
 
-        view!!.findViewById<TextView>(R.id.tvOrderTitle).text = getChild(groupPosition, childPosition).title
+        view!!.findViewById<TextView>(R.id.tvOrderTitle).text = getChild(groupPosition, childPosition).titleResId
         view.findViewById<TextView>(R.id.tvOrderPrice).text = getChild(groupPosition, childPosition).price.toString()
 
         view.setOnLongClickListener {
