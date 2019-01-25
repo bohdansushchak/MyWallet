@@ -14,21 +14,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:text="Category"
-        android:textColor="#000"
+        android:textColor="@color/textColorBlack"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_weight="1"/>
-<!--
-    <androidx.cardview.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/boxColor"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        card_view:cardBackgroundColor="#E60808"
-        card_view:cardCornerRadius="8dp" />
-    -->
 </LinearLayout>

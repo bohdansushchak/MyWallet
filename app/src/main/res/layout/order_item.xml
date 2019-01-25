@@ -15,7 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Title"
-        android:textColor="#000"
+        android:textColor="@color/textColorBlack"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="Price"
-        android:textColor="#000"
+        android:textColor="@color/textColorBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

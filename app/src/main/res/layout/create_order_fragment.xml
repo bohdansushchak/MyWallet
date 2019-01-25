@@ -97,7 +97,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
         android:text="Total: 0"
-        android:textColor="#000"
+        android:textColor="@color/textColorBlack"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btnSaveOrder"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="0dp"
-        android:textColor="#000"
+        android:textColor="@color/textColorBlack"
         android:textSize="16sp"
         android:focusable="true"
         android:clickable="true"
@@ -122,7 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="#0F0101"
+        android:background="@color/textColorBlack"
         app:layout_constraintTop_toBottomOf="@+id/spCategory"
         tools:layout_editor_absoluteX="16dp" />
 
@@ -131,7 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="8dp"
-        android:background="#0F0101"
+        android:background="@color/textColorBlack"
         app:layout_constraintBottom_toTopOf="@+id/tvTotalPrice"
         tools:layout_editor_absoluteX="16dp" />
 
@@ -143,7 +143,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Select a categoryEntity :"
-        android:textColor="#000"
+        android:textColor="@color/textColorBlack"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/dividerTop"
         app:layout_constraintStart_toStartOf="parent"
