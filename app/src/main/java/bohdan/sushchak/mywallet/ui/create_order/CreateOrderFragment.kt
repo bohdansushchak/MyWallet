@@ -188,7 +188,6 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     private fun spinnerUpdate(categoryEntities: List<CategoryEntity>) {
 
         val adapter = MySpinnerAdapter(context!!, categoryEntities)
-        //adapter.setDropDownViewResource(R.layout.category_item_spinner)
 
         spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {

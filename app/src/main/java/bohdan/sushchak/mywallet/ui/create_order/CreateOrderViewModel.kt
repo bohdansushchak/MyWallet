@@ -92,9 +92,6 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
     }
 
     fun addOrder(date: Long, title: String) {
-        if (isProductListEmpty())
-            throw EmptyProductListException()
-
         GlobalScope.launch {
             val order = OrderEntity(id = null,
                     title = title,

@@ -75,7 +75,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
 
     private fun initButton(list: List<CategoryEntity>){
         btnAddCategory.setOnClickListener {
-            if(list.size < Constants.MAX_CATAGORIES){
+            if(list.size < Constants.MAX_CATEGORIES){
                 val ft = fragmentManager?.beginTransaction()
                 val category = CategoryEntity.emptyCategoryEntity
                 val fragment = CreateCategoryDialogFragment(category)

@@ -1,7 +1,6 @@
 package bohdan.sushchak.mywallet.adapters.callbacks
 
 import androidx.recyclerview.widget.DiffUtil
-import bohdan.sushchak.mywallet.data.db.entity.BaseEntity
 
 class ItemDiffCallback<T>(private val oldList: List<T>,
                           private val newList: List<T>): DiffUtil.Callback() {

@@ -2,17 +2,17 @@
     <string name="app_name">MyWallet</string>
 
     <!-- fragment titleResId -->
-    <string name="create_order_fragment_title">Create orderEntity</string>
+    <string name="create_order_fragment_title">Create order</string>
     <string name="list_order_fragment_title">Order list</string>
     <string name="calendar_fragment_title">Calendar</string>
     <string name="settings_fragment_title">Settings</string>
     <string name="diagram_fragment_title">Statistic</string>
 
     <!-- textview-->
-    <string name="tv_no_categories">No categoryEntities</string>
+    <string name="tv_no_categories">No categories</string>
 
     <!--buttons text-->
-    <string name="btn_text_save_order">Save orderEntity</string>
+    <string name="btn_text_save_order">Save order</string>
     <string name="btn_text_clear_all">Clear all</string>
     <string name="btn_text_yes">Yes</string>
     <string name="btn_text_cancel">Cancel</string>
@@ -36,9 +36,9 @@
     <string name="d_order_title_please_enter">Please enter order title"</string>
     <string name="d_remove_product">Remove product</string>
     <string name="d_remove_product_are_you_sure">"Are sure you to remove product?"</string>
-    <string name="d_remove_category">Remove categoryEntity</string>
+    <string name="d_remove_category">Remove category</string>
     <string name="d_remove_category_are_you_sure">"Are sure you to remove category?"</string>
-    <string name="d_remove_order">Remove orderEntity</string>
+    <string name="d_remove_order">Remove order</string>
     <string name="d_remove_order_are_you_sure">"Are sure you to remove order?"</string>
     <string name="d_clear_products">Clear all products</string>
     <string name="d_clear_products_are_you_sure">Are you sure to clear all product from list?</string>

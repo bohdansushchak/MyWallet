@@ -71,22 +71,15 @@ class OrderListFragment : BaseFragment(), KodeinAware {
     }
 
     private fun updateOrderList(ordersByDate: List<OrdersByDateGroup>) {
-/*
-        if(::adapter.isInitialized){
 
-
-
-            return
-        }
-*/
         adapter = OrdersByDateAdapter(context!!, ordersByDate)
 
         rcViewOrders.adapter = adapter
         rcViewOrders.layoutManager = LinearLayoutManager(context)
-/*
+
         adapter.onLongClick = { view, order ->
             showPopupEditRemove(view,
-                    edit = { editCategory(order) },
+                    edit = { editOrder(order) },
                     remove = {
                         removeCategory(order)
                     })
@@ -95,7 +88,7 @@ class OrderListFragment : BaseFragment(), KodeinAware {
         adapter.onClick = { order ->
             viewOrder(order)
         }
-*/
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -117,7 +110,7 @@ class OrderListFragment : BaseFragment(), KodeinAware {
                 cancel = {})
     }
 
-    private fun editCategory(order: OrderEntity) {
+    private fun editOrder(order: OrderEntity) {
 
     }
 

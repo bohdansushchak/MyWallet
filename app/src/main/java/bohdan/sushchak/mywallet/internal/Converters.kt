@@ -8,8 +8,6 @@ class Converters {
 
     @TypeConverter
     fun dateToEvent(date: Long): Event{
-        val event = Event(Constants.COLOR_EVENT, date)
-        return event
+        return Event(Constants.COLOR_EVENT, date)
     }
-
 }

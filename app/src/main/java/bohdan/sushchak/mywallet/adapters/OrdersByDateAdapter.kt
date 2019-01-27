@@ -18,15 +18,10 @@ import kotlinx.android.synthetic.main.order_item.view.*
 class OrdersByDateAdapter(private val context: Context,
                           items: List<OrdersByDateGroup>)
     : ExpandableRecyclerViewAdapter<OrdersByDateAdapter.DateViewHolder, OrdersByDateAdapter.OrderViewHolder>(items) {
-    /*
-        fun bind(newItems: List<OrdersByDateGroup>){
-            val categoryDiffCallback = ItemDiffCallback(legendItems, newItems)
-            val diffResult = DiffUtil.calculateDiff(categoryDiffCallback)
-            diffResult.dispatchUpdatesTo(this)
 
-            legendItems = newItems
-        }
-    */
+    var onLongClick: ((view: View, order: OrderEntity) -> Unit)? = null
+    var onClick: ((order: OrderEntity) -> Unit)? = null
+
     override fun onCreateGroupViewHolder(parent: ViewGroup?, viewType: Int): DateViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.date_item, parent, false)
         return DateViewHolder(view)
@@ -39,7 +34,19 @@ class OrdersByDateAdapter(private val context: Context,
 
     override fun onBindChildViewHolder(holder: OrderViewHolder?, flatPosition: Int, group: ExpandableGroup<*>?, childIndex: Int) {
         val ordersByDateGroup = group as OrdersByDateGroup
-        holder?.bind(ordersByDateGroup.orders[childIndex])
+        val order = ordersByDateGroup.orders[childIndex]
+
+        holder?.bind(order)
+
+        holder?.itemView?.setOnLongClickListener {
+            onLongClick?.invoke(it, order)
+            return@setOnLongClickListener (onLongClick != null)
+        }
+
+        holder?.itemView?.setOnClickListener{
+            onClick?.invoke(order)
+            return@setOnClickListener
+        }
     }
 
     override fun onBindGroupViewHolder(holder: DateViewHolder?, flatPosition: Int, group: ExpandableGroup<*>?) {
@@ -49,7 +56,7 @@ class OrdersByDateAdapter(private val context: Context,
 
     class DateViewHolder(view: View) : GroupViewHolder(view) {
 
-        val tvDate = view.tvDate
+        private val tvDate = view.tvDate
 
         fun bind(item: OrdersByDateGroup): Unit {
             tvDate.text = item.date
@@ -58,8 +65,8 @@ class OrdersByDateAdapter(private val context: Context,
 
     class OrderViewHolder(view: View) : ChildViewHolder(view) {
 
-        val tvOrderTitle = view.tvOrderTitle
-        val tvOrderPrice = view.tvOrderPrice
+        private val tvOrderTitle = view.tvOrderTitle
+        private val tvOrderPrice = view.tvOrderPrice
 
         fun bind(order: OrderEntity): Unit {
             tvOrderTitle.text = order.title

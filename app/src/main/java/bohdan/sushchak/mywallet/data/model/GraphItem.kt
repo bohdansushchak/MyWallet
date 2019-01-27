@@ -29,6 +29,8 @@ class GraphItem : Item() {
     var maxX: Double = 0.0
     var maxY: Double = 0.0
 
+    var isHasSubItems = false
+
     var labelFormatter: LabelFormatter? = null
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
@@ -55,6 +57,9 @@ class GraphItem : Item() {
 
         if (isShowLegend)
             bindLegend(viewHolder)
+
+        if(isHasSubItems)
+            bindSubItems(viewHolder)
     }
 
     override fun getLayout() = R.layout.graph_item
@@ -71,6 +76,17 @@ class GraphItem : Item() {
             }
         } else
             viewHolder.rcLegend.visibility = View.GONE
+    }
+
+    private fun bindSubItems(viewHolder: ViewHolder){
+        viewHolder.itemView.setOnClickListener {
+            viewHolder.rcCategoryPrice.visibility = if(viewHolder.rcCategoryPrice.visibility == View.VISIBLE)
+                View.GONE
+            else View.VISIBLE
+        }
+
+
+
     }
 }
 
