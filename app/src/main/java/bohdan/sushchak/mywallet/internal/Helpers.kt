@@ -2,7 +2,6 @@ package bohdan.sushchak.mywallet.internal
 
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
-import java.lang.Math.pow
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.absoluteValue

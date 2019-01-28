@@ -10,6 +10,5 @@ class BarLabelFormatter : LabelFormatter {
     else
         formatDigitToString(value)
 
-
     override fun setViewport(viewport: Viewport?) {}
 }

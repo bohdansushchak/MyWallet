@@ -114,9 +114,11 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
         val graphItem = GraphItem()
         val dataPoints: MutableList<DataPoint> = mutableListOf()
         listMoneyByDate.forEach { moneyByDate ->
-            val date = Date()
-            date.time = moneyByDate.date
-            val dataPoint = DataPoint(date, moneyByDate.totalPrice)
+            val date = Date(moneyByDate.date)
+            val cal = Calendar.getInstance()
+            cal.time = date
+            val day = cal.get(Calendar.DAY_OF_MONTH).toDouble()
+            val dataPoint = DataPoint(day, moneyByDate.totalPrice)
             dataPoints.add(dataPoint)
         }
         val lineGraphSeries = LineGraphSeries<DataPoint>(dataPoints.toTypedArray())
@@ -125,6 +127,9 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
         graphItem.apply {
             titleResId = graphTitleResId
             seriesList.add(lineGraphSeries)
+            minX = 0.0
+            maxX = 32.0
+            isXAxisBoundsManual = true
             labelFormatter = LineLabelFormatter()
         }
         return graphItem
