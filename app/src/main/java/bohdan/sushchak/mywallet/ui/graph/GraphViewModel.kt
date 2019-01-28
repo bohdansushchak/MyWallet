@@ -9,7 +9,8 @@ import bohdan.sushchak.mywallet.data.model.LegendItem
 import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.Constants
-import bohdan.sushchak.mywallet.internal.CustomLabelFormatter
+import bohdan.sushchak.mywallet.internal.label_formatter.BarLabelFormatter
+import bohdan.sushchak.mywallet.internal.label_formatter.LineLabelFormatter
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
@@ -65,7 +66,7 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
             minX = 0.0
             minY = 0.0
             maxX = (listCategoryPrice.size + 2).toDouble()
-            labelFormatter = CustomLabelFormatter()
+            labelFormatter = BarLabelFormatter()
         }
         return graphItem
     }
@@ -119,10 +120,12 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
             dataPoints.add(dataPoint)
         }
         val lineGraphSeries = LineGraphSeries<DataPoint>(dataPoints.toTypedArray())
+        lineGraphSeries.setAnimated(true)
 
         graphItem.apply {
             titleResId = graphTitleResId
             seriesList.add(lineGraphSeries)
+            labelFormatter = LineLabelFormatter()
         }
         return graphItem
     }

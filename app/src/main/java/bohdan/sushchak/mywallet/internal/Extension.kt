@@ -93,3 +93,5 @@ fun List<OrdersByDateGroup>.indexBydate(date: Long): Int {
     return index
 }
 
+fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
+

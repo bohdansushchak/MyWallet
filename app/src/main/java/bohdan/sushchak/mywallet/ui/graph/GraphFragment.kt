@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout.VERTICAL
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.model.GraphItem
@@ -27,7 +29,7 @@ class GraphFragment : BaseFragment(), KodeinAware {
     private val viewModelFactory: GraphViewModelFactory by instance()
     private lateinit var viewModel: GraphViewModel
 
-    private lateinit var adapter: GroupAdapter<ViewHolder>
+    private lateinit var groupAdapter: GroupAdapter<ViewHolder>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,16 +52,23 @@ class GraphFragment : BaseFragment(), KodeinAware {
 
     private fun updateGraphList(graphItems: List<GraphItem>) {
 
-        if (::adapter.isInitialized) {
+        if (::groupAdapter.isInitialized) {
 
-            adapter.update(graphItems)
+            groupAdapter.update(graphItems)
             return
         }
 
-        adapter = GroupAdapter()
-        adapter.addAll(graphItems)
+        groupAdapter = GroupAdapter()
+        groupAdapter.addAll(graphItems)
 
-        rcGraphList.adapter = adapter
-        rcGraphList.layoutManager = LinearLayoutManager(context)
+        val decoration = DividerItemDecoration(context, VERTICAL)
+        val drawable = resources.getDrawable(R.drawable.transparent_decoration_drawable)
+        decoration.setDrawable(drawable)
+
+        rcGraphList.apply {
+            adapter = groupAdapter
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(decoration)
+        }
     }
 }
