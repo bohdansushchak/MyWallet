@@ -6,8 +6,6 @@ import java.util.Random;
 
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity;
 
-
-
 public final class OrderTestHelper {
 
     public static List<OrderEntity> createListOfOrders(int amount) {
@@ -25,8 +23,8 @@ public final class OrderTestHelper {
         return orderEntityList;
     }
 
-    public static boolean ordersAreIdentical(OrderEntity orderEntity1, OrderEntity orderEntity2) {
-        return orderEntity1.getId() == orderEntity2.getId()
+    public static boolean ordersAreIdentical(OrderEntity orderEntity1, OrderEntity orderEntity2) throws NullPointerException {
+        return orderEntity1.getId().equals(orderEntity2.getId())
                 && orderEntity1.getDate() == orderEntity2.getDate()
                 && orderEntity1.getPrice() == orderEntity2.getPrice()
                 && orderEntity1.getTitle().equals(orderEntity2.getTitle());

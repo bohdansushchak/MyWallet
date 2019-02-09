@@ -20,13 +20,12 @@ public class OrderDaoTest extends DatabaseBaseTest{
     }
 
     @Test
-    public void whenInsertCategoryThenReadTheSameOne(){
+    public void whenInsertOrderThenReadTheSameOne(){
         List<OrderEntity> orderEntities = OrderTestHelper.createListOfOrders(1);
         orderDao.insert(orderEntities.get(0));
 
         List<OrderEntity> dbOrderEntities = orderDao.getOrdersNonLive();
         Assert.assertEquals(1, dbOrderEntities.size());
         Assert.assertTrue(OrderTestHelper.ordersAreIdentical(orderEntities.get(0), dbOrderEntities.get(0)));
-
     }
 }

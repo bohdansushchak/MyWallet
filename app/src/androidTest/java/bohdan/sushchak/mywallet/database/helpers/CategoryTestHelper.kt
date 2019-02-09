@@ -12,7 +12,7 @@ class CategoryTestHelper {
 
             for (i in 0..amount){
                 val rand = Random(1)
-                val categoryEntity = CategoryEntity(rand.nextLong(),
+                val categoryEntity = CategoryEntity(i.toLong(),
                         "title $i",
                         Color.argb(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256))
                 )

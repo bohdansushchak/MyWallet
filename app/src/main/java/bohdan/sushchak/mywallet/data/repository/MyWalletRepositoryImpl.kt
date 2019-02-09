@@ -14,7 +14,6 @@ import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.model.OrderWithProducts
 import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class MyWalletRepositoryImpl(
@@ -111,7 +110,7 @@ class MyWalletRepositoryImpl(
     override suspend fun viewDataBase() {
         withContext(Dispatchers.Default) {
             Log.d("TAG", "Products")
-            productDao.getProducts()?.forEach {
+            productDao.getProductsNonLive()?.forEach {
                 Log.d("TAG", it.toString())
             }
 

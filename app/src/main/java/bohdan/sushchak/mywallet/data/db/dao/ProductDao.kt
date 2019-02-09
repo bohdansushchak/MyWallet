@@ -12,5 +12,6 @@ abstract class ProductDao : BaseDao<ProductEntity> {
     abstract fun getCategoriesCountByProductTitle(productTitle: String): List<CategoryCount>?
 
     @Query("select * from products")
-    abstract fun getProducts(): List<ProductEntity>?
+    abstract fun getProductsNonLive(): List<ProductEntity>?
+
 }
