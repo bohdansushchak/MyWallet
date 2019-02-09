@@ -2,7 +2,10 @@ package bohdan.sushchak.mywallet.data.db.entity
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "orders")
 data class OrderEntity(
@@ -19,19 +22,19 @@ data class OrderEntity(
         @ColumnInfo(name = "total_price")
         var price: Double
 
-): BaseEntity(), Parcelable {
+) : BaseEntity(), Parcelable {
 
     @Ignore
     constructor(parcel: Parcel) : this(
             parcel.readValue(Long::class.java.classLoader) as? Long,
             parcel.readString(),
             parcel.readLong(),
-            parcel.readDouble()) {
-    }
+            parcel.readDouble())
 
     override fun toString(): String {
         return "(id:$id, title:$title, date:$date, price:$price)"
     }
+
     @Ignore
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
@@ -39,11 +42,11 @@ data class OrderEntity(
         parcel.writeLong(date)
         parcel.writeDouble(price)
     }
+
     @Ignore
     override fun describeContents(): Int {
         return 0
     }
-
 
     companion object CREATOR : Parcelable.Creator<OrderEntity> {
         @Ignore
@@ -56,4 +59,14 @@ data class OrderEntity(
             return arrayOfNulls(size)
         }
     }
+/*
+    override fun equals(other: Any?): Boolean {
+        return if (other is OrderEntity) {
+            this.id == other.id
+                    && this.date == other.date
+                    && this.price == other.price
+                    && this.title == other.title
+        } else false
+    }
+    */
 }

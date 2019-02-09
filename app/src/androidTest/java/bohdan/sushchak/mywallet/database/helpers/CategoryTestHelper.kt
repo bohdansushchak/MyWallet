@@ -1,4 +1,4 @@
-package bohdan.sushchak.mywallet.helpers
+package bohdan.sushchak.mywallet.database.helpers
 
 import android.graphics.Color
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
