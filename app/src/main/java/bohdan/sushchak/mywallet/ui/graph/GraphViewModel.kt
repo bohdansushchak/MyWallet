@@ -9,6 +9,7 @@ import bohdan.sushchak.mywallet.data.model.LegendItem
 import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.Constants
+import bohdan.sushchak.mywallet.internal.getDateLimit
 import bohdan.sushchak.mywallet.internal.label_formatter.BarLabelFormatter
 import bohdan.sushchak.mywallet.internal.label_formatter.LineLabelFormatter
 import com.jjoe64.graphview.series.BarGraphSeries
@@ -26,7 +27,14 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
     val graphItems: MutableLiveData<List<GraphItem>> = MutableLiveData()
 
     init {
-        updateGraphItems(1546297200000, 1548889200000)
+        val dateLimit = getDateLimit(2019, 0)
+
+        //updateGraphItems(1546297200000, 1548889200000)
+
+        //1546297200000
+        //1546297200000
+
+        updateGraphItems(dateLimit.startDate, dateLimit.endDate)
     }
 
     private fun updateGraphItems(startDate: Long, endDate: Long) {

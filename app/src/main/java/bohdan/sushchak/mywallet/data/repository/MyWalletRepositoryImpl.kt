@@ -104,6 +104,7 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun getTotalPriceByDate(startDate: Long, endDate: Long): List<MoneyByDate> {
+        viewDataBase()
         return orderDao.getSpendMoneyByDateNonLive(startDate, endDate)
     }
 
