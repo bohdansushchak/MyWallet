@@ -4,6 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
@@ -13,6 +16,7 @@ import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.date_item.view.*
 import kotlinx.android.synthetic.main.order_item.view.*
+import org.jetbrains.anko.doAsync
 
 
 class OrdersByDateAdapter(private val context: Context,
@@ -56,10 +60,41 @@ class OrdersByDateAdapter(private val context: Context,
 
     class DateViewHolder(view: View) : GroupViewHolder(view) {
 
+        private var context: Context = itemView.context
         private val tvDate = view.tvDate
+        private val isIndication = view.isIndicator
 
         fun bind(item: OrdersByDateGroup): Unit {
             tvDate.text = item.date
+        }
+
+        init {
+
+            val inAnimation = AnimationUtils.loadAnimation(context, R.anim.anim_collapse)
+            isIndication.startAnimation(inAnimation)
+
+            val outAnimation = AnimationUtils.loadAnimation(context, R.anim.anim_expand )
+
+            isIndication.inAnimation = inAnimation
+            isIndication.outAnimation = outAnimation
+        }
+
+        override fun expand() {
+            super.expand()
+            animateExpand()
+        }
+
+        override fun collapse() {
+            super.collapse()
+            animateCollapse()
+        }
+
+        private fun animateExpand(){
+            isIndication.showNext()
+        }
+
+        private fun animateCollapse(){
+            isIndication.showPrevious()
         }
     }
 

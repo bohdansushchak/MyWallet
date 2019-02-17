@@ -11,7 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent">
+        android:background="@color/colorAccent"
+        android:visibility="gone">
 
         <ImageButton
             android:id="@+id/iBtnLeft"
@@ -121,7 +122,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#DBD8D8"
-            android:padding="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="-210dp"/>
 

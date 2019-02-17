@@ -1,4 +1,4 @@
-package bohdan.sushchak.mywallet.database
+package bohdan.sushchak.mywallet.test_internal
 
 import bohdan.sushchak.mywallet.internal.getDateLimit
 import org.junit.Assert

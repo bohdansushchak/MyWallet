@@ -3,10 +3,22 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="textColorPrimary">#ddd</color>
+    <color name="windowBackground">#eee</color>
+    <color name="navigationBarColor">#444</color>
+
+
+
 
     <color name="textColorBlack">#000000</color>
     <color name="textColorGray">#414040</color>
 
+    <!-- colors dark-->
+    <color name="textHeaderColorDark">#161616</color>
+
+
+    <!-- colors light-->
+    <color name="textHeaderColorLight">#C5BFBF</color>
 
     <string-array name="colorCategoriesArray">
         <item>#F83F2B</item>

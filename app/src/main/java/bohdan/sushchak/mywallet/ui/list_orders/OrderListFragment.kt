@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.OrdersByDateAdapter
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
@@ -16,6 +18,7 @@ import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import bohdan.sushchak.mywallet.internal.convertOrdersByDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.order_list_fragment.*
+import kotlinx.android.synthetic.main.settings_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -88,7 +91,6 @@ class OrderListFragment : BaseFragment(), KodeinAware {
         adapter.onClick = { order ->
             viewOrder(order)
         }
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
