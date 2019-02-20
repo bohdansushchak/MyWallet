@@ -31,6 +31,18 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         job.cancel()
     }
 
+    protected fun showAlertDialog(title: String, msg: String, yes: (() -> Unit)? = null) {
+        val alertDialog = AlertDialog.Builder(context)
+        alertDialog.setTitle(title)
+        alertDialog.setMessage(msg)
+        alertDialog.setPositiveButton(R.string.btn_text_yes) { _, _ ->
+            yes?.invoke()
+        }
+
+        val dialog = alertDialog.create()
+        dialog.show()
+    }
+
     protected fun showDialog(title: String, msg: String, yes: (() -> Unit)? = null, cancel: (() -> Unit)? = null) {
         val alertDialog = AlertDialog.Builder(context)
         alertDialog.setTitle(title)
@@ -39,10 +51,9 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
             yes?.invoke()
         }
 
-        if (cancel != null)
-            alertDialog.setNegativeButton(R.string.btn_text_cancel) { _, _ ->
-                cancel.invoke()
-            }
+        alertDialog.setNegativeButton(R.string.btn_text_cancel) { _, _ ->
+            cancel?.invoke()
+        }
 
         val dialog = alertDialog.create()
         dialog.show()
@@ -50,6 +61,10 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
     protected fun showDialog(title: Int, msg: Int, yes: (() -> Unit)? = null, cancel: (() -> Unit)? = null) {
         showDialog(getString(title), getString(msg), yes, cancel)
+    }
+
+    protected fun showAlertDialog(title: Int, msg: Int, yes: (() -> Unit)? = null) {
+        showAlertDialog(getString(title), getString(msg), yes)
     }
 
     protected fun showEntryDialog(title: String, msg: String, yes: ((str: String) -> Unit)? = null, cancel: (() -> Unit)? = null) {
