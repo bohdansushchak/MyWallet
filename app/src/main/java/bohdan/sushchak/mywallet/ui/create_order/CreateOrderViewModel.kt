@@ -88,6 +88,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
 
     fun clearProductList() {
         productList.postValue(mutableListOf())
+        categoryProductList.postValue(mutableListOf())
         totalPrice.postValue(ZERO)
     }
 

@@ -33,7 +33,6 @@ import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import java.util.*
 
-
 class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     override val kodein by closestKodein()
