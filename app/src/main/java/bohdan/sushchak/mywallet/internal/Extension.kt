@@ -69,7 +69,7 @@ fun List<OrdersByDateGroup>.containDate(date: Long): Boolean {
     var isExist = false
 
     loop@ for (ordersByDate in this) {
-        val time = parseDate(ordersByDate.date, Constants.DATE_FORMAT).time
+        val time = ordersByDate.date
         if (time == date) {
             isExist = true
             break@loop
@@ -83,13 +83,11 @@ fun List<OrdersByDateGroup>.indexBydate(date: Long): Int {
     var index = -1
 
     this.forEachWithIndex { i, ordersByDate ->
-        val time = parseDate(ordersByDate.date, Constants.DATE_FORMAT).time
-        if (time == date){
+        if (ordersByDate.date == date){
             index = i
             return@forEachWithIndex
         }
     }
-
     return index
 }
 

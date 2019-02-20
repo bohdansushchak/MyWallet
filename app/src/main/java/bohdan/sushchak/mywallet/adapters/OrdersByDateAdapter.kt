@@ -8,6 +8,8 @@ import android.view.animation.AnimationUtils
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
+import bohdan.sushchak.mywallet.internal.Constants
+import bohdan.sushchak.mywallet.internal.formatDate
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder
@@ -62,7 +64,7 @@ class OrdersByDateAdapter(private val context: Context,
         private val isIndication = view.isIndicator
 
         fun bind(item: OrdersByDateGroup): Unit {
-            tvDate.text = item.date
+            tvDate.text = formatDate(item.date, Constants.DATE_FORMAT)
         }
 
         init {

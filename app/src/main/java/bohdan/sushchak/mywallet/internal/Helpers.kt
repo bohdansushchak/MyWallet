@@ -19,15 +19,23 @@ fun formatDate(date: Date?, patter: String): String {
     return sdf.format(date)
 }
 
+fun formatDate(date: Long, patter: String): String {
+/*
+    val dateClass = Date()
+    dateClass.time = date
+
+    */
+    val sdf = SimpleDateFormat(patter)
+    return sdf.format(date)
+}
+
 fun convertOrdersByDate(orders: List<OrderEntity>): List<OrdersByDateGroup> {
 
     val ordersByDateList = mutableListOf<OrdersByDateGroup>()
 
     orders.forEach { order ->
         if (!ordersByDateList.containDate(order.date)) {
-            val date = Date()
-            date.time = order.date
-            val ordersByDate = OrdersByDateGroup(formatDate(date, Constants.DATE_FORMAT), mutableListOf(order))
+            val ordersByDate = OrdersByDateGroup(order.date, mutableListOf(order))
             ordersByDateList.add(ordersByDate)
         } else {
             val inx = ordersByDateList.indexBydate(order.date)

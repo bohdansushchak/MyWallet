@@ -21,4 +21,11 @@ class OrderListViewModel(val myWalletRepository: MyWalletRepository) : ViewModel
             myWalletRepository.removeOrder(order)
         }
     }
+
+    /*
+(id:1, title:Ех, date:1550354400000, price:892.0)
+(id:2, title:мяско, date:1550354400000, price:50.0)
+(id:3, title:жд, date:1550268000000, price:135.0)
+(id:4, title:льж, date:1550617200000, price:275.0)
+ */
 }

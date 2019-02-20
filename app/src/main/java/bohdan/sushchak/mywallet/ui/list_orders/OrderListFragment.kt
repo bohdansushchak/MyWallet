@@ -2,6 +2,7 @@ package bohdan.sushchak.mywallet.ui.list_orders
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -47,7 +48,6 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
 
         rcViewOrders.setOnTouchListener(this)
     }
-
 
     private fun bindUI() = launch {
 
@@ -123,27 +123,30 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
 
     }
 
-    private var downY: Float = 0f
-    private var upY: Float = 0f
+    private var downY: Float = -1f
+    private var upY: Float = -1f
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        if (v?.id == rcViewOrders.id)
-            recyclerTouchShowOrGoneFab(event)
+        recyclerTouchShowOrGoneFab(event)
 
-        return true
+        Log.d("EVENT", event.toString())
+
+        return false
     }
 
     @SuppressLint("RestrictedApi")
     private fun recyclerTouchShowOrGoneFab(event: MotionEvent?) {
         when (event?.action) {
-            MotionEvent.ACTION_DOWN ->
-                downY = event.y
+            MotionEvent.ACTION_MOVE -> if(downY == -1f) downY = event.y
+            MotionEvent.ACTION_DOWN -> if(downY == -1f) downY = event.y
 
             MotionEvent.ACTION_UP -> {
                 upY = event.y
 
-                if (downY < upY && fabCreateOrder.visibility == View.GONE) {
+                Log.d("ACTION UP", "$downY  $upY")
+
+                if (downY < upY && fabCreateOrder.visibility == View.GONE ) {
                     val animMoveDown = AnimationUtils.loadAnimation(context, R.anim.move_from_bottom_to_current_position)
                     fabCreateOrder.startAnimation(animMoveDown)
                     fabCreateOrder.visibility = View.VISIBLE
@@ -152,6 +155,9 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
                     fabCreateOrder.startAnimation(animMoveDown)
                     fabCreateOrder.visibility = View.GONE
                 }
+
+                downY = -1f
+                upY = -1f
             }
         }
     }
