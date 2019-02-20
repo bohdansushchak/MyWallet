@@ -51,8 +51,9 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_collapse_list"
-                tools:ignore="ContentDescription" />
-
+                tools:ignore="ContentDescription"
+               />
         </ImageSwitcher>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

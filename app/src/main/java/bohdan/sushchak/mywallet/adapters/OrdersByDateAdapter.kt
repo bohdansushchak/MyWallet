@@ -61,22 +61,17 @@ class OrdersByDateAdapter(private val context: Context,
 
         private var context: Context = itemView.context
         private val tvDate = view.tvDate
+
         private val isIndication = view.isIndicator
 
         fun bind(item: OrdersByDateGroup): Unit {
             tvDate.text = formatDate(item.date, Constants.DATE_FORMAT)
-        }
-
-        init {
 
             val inAnimation = AnimationUtils.loadAnimation(context, R.anim.collapse)
-            isIndication.startAnimation(inAnimation)
-
             val outAnimation = AnimationUtils.loadAnimation(context, R.anim.expand )
 
             isIndication.inAnimation = inAnimation
             isIndication.outAnimation = outAnimation
-
         }
 
         override fun expand() {
