@@ -1,15 +1,16 @@
 package bohdan.sushchak.mywallet.ui.list_orders
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.OrdersByDateAdapter
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
@@ -18,13 +19,12 @@ import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import bohdan.sushchak.mywallet.internal.convertOrdersByDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.order_list_fragment.*
-import kotlinx.android.synthetic.main.settings_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-class OrderListFragment : BaseFragment(), KodeinAware {
+class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
 
     override val kodein by closestKodein()
 
@@ -44,7 +44,10 @@ class OrderListFragment : BaseFragment(), KodeinAware {
                 .get(OrderListViewModel::class.java)
 
         bindUI()
+
+        rcViewOrders.setOnTouchListener(this)
     }
+
 
     private fun bindUI() = launch {
 
@@ -58,9 +61,10 @@ class OrderListFragment : BaseFragment(), KodeinAware {
         })
     }
 
-    private fun initButtonCreateOrder(list: List<CategoryEntity>): Unit {
+    private fun initButtonCreateOrder(list: List<CategoryEntity>) {
 
         fabCreateOrder.setOnClickListener {
+
             val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
 
             if (list.isNotEmpty())
@@ -108,8 +112,7 @@ class OrderListFragment : BaseFragment(), KodeinAware {
     private fun removeCategory(order: OrderEntity) {
 
         showDialog(title = R.string.d_remove_order, msg = R.string.d_remove_order_are_you_sure,
-                yes = { viewModel.removeOrder(order) },
-                cancel = {})
+                yes = { viewModel.removeOrder(order) })
     }
 
     private fun editOrder(order: OrderEntity) {
@@ -118,5 +121,38 @@ class OrderListFragment : BaseFragment(), KodeinAware {
 
     private fun viewOrder(order: OrderEntity) {
 
+    }
+
+    private var downY: Float = 0f
+    private var upY: Float = 0f
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        if (v?.id == rcViewOrders.id)
+            recyclerTouchShowOrGoneFab(event)
+
+        return true
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun recyclerTouchShowOrGoneFab(event: MotionEvent?) {
+        when (event?.action) {
+            MotionEvent.ACTION_DOWN ->
+                downY = event.y
+
+            MotionEvent.ACTION_UP -> {
+                upY = event.y
+
+                if (downY < upY && fabCreateOrder.visibility == View.GONE) {
+                    val animMoveDown = AnimationUtils.loadAnimation(context, R.anim.move_from_bottom_to_current_position)
+                    fabCreateOrder.startAnimation(animMoveDown)
+                    fabCreateOrder.visibility = View.VISIBLE
+                } else if (downY > upY && fabCreateOrder.visibility == View.VISIBLE) {
+                    val animMoveDown = AnimationUtils.loadAnimation(context, R.anim.move_from_current_position_to_bottom)
+                    fabCreateOrder.startAnimation(animMoveDown)
+                    fabCreateOrder.visibility = View.GONE
+                }
+            }
+        }
     }
 }
