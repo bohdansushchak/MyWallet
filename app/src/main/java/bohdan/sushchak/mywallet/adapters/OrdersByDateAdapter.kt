@@ -4,9 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
@@ -16,7 +14,6 @@ import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.date_item.view.*
 import kotlinx.android.synthetic.main.order_item.view.*
-import org.jetbrains.anko.doAsync
 
 
 class OrdersByDateAdapter(private val context: Context,
@@ -70,13 +67,14 @@ class OrdersByDateAdapter(private val context: Context,
 
         init {
 
-            val inAnimation = AnimationUtils.loadAnimation(context, R.anim.anim_collapse)
+            val inAnimation = AnimationUtils.loadAnimation(context, R.anim.collapse)
             isIndication.startAnimation(inAnimation)
 
-            val outAnimation = AnimationUtils.loadAnimation(context, R.anim.anim_expand )
+            val outAnimation = AnimationUtils.loadAnimation(context, R.anim.expand )
 
             isIndication.inAnimation = inAnimation
             isIndication.outAnimation = outAnimation
+
         }
 
         override fun expand() {

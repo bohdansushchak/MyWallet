@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 const val IS_START_KEY = "isStart"
 
-class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener{
 
     private lateinit var navController: NavController
 

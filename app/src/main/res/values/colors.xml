@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="textColorPrimary">#ddd</color>
     <color name="windowBackground">#eee</color>
+    <color name="activityBackground">#FFFFFF</color>
     <color name="navigationBarColor">#444</color>
 
 

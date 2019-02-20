@@ -101,14 +101,18 @@ class CalendarFragment : BaseFragment(), KodeinAware {
     private fun initCalendar() {
 
         val cal = Calendar.getInstance()
-        cal.onlyDateInMillis { viewModel.updateOrders(it) }
+        cal.onlyDateInMillis {
+            val date = it
+            viewModel.updateOrders(date) }
 
         tvMonthTitle.text = formatDate(Date(), Constants.MONTH_FORMAT)
 
         calendarView.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
                 cal.time = dateClicked
-                cal.onlyDateInMillis { viewModel.updateOrders(it) }
+                cal.onlyDateInMillis {
+                    val date = it
+                    viewModel.updateOrders(date) }
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {
