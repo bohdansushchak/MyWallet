@@ -81,6 +81,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         viewModel.totalPrice.observe(this@CreateOrderFragment, Observer { totalPrice ->
             tvTotalPrice.text = "${getString(R.string.total)} ${totalPrice.myToString()}"
+            Log.d("Total", "Total: $totalPrice")
         })
 
         viewModel.foundedCategoryEntity.observe(this@CreateOrderFragment, Observer { category ->

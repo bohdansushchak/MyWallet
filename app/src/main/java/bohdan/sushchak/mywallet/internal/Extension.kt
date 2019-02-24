@@ -93,6 +93,24 @@ fun List<OrdersByDateGroup>.indexBydate(date: Long): Int {
 
 fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 
+fun Double.myPlus(num: Double): Double {
+    val intNumA = (this * 100).toInt()
+    val intNumB = (num * 100).toInt()
+
+    val sum = (intNumA + intNumB).toDouble() / 100
+
+    return sum
+}
+
+fun Double.myMinus(num: Double): Double {
+    val intNumA = (this * 100).toInt()
+    val intNumB = (num * 100).toInt()
+
+    val sum = (intNumA - intNumB).toDouble() / 100
+
+    return sum
+}
+
 fun Double.myToString(): String {
     var str = this.toString()
 
@@ -102,10 +120,5 @@ fun Double.myToString(): String {
     return str
 }
 
-fun Double.correctPlus(num: Double): Double {
-    val sum = this + num
-
-    return sum
-}
 
 

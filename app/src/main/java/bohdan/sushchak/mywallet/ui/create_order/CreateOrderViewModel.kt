@@ -53,7 +53,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
         list.addAll(productList.value?.toList() ?: listOf())
         list.add(product)
 
-        val price = totalPrice.value!! + product.price
+        val price = totalPrice.value!!.myPlus(product.price)
 
         val newCategoryProductList = categoryProductList.value!!
 
@@ -75,7 +75,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
             val list = productList.value
             list?.remove(product)
 
-            val price = totalPrice.value!! - product.price
+            val price = totalPrice.value!!.myMinus(product.price)
 
             val newCategoryProductList = categoryProductList.value!!
             newCategoryProductList.removeProduct(product)
