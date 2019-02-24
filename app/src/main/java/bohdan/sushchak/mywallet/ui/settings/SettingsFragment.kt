@@ -46,6 +46,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
 
     private fun bindUI() = launch {
         val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
+
         dividerItemDecoration.setDrawable(context!!.getDrawable(R.drawable.divider_black)!!)
         recyclerViewCategory.addItemDecoration(dividerItemDecoration)
 
