@@ -45,13 +45,14 @@
         android:layout_marginEnd="8dp"
         android:maxLength="30"
         android:ems="10"
+        android:importantForAutofill="yes"
         android:inputType="textPersonName|textCapSentences"
         android:hint="@string/ed_hint_write_product_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="Autofill" />
+        android:autofillHints="product" />
 
     <ImageButton
         android:id="@+id/ibtnAddProduct"
@@ -87,10 +88,10 @@
         android:hint="@string/ed_hint_enter_price"
         android:ems="10"
         android:inputType="numberDecimal"
+        android:importantForAutofill="no"
         app:layout_constraintEnd_toStartOf="@+id/ibtnAddProduct"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edProductTitle"
-        tools:ignore="Autofill" />
+        app:layout_constraintTop_toBottomOf="@+id/edProductTitle" />
 
     <TextView
         android:id="@+id/tvTotalPrice"

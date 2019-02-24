@@ -47,25 +47,18 @@ class PickColorAdapter(private var context: Context,
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val cardViewBackground = itemView.cardViewBackground
         val ivColor = itemView.ivColor
         val vColor = itemView.vColor
 
         fun bind(color: Int) {
             val background = vColor.background
 
-            if (background is ShapeDrawable) {
-
+            if (background is ShapeDrawable)
                 background.paint.color = color
-                vColor.background = background
-
-            } else if (background is GradientDrawable) {
-
+            else if (background is GradientDrawable)
                 background.setColor(color)
-                vColor.background = background
-            }
-            //cardViewBackground.setCardBackgroundColor(color)
 
+            vColor.background = background
         }
     }
 }
