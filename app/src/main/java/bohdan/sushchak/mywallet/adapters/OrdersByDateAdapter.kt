@@ -17,7 +17,6 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.date_item.view.*
 import kotlinx.android.synthetic.main.order_item.view.*
 
-
 class OrdersByDateAdapter(private val context: Context,
                           items: List<OrdersByDateGroup>)
     : ExpandableRecyclerViewAdapter<OrdersByDateAdapter.DateViewHolder, OrdersByDateAdapter.OrderViewHolder>(items) {

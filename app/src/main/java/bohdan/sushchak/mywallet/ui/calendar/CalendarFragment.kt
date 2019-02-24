@@ -15,6 +15,7 @@ import bohdan.sushchak.mywallet.adapters.OrderAdapter
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.formatDate
+import bohdan.sushchak.mywallet.internal.myToString
 import bohdan.sushchak.mywallet.internal.onlyDateInMillis
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
@@ -66,7 +67,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         })
 
         viewModel.totalPrice.observe(this@CalendarFragment, Observer { totalPrice ->
-            tvTotal.text = "${getString(R.string.total)} $totalPrice"
+            tvTotal.text = "${getString(R.string.total)} ${totalPrice.myToString()}"
         })
     }
 

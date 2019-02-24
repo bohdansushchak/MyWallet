@@ -21,10 +21,7 @@ import bohdan.sushchak.mywallet.adapters.MySpinnerAdapter
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
-import bohdan.sushchak.mywallet.internal.Constants
-import bohdan.sushchak.mywallet.internal.DecimalDigitsInputFilter
-import bohdan.sushchak.mywallet.internal.formatDate
-import bohdan.sushchak.mywallet.internal.parseDate
+import bohdan.sushchak.mywallet.internal.*
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.create_order_fragment.*
 import kotlinx.coroutines.launch
@@ -83,7 +80,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         })
 
         viewModel.totalPrice.observe(this@CreateOrderFragment, Observer { totalPrice ->
-            tvTotalPrice.text = "${getString(R.string.total)} $totalPrice"
+            tvTotalPrice.text = "${getString(R.string.total)} ${totalPrice.myToString()}"
         })
 
         viewModel.foundedCategoryEntity.observe(this@CreateOrderFragment, Observer { category ->
