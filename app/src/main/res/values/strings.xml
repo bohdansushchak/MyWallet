@@ -31,7 +31,7 @@
     <string name="t_product_list_cant_be_empty">Product list can\'t be empty</string>
     <string name="t_please_enter_product_name">Please enter product name</string>
     <string name="t_please_enter_product_price">Please enter product price</string>
-    <string name="t_please_select_a_category">Please select a category</string>
+    <string name="t_please_select_a_category">Select a category</string>
     <string name="t_price_should_be_a_number">Price should be a number</string>
 
 
