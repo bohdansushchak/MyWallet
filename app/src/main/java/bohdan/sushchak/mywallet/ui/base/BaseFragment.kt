@@ -18,6 +18,8 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
     private lateinit var job: Job
 
+    private lateinit var mToast: Toast
+
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
@@ -122,7 +124,21 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         }
     }
 
-    protected fun makeToast(msg: String) = Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    protected fun makeToast(msg: Int) {
 
-    protected fun makeToast(msg: Int) = Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        fun toastShow(){
+            mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+            mToast.show()
+        }
+
+        if(!::mToast.isInitialized){
+            toastShow()
+            return
+        }
+
+        if(mToast.view.isShown)
+            mToast.cancel()
+
+        toastShow()
+    }
 }

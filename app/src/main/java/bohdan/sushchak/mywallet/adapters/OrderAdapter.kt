@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
+import bohdan.sushchak.mywallet.internal.myToString
 import kotlinx.android.synthetic.main.order_item.view.*
 
 class OrderAdapter(private val context: Context,
@@ -27,12 +28,12 @@ class OrderAdapter(private val context: Context,
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val tvOrderTitle = view.tvOrderTitle
-        val tvOrderPrice = view.tvOrderPrice
+        private val tvOrderTitle = view.tvOrderTitle
+        private val tvOrderPrice = view.tvOrderPrice
 
         fun bind(order: OrderEntity) {
             tvOrderTitle.text = order.title
-            tvOrderPrice.text = order.price.toString()
+            tvOrderPrice.text = order.price.myToString()
         }
     }
 }
