@@ -2,5 +2,6 @@
 <resources>
     <integer name="fabShowGone">500</integer>
     <integer name="listIndicatorExpandCollapse">600</integer>
+    <integer name="bottomNavigation">400</integer>
 
 </resources>

@@ -2,6 +2,8 @@ package bohdan.sushchak.mywallet.ui
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -12,8 +14,9 @@ import bohdan.sushchak.mywallet.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 const val IS_START_KEY = "isStart"
+const val IS_BOTTOM_NAVIGATION_GONE = "isBottomNavigationGone"
 
-class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener{
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     private lateinit var navController: NavController
 
@@ -32,23 +35,44 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController.addOnDestinationChangedListener(this)
     }
 
-
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
-        val actionBar = getSupportActionBar()
+        val actionBar = supportActionBar
         val title = destination.label
         if (!TextUtils.isEmpty(title)) {
-            actionBar?.setTitle(title)
+            actionBar?.title = title
         }
 
         val isStartArg = arguments?.get(IS_START_KEY) as Boolean?
-        val isStartFragment = controller.getGraph().getStartDestination() == destination.getId()
+        val isBottomNavigationGone = arguments?.get(IS_BOTTOM_NAVIGATION_GONE) as Boolean?
+        val isStartFragment = controller.graph.startDestination == destination.id
 
-        actionBar?.setDisplayHomeAsUpEnabled(!(isStartFragment || isStartArg?: false))
+        actionBar?.setDisplayHomeAsUpEnabled(!(isStartFragment || isStartArg ?: false))
+        navigationBottomUpdate(isBottomNavigationGone)
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
         navController.removeOnDestinationChangedListener(this)
+    }
+
+    private fun navigationBottomUpdate(isShouldGone: Boolean?) {
+
+        fun goneNavigation() {
+            if (bottom_nav.visibility == View.GONE)
+                return
+            val anim = AnimationUtils.loadAnimation(this, R.anim.bottom_navigation_gone)
+            bottom_nav.startAnimation(anim)
+            bottom_nav.visibility = View.GONE
+        }
+
+        fun showNavigation() {
+            if (bottom_nav.visibility == View.VISIBLE)
+                return
+            val anim = AnimationUtils.loadAnimation(this, R.anim.bottom_navigation_show)
+            bottom_nav.startAnimation(anim)
+            bottom_nav.visibility = View.VISIBLE
+        }
+
+        if (isShouldGone == true) goneNavigation() else showNavigation()
     }
 }
