@@ -10,6 +10,7 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.formatDate
+import bohdan.sushchak.mywallet.internal.myToString
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder
@@ -99,7 +100,7 @@ class OrdersByDateAdapter(private val context: Context,
 
         fun bind(order: OrderEntity): Unit {
             tvOrderTitle.text = order.title
-            tvOrderPrice.text = order.price.toString()
+            tvOrderPrice.text = order.price.myToString()
         }
     }
 }
