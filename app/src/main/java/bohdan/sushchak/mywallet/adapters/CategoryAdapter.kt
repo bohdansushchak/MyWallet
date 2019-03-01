@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.category_item_spinner.view.*
 import org.jetbrains.anko.textColor
 
 class CategoryAdapter(private val context: Context,
-                      categoryEntities: List<CategoryEntity>): RecyclerAdapterClick<CategoryAdapter.CategoryViewHolder, CategoryEntity>(categoryEntities) {
+                      categoryEntities: List<CategoryEntity>):
+    RecyclerAdapterClick<CategoryAdapter.CategoryViewHolder, CategoryEntity>(categoryEntities) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.CategoryViewHolder {
         return CategoryViewHolder(LayoutInflater.from(context)
@@ -28,13 +29,11 @@ class CategoryAdapter(private val context: Context,
 
         holder.bind(item)
 
-
-
         Log.d("TAG", "${item.title} and ${item.color}")
     }
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvCategory = itemView.tvCategory
+        private val tvCategory = itemView.tvCategory
 
         fun bind(category: CategoryEntity){
             tvCategory.text = category.title

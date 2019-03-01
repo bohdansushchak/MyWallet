@@ -26,7 +26,7 @@ data class CategoryEntity(
     }
 
     override fun toString(): String {
-        return "(id:$id, title:$title, $color$color)"
+        return "(id:$id, title:$title, color:$color)"
     }
 
     override fun equals(other: Any?): Boolean {

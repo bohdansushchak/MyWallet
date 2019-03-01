@@ -74,6 +74,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
     private fun updateListOrder(orders: List<OrderEntity>) {
         if (::adapter.isInitialized) {
             adapter.update(orders)
+            adapter.notifyDataSetChanged()
             initLongClick(orders)
             return
         }

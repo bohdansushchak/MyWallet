@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.adapters.callbacks
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 
 class ItemDiffCallback<T>(private val oldList: List<T>,
@@ -18,7 +19,12 @@ class ItemDiffCallback<T>(private val oldList: List<T>,
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition] == (newList[newItemPosition])
-    }
 
+        Log.d("TAG", "=============================================")
+        Log.d("TAG", oldList[oldItemPosition].toString())
+        Log.d("TAG", newList[newItemPosition].toString())
+        Log.d("TAG", (oldList[oldItemPosition] == newList[newItemPosition]).toString())
+
+        return oldList[oldItemPosition] == newList[newItemPosition]
+    }
 }

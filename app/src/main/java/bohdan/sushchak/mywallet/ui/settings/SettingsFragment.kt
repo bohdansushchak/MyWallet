@@ -60,13 +60,14 @@ class SettingsFragment : BaseFragment(), KodeinAware {
     private fun updateCategory(categoryEntities: List<CategoryEntity>) {
         if (::categoryAdapter.isInitialized) {
             categoryAdapter.update(categoryEntities)
+            categoryAdapter.notifyDataSetChanged() //TODO fix this
             initLongClick(categoryEntities)
             initButton(categoryEntities)
             return
         }
 
-        val linearLayout = LinearLayoutManager(context!!)
         categoryAdapter = CategoryAdapter(context!!, categoryEntities)
+        val linearLayout = LinearLayoutManager(context!!)
 
         recyclerViewCategory.layoutManager = linearLayout
         recyclerViewCategory.adapter = categoryAdapter
