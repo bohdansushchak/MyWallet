@@ -16,7 +16,8 @@
     <color name="activityBackground">#FFFFFF</color>
     <color name="navigationBarColor">#444</color>
 
-
+    <color name="colorAccentSecondDark">#2D7731</color>
+    <color name="colorAccentSecondLight">#668F32</color>
 
 
     <color name="textColorBlack">#000000</color>
@@ -24,7 +25,6 @@
 
     <!-- colors dark-->
     <color name="textHeaderColorDark">#161616</color>
-
 
     <!-- colors light-->
     <color name="textHeaderColorLight">#C5BFBF</color>
