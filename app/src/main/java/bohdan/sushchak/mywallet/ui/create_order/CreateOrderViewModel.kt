@@ -1,6 +1,7 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
@@ -14,22 +15,36 @@ import kotlinx.coroutines.launch
 
 const val ZERO = 0.0
 
-class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
-    : ViewModel() {
+class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) : ViewModel() {
 
-    var productList: MutableLiveData<MutableList<ProductEntity>> = MutableLiveData()
+    //region public parameters
     val categories by lazyDeffered { myWalletRepository.getCategories() }
-    val totalPrice: MutableLiveData<Double> = MutableLiveData()
-    val foundedCategoryEntity: MutableLiveData<CategoryEntity> = MutableLiveData()
 
-    val categoryProductList: MutableLiveData<MutableList<CategoryWithProducts>> = MutableLiveData()
+    val productList: LiveData<MutableList<ProductEntity>>
+        get() = _productList
 
+    val totalPrice: LiveData<Double>
+        get() = _totalPrice
+
+    val foundedCategoryEntity: LiveData<CategoryEntity>
+        get() = _foundedCategoryEntity
+
+    val categoryProductList: LiveData<MutableList<CategoryWithProducts>>
+    get() = _categoryProductList
+
+    var orderDate: Long = 0
+    //endregion
+
+    private val _totalPrice by lazy { MutableLiveData<Double>()  }
+    private val _productList by lazy { MutableLiveData<MutableList<ProductEntity>>() }
+    private val _foundedCategoryEntity by lazy { MutableLiveData<CategoryEntity>() }
+    private val _categoryProductList: MutableLiveData<MutableList<CategoryWithProducts>> = MutableLiveData()
     var selectedCategory = CategoryEntity.emptyCategoryEntity
 
     init {
-        productList.value = mutableListOf()
-        categoryProductList.value = mutableListOf()
-        totalPrice.value = ZERO
+        //productList.value = mutableListOf()
+        _categoryProductList.value = mutableListOf()
+        _totalPrice.value = ZERO
     }
 
     fun searchCategoryCount(productTitle: String) {
@@ -43,19 +58,20 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
 
             if (categoryCount?.categoryId != null) {
                 val category = let { myWalletRepository.getCategoryById(categoryCount.categoryId!!) }
-                foundedCategoryEntity.postValue(category)
+                _foundedCategoryEntity.postValue(category)
             }
         }
     }
 
     fun addProduct(product: ProductEntity) {
-        val list = mutableListOf<ProductEntity>()
-        list.addAll(productList.value?.toList() ?: listOf())
-        list.add(product)
+        val list = mutableListOf<ProductEntity>().apply {
+            addAll(productList.value?.toList() ?: listOf())
+            add(product)
+        }
 
         val price = totalPrice.value!!.myPlus(product.price)
 
-        val newCategoryProductList = categoryProductList.value!!
+        val newCategoryProductList = _categoryProductList.value ?: mutableListOf()
 
         if (!newCategoryProductList.containCategory(selectedCategory)) {
             val categoryProductObj = CategoryWithProducts(selectedCategory, mutableListOf(product))
@@ -65,9 +81,9 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
             newCategoryProductList[index].products.add(product)
         }
 
-        productList.postValue(list)
-        totalPrice.postValue(price)
-        categoryProductList.postValue(newCategoryProductList)
+        _productList.postValue(list)
+        _totalPrice.postValue(price)
+        _categoryProductList.postValue(newCategoryProductList)
     }
 
     fun removeProduct(product: ProductEntity) {
@@ -77,32 +93,44 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository)
 
             val price = totalPrice.value!!.myMinus(product.price)
 
-            val newCategoryProductList = categoryProductList.value!!
+            val newCategoryProductList = _categoryProductList.value ?: mutableListOf()
             newCategoryProductList.removeProduct(product)
 
-            productList.postValue(list)
-            totalPrice.postValue(price)
-            categoryProductList.postValue(newCategoryProductList)
+            _productList.postValue(list)
+            _totalPrice.postValue(price)
+            _categoryProductList.postValue(newCategoryProductList)
         }
     }
 
     fun clearProductList() {
-        productList.postValue(mutableListOf())
-        categoryProductList.postValue(mutableListOf())
-        totalPrice.postValue(ZERO)
+        _productList.postValue(mutableListOf())
+        _categoryProductList.postValue(mutableListOf())
+        _totalPrice.postValue(ZERO)
     }
 
-    fun addOrder(date: Long, title: String) {
+    fun addOrder(title: String) {
         GlobalScope.launch {
-            val order = OrderEntity(id = null,
-                    title = title,
-                    date = date,
-                    price = totalPrice.value ?: ZERO)
 
-            myWalletRepository.createOrderWithProducts(order, productList.value?.toList()
-                    ?: listOf())
+            if(orderDate == 0L) throw IllegalArgumentException("Order date can't be 0")
+
+            val order = OrderEntity(
+                id = null,
+                title = title,
+                date = orderDate,
+                price = totalPrice.value ?: ZERO
+            )
+
+            myWalletRepository.createOrderWithProducts(
+                order, productList.value?.toList()
+                    ?: listOf()
+            )
         }
     }
 
-    fun isProductListEmpty() = productList.value!!.isEmpty()
+    fun isProductListEmpty(): Boolean  {
+        if (productList.value != null){
+           return productList.value!!.isEmpty()
+        }
+        return true
+    }
 }

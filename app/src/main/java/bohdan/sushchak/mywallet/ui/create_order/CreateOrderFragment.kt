@@ -53,10 +53,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         ibtnAddProduct.setOnClickListener { addProduct() }
         btnClearAll.setOnClickListener { clearProductList() }
         btnSaveOrder.setOnClickListener { saveOrder() }
-        tvOrderDate.setOnClickListener {
-            val date = tvOrderDate.text
-            pickDate(date)
-        }
+        tvOrderDate.setOnClickListener { pickDate(viewModel.orderDate) }
 
         bindUI()
     }
@@ -64,7 +61,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     @SuppressLint("SetTextI18n")
     private fun bindUI() = launch {
 
-        tvOrderDate.text = formatDate(Date(), Constants.DATE_FORMAT)
+        setDate(Date())
 
         edProductPrice.filters = arrayOf(DecimalDigitsInputFilter(5,2))
         initTextWatcher(edProductTitle)
@@ -167,16 +164,12 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     private fun saveOrder() {
 
-        val date = parseDate(tvOrderDate.text.toString(), Constants.DATE_FORMAT)
-
         if (viewModel.isProductListEmpty())
             makeToast(R.string.t_product_list_cant_be_empty)
         else {
             showEntryDialog(R.string.d_order_title, R.string.d_order_title_please_enter, yes = { strMsg ->
 
-                Log.d("DATE", date.time.toString())
-
-                viewModel.addOrder(date.time, strMsg)
+                viewModel.addOrder(strMsg)
                 fragmentManager?.popBackStack()
             })
         }
@@ -251,31 +244,43 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         true
     }
 
-    private fun pickDate(dateCharSequence: CharSequence) {
+    private fun pickDate(time: Long) {
         val calendar = Calendar.getInstance()
 
-        if (dateCharSequence.isNotEmpty()) {
-            val date = parseDate(dateCharSequence.toString(), Constants.DATE_FORMAT)
+        if (0L != time) {
             calendar.clear()
-            calendar.time = date
+            calendar.time = Date(time)
         }
+
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-
         val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
 
-            calendar.clear()
-            calendar.set(Calendar.YEAR, year_)
-            calendar.set(Calendar.MONTH, monthOfYear)
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-            tvOrderDate.text = formatDate(calendar.time, Constants.DATE_FORMAT)
-
-            Log.d("DATE", calendar.time.time.toString())
+            calendar.apply {
+                clear()
+                set(Calendar.YEAR, year_)
+                set(Calendar.MONTH, monthOfYear)
+                set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            }
+            setDate(calendar.time)
 
         }, year, month, day)
         dpd.show()
+    }
+
+    private fun setDate(date: Date){
+        tvOrderDate.text = formatDate(date, Constants.DATE_FORMAT)
+        val cal = Calendar.getInstance().apply {
+            time = date
+            clear(Calendar.HOUR)
+            clear(Calendar.HOUR_OF_DAY)
+            clear(Calendar.MINUTE)
+            clear(Calendar.SECOND)
+            clear(Calendar.MILLISECOND)
+        }
+
+        viewModel.orderDate = cal.time.time
     }
 }

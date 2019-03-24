@@ -19,6 +19,7 @@ import bohdan.sushchak.mywallet.internal.myToString
 import bohdan.sushchak.mywallet.internal.onlyDateInMillis
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
+
 import kotlinx.android.synthetic.main.calendar_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -122,7 +123,6 @@ class CalendarFragment : BaseFragment(), KodeinAware {
             }
         })
     }
-
 }
 
 

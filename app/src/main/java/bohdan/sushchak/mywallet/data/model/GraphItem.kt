@@ -66,8 +66,9 @@ class GraphItem : Item() {
 
     private fun bindLegend(viewHolder: ViewHolder) {
         if (isShowLegend && legendItems != null) {
-            val groupAdapter = GroupAdapter<ViewHolder>()
-            groupAdapter.addAll(legendItems!!)
+            val groupAdapter = GroupAdapter<ViewHolder>().apply {
+                addAll(legendItems!!)
+            }
 
             viewHolder.rcLegend.apply {
                 visibility = View.VISIBLE
@@ -84,9 +85,6 @@ class GraphItem : Item() {
                 View.GONE
             else View.VISIBLE
         }
-
-
-
     }
 }
 

@@ -26,9 +26,7 @@ interface MyWalletRepository {
 
     suspend fun getCategoryById(id: Long): CategoryEntity?
 
-
     suspend fun getCategoriesPrice(startDate: Long, endDate: Long): List<CategoryPrice>
-
     //endregion
 
     //region Date
@@ -51,6 +49,5 @@ interface MyWalletRepository {
     //endregion
 
     suspend fun viewDataBase()
-
 
 }

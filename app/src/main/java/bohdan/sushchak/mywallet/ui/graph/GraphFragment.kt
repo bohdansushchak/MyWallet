@@ -31,15 +31,17 @@ class GraphFragment : BaseFragment(), KodeinAware {
 
     private lateinit var groupAdapter: GroupAdapter<ViewHolder>
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.graph_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(GraphViewModel::class.java)
+            .get(GraphViewModel::class.java)
 
         bindUI()
     }
@@ -53,13 +55,13 @@ class GraphFragment : BaseFragment(), KodeinAware {
     private fun updateGraphList(graphItems: List<GraphItem>) {
 
         if (::groupAdapter.isInitialized) {
-
             groupAdapter.update(graphItems)
             return
         }
 
-        groupAdapter = GroupAdapter()
-        groupAdapter.addAll(graphItems)
+        groupAdapter = GroupAdapter<ViewHolder>().apply {
+            addAll(graphItems)
+        }
 
         val decoration = DividerItemDecoration(context, VERTICAL)
         val drawable = resources.getDrawable(R.drawable.transparent_decoration_drawable)
