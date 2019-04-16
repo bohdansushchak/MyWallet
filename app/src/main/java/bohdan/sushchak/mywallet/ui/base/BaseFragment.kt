@@ -1,8 +1,11 @@
 package bohdan.sushchak.mywallet.ui.base
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.PopupMenu
@@ -69,15 +72,21 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         showAlertDialog(getString(title), getString(msg), yes)
     }
 
-    protected fun showEntryDialog(title: String, msg: String, yes: ((str: String) -> Unit)? = null, cancel: (() -> Unit)? = null) {
+    protected fun showEntryDialog(
+        title: String,
+        msg: String,
+        yes: ((str: String) -> Unit)? = null,
+        cancel: (() -> Unit)? = null
+    ) {
         val entryDialogBuilder = AlertDialog.Builder(context)
         entryDialogBuilder.setTitle(title)
         entryDialogBuilder.setMessage(msg)
 
         val input = EditText(context)
         val lp = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT)
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
         input.layoutParams = lp
         lp.marginStart = 15
         lp.marginEnd = 15
@@ -97,7 +106,12 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         entryDialog.show()
     }
 
-    protected fun showEntryDialog(title: Int, msg: Int, yes: ((str: String) -> Unit)? = null, cancel: (() -> Unit)? = null) {
+    protected fun showEntryDialog(
+        title: Int,
+        msg: Int,
+        yes: ((str: String) -> Unit)? = null,
+        cancel: (() -> Unit)? = null
+    ) {
         showEntryDialog(getString(title), getString(msg), yes, cancel)
     }
 
@@ -126,19 +140,28 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
     protected fun makeToast(msg: Int) {
 
-        fun toastShow(){
+        fun toastShow() {
             mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT)
             mToast.show()
         }
 
-        if(!::mToast.isInitialized){
+        if (!::mToast.isInitialized) {
             toastShow()
             return
         }
 
-        if(mToast.view.isShown)
+        if (mToast.view.isShown)
             mToast.cancel()
 
         toastShow()
+    }
+
+
+    protected fun hideKeyboard(context: Context, view: View) {
+        val imm = with(context) {
+            getSystemService(Activity.INPUT_METHOD_SERVICE)
+        } as InputMethodManager
+
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

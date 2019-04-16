@@ -15,11 +15,10 @@ import bohdan.sushchak.mywallet.adapters.OrderAdapter
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.formatDate
+import bohdan.sushchak.mywallet.internal.getOnlyDate
 import bohdan.sushchak.mywallet.internal.myToString
-import bohdan.sushchak.mywallet.internal.onlyDateInMillis
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
-
 import kotlinx.android.synthetic.main.calendar_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -37,8 +36,10 @@ class CalendarFragment : BaseFragment(), KodeinAware {
     private val viewModelFactory: CalendarViewModelFactory by instance()
     private lateinit var viewModel: CalendarViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.calendar_fragment, container, false)
     }
 
@@ -46,7 +47,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(CalendarViewModel::class.java)
+            .get(CalendarViewModel::class.java)
 
         bindUI()
     }
@@ -64,6 +65,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         })
 
         viewModel.calendarDates.await().observe(this@CalendarFragment, Observer { events ->
+
             calendarView.addEvents(events.toMutableList())
         })
 
@@ -91,31 +93,26 @@ class CalendarFragment : BaseFragment(), KodeinAware {
     private fun initLongClick(orders: List<OrderEntity>) {
         adapter.onLongClick = { view, position ->
             showPopupEditRemove(view,
-                    edit = {},
-                    remove = {
-                        showDialog(title = R.string.d_remove_order, msg = R.string.d_remove_order_are_you_sure,
-                                yes = {
-                                    viewModel.removeOrder(orders[position])
-                                })
-                    })
+                edit = {},
+                remove = {
+                    showDialog(title = R.string.d_remove_order, msg = R.string.d_remove_order_are_you_sure,
+                        yes = {
+                            viewModel.removeOrder(orders[position])
+                        })
+                })
         }
     }
 
     private fun initCalendar() {
+        val date = Calendar.getInstance().getOnlyDate()
+        viewModel.updateOrders(date = date.time)
 
-        val cal = Calendar.getInstance()
-        cal.onlyDateInMillis {
-            val date = it
-            viewModel.updateOrders(date) }
-
-        tvMonthTitle.text = formatDate(Date(), Constants.MONTH_FORMAT)
+        tvMonthTitle.text = formatDate(date, Constants.MONTH_FORMAT)
 
         calendarView.setListener(object : CompactCalendarView.CompactCalendarViewListener {
-            override fun onDayClick(dateClicked: Date?) {
-                cal.time = dateClicked
-                cal.onlyDateInMillis {
-                    val date = it
-                    viewModel.updateOrders(date) }
+            override fun onDayClick(dateClicked: Date) {
+                val newDate = Calendar.getInstance().apply { time = dateClicked }.getOnlyDate()
+                viewModel.updateOrders(newDate.time)
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {

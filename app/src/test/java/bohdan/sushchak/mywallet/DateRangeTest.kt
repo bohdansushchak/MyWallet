@@ -5,6 +5,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.Assert.assertEquals
+import java.util.*
 
 @RunWith(JUnit4::class)
 class DateRangeTest {
@@ -21,5 +22,12 @@ class DateRangeTest {
         val lastDay = 1577746800000
 
         assertEquals(firstDay, actual.startDate)
+    }
+
+    @Test
+    fun myTest(){
+        val calendar = Calendar.getInstance()
+
+        assertEquals(calendar.time.time, calendar.timeInMillis)
     }
 }

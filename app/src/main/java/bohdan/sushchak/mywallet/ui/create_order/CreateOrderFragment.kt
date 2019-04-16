@@ -39,8 +39,10 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     private val viewModelFactory: CreateOrderViewModelFactory by instance()
     private lateinit var viewModel: CreateOrderViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.create_order_fragment, container, false)
     }
 
@@ -48,7 +50,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(CreateOrderViewModel::class.java)
+            .get(CreateOrderViewModel::class.java)
 
         ibtnAddProduct.setOnClickListener { addProduct() }
         btnClearAll.setOnClickListener { clearProductList() }
@@ -60,10 +62,10 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     @SuppressLint("SetTextI18n")
     private fun bindUI() = launch {
+        val calendar = Calendar.getInstance()
+        setDate(calendar.getOnlyDate())
 
-        setDate(Date())
-
-        edProductPrice.filters = arrayOf(DecimalDigitsInputFilter(5,2))
+        edProductPrice.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
         initTextWatcher(edProductTitle)
 
         viewModel.categoryProductList.observe(this@CreateOrderFragment, Observer { categoryProductList ->
@@ -87,22 +89,22 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         })
     }
 
-    private fun initTextWatcher(editText: EditText){
+    private fun initTextWatcher(editText: EditText) {
 
-        editText.addTextChangedListener(object : TextWatcher{
+        editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s.toString()
-                if(str.isNotEmpty())
+                if (str.isNotEmpty())
                     viewModel.searchCategoryCount(s.toString())
             }
         })
     }
 
-    private fun updateCategoryList(categoryWithProduct: MutableList<CategoryWithProducts>){
+    private fun updateCategoryList(categoryWithProduct: MutableList<CategoryWithProducts>) {
 
         adapter = ExpandableListProductAdapter(context!!, categoryWithProduct)
 
@@ -116,10 +118,12 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                         viewModel.removeProduct(product)
                     })
 
-                }) }
+                })
+        }
 
         expListViewProducts.setAdapter(adapter)
     }
+
     private fun addProduct() {
         if (!isValid())
             return
@@ -134,11 +138,11 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         val categoryId = viewModel.selectedCategory.id
 
         val product = ProductEntity(
-                id = null,
-                title = title,
-                price = price,
-                categoryId = categoryId,
-                orderId = 0
+            id = null,
+            title = title,
+            price = price,
+            categoryId = categoryId,
+            orderId = 0
         )
 
         viewModel.addProduct(product)
@@ -146,19 +150,19 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         clearDataInViews()
     }
 
-    private fun updateSpinner(categoryEntity: CategoryEntity) = launch{
+    private fun updateSpinner(categoryEntity: CategoryEntity) = launch {
 
         val index = viewModel.categories.await().value?.indexOf(categoryEntity)
-        if(index != null)
+        if (index != null)
             spCategory.setSelection(index)
     }
 
     private fun clearProductList() {
         if (viewModel.productList.value!!.size > 0)
             showDialog(R.string.d_clear_products,
-                    R.string.d_clear_products_are_you_sure, yes = {
-                viewModel.clearProductList()
-            })
+                R.string.d_clear_products_are_you_sure, yes = {
+                    viewModel.clearProductList()
+                })
         else makeToast(R.string.t_product_list_is_empty)
     }
 
@@ -264,23 +268,14 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                 set(Calendar.MONTH, monthOfYear)
                 set(Calendar.DAY_OF_MONTH, dayOfMonth)
             }
-            setDate(calendar.time)
-
+            setDate(calendar.getOnlyDate())
         }, year, month, day)
         dpd.show()
     }
 
-    private fun setDate(date: Date){
+    private fun setDate(date: Date) {
         tvOrderDate.text = formatDate(date, Constants.DATE_FORMAT)
-        val cal = Calendar.getInstance().apply {
-            time = date
-            clear(Calendar.HOUR)
-            clear(Calendar.HOUR_OF_DAY)
-            clear(Calendar.MINUTE)
-            clear(Calendar.SECOND)
-            clear(Calendar.MILLISECOND)
-        }
-
-        viewModel.orderDate = cal.time.time
+        viewModel.orderDate = date.time
     }
+
 }

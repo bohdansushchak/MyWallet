@@ -83,7 +83,7 @@ fun List<OrdersByDateGroup>.indexBydate(date: Long): Int {
     var index = -1
 
     this.forEachWithIndex { i, ordersByDate ->
-        if (ordersByDate.date == date){
+        if (ordersByDate.date == date) {
             index = i
             return@forEachWithIndex
         }
@@ -114,10 +114,21 @@ fun Double.myMinus(num: Double): Double {
 fun Double.myToString(): String {
     var str = this.toString()
 
-    if(str.length > 2 && str.last() == '0')
-        str = str.substring(0, str.length -2)
+    if (str.length > 2 && str.last() == '0')
+        str = str.substring(0, str.length - 2)
 
     return str
+}
+
+fun Calendar.getOnlyDate(): Date {
+    val cal = this
+    cal.apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+    return cal.time
 }
 
 
