@@ -70,7 +70,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         })
 
         viewModel.totalPrice.observe(this@CalendarFragment, Observer { totalPrice ->
-            tvTotal.text = "${getString(R.string.total)} ${totalPrice.myToString()}"
+            tvTotal.text = totalPrice.myToString()
         })
     }
 

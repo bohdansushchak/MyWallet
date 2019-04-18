@@ -11,6 +11,7 @@
     <!-- textview-->
     <string name="tv_no_categories">No categories</string>
     <string name="tv_pick_a_color">Pick a color</string>
+    <string name="tv_category_categories">Categories</string>
 
     <!--buttons text-->
     <string name="btn_text_save_order">Save order</string>
@@ -33,6 +34,7 @@
     <string name="t_please_enter_product_price">Please enter product price</string>
     <string name="t_please_select_a_category">Select a category</string>
     <string name="t_price_should_be_a_number">Price should be a number</string>
+
 
 
     <!-- dialogs -->

@@ -26,4 +26,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TextViewCategoryStyle">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
 </resources>
