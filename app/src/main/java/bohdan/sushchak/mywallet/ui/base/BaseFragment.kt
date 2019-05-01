@@ -150,14 +150,14 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
         toastShow()
     }
-/*
+
     protected fun hideKeyboard(context: Context, view: View) {
         val imm = with(context) {
             getSystemService(Activity.INPUT_METHOD_SERVICE)
         } as InputMethodManager
 
         imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }*/
+    }
 
     protected fun hideKeyboardIfLostFocus(context: Context, vararg view: TextView) {
         val imm = with(context) {

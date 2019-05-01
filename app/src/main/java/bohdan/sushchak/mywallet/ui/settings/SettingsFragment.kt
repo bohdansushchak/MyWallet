@@ -6,7 +6,6 @@ import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,6 +15,8 @@ import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.CategoryAdapter
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.internal.Constants
+import bohdan.sushchak.mywallet.internal.Constants.CURRENCY_KEY_PREF
+import bohdan.sushchak.mywallet.internal.getSavedCurrency
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import bohdan.sushchak.mywallet.ui.dialogs.CreateCategoryDialogFragment
 import kotlinx.android.synthetic.main.settings_fragment.*
@@ -24,8 +25,6 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
-
-const val CURRENCY_KEY_PREF = "currency"
 
 class SettingsFragment : BaseFragment(), KodeinAware {
 
@@ -54,8 +53,6 @@ class SettingsFragment : BaseFragment(), KodeinAware {
     }
 
     private fun bindUI() = launch {
-        initViews()
-
         val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
 
         dividerItemDecoration.setDrawable(context!!.getDrawable(R.drawable.divider_black)!!)
@@ -66,21 +63,20 @@ class SettingsFragment : BaseFragment(), KodeinAware {
             tvNoCategories.visibility = if (categories.isEmpty()) View.VISIBLE else View.GONE
             updateCategory(categories)
         })
+
+        initViews()
     }
 
     private fun initViews() {
-        edCurrency.setText(preferences.getString(CURRENCY_KEY_PREF, ""))
+        context?.let { edCurrency.setText(getSavedCurrency(it)) }
         edCurrency.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus && v is EditText) {
-                val preferencesEditor = preferences.edit()
-                preferencesEditor.apply {
-                    putString(CURRENCY_KEY_PREF, v.text.toString())
-                    apply()
-                }
+            if (!hasFocus) {
+                preferences.edit().apply {
+                    putString(CURRENCY_KEY_PREF, edCurrency.text.toString().trim())
+                }.apply()
+                context?.let { hideKeyboard(it, v) }
             }
         }
-
-        context?.let { hideKeyboardIfLostFocus(it, edCurrency)}
     }
 
     private fun updateCategory(categoryEntities: List<CategoryEntity>) {
