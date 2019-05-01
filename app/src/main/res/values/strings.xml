@@ -12,6 +12,7 @@
     <string name="tv_no_categories">No categories</string>
     <string name="tv_pick_a_color">Pick a color</string>
     <string name="tv_category_categories">Categories</string>
+    <string name="tv_currency">Currency</string>
 
     <!--buttons text-->
     <string name="btn_text_save_order">Save order</string>
@@ -26,6 +27,7 @@
     <string name="ed_hint_write_product_name">Write product name</string>
     <string name="ed_hint_enter_price">Enter price</string>
     <string name="ed_hint_enter_title_of_category">Enter title of category</string>
+    <string name="ed_hint_enter_currency">Enter a currency</string>
 
     <!-- toasts -->
     <string name="t_product_list_is_empty">Product list is already empty</string>

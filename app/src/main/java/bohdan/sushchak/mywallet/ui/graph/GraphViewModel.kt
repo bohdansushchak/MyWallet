@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.model.CategoryPrice
-import bohdan.sushchak.mywallet.data.model.GraphItem
-import bohdan.sushchak.mywallet.data.model.LegendItem
 import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.Constants
@@ -24,7 +22,6 @@ import java.util.*
 class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewModel() {
 
     //region public parameters
-
     val graphItems: LiveData<List<GraphItem>>
         get() = _graphItems
     //endregion
@@ -58,25 +55,19 @@ class GraphViewModel(private val myWalletRepository: MyWalletRepository) : ViewM
 
     private fun getBarGraph(graphTitleResId: Int, listCategoryPrice: List<CategoryPrice>): Deferred<GraphItem> {
         return GlobalScope.async {
-            val graphItem = GraphItem()
-
-            graphItem.apply {
-                titleResId = graphTitleResId
-                isShowLegend = true
-            }
-
-            val listSeries = convertToSeries(listCategoryPrice)
             val legendItemsList = getLegendItemsBarGraph(listCategoryPrice)
+            val listSeries = convertToSeries(listCategoryPrice)
 
-            graphItem.apply {
-                seriesList.addAll(listSeries)
-                legendItems = legendItemsList.toMutableList()
-                isXAxisBoundsManual = true
-                minX = 0.0
-                minY = 0.0
-                maxX = (listCategoryPrice.size + 2).toDouble()
+            val graphItem = GraphItem(
+                isShowLegend = true,
+                seriesList = listSeries,
+                legendItems = legendItemsList,
+                titleResId = graphTitleResId,
+                maxX = (listCategoryPrice.size + 2).toDouble(),
+                isXAxisBoundsManual = true,
                 labelFormatter = BarLabelFormatter()
-            }
+            )
+
             return@async graphItem
         }
     }
@@ -99,9 +90,7 @@ private fun convertToSeries(listCategoryPrice: List<CategoryPrice>): List<Series
             spacing = 50 / listCategoryPrice.size
             isDrawValuesOnTop = true
         }
-
         listSeries.add(series)
-
     }
 
     return listSeries
@@ -110,7 +99,7 @@ private fun convertToSeries(listCategoryPrice: List<CategoryPrice>): List<Series
 private fun getLegendItemsBarGraph(listCategoryPrice: List<CategoryPrice>): List<LegendItem> {
     val legendItemsList = mutableListOf<LegendItem>()
 
-    listCategoryPrice.forEachIndexed { index, categoryPrice ->
+    listCategoryPrice.forEach { categoryPrice ->
         val categoryColor = categoryPrice.color ?: Constants.DEFAULT_CATEGORY_COLOR
         val categoryTitle = categoryPrice.title ?: ""
 
@@ -124,7 +113,7 @@ private fun getLegendItemsBarGraph(listCategoryPrice: List<CategoryPrice>): List
 
 private fun getLineGraph(graphTitleResId: Int, listMoneyByDate: List<MoneyByDate>): Deferred<GraphItem> {
     return GlobalScope.async {
-        val graphItem = GraphItem()
+
         val dataPoints: MutableList<DataPoint> = mutableListOf()
         listMoneyByDate.forEach { moneyByDate ->
             val date = Date(moneyByDate.date)
@@ -139,13 +128,16 @@ private fun getLineGraph(graphTitleResId: Int, listMoneyByDate: List<MoneyByDate
         val lineGraphSeries = LineGraphSeries<DataPoint>(dataPoints.toTypedArray())
         lineGraphSeries.setAnimated(true)
 
-        graphItem.apply {
-            titleResId = graphTitleResId
-            seriesList.add(lineGraphSeries)
-            minX = 0.0
-            maxX = 32.0
-            isXAxisBoundsManual = true
+        val graphItem = GraphItem(
+            titleResId = graphTitleResId,
+            seriesList = listOf(lineGraphSeries),
+            maxX = 32.0,
+            isXAxisBoundsManual = true,
             labelFormatter = LineLabelFormatter()
+        )
+
+        graphItem.apply {
+
         }
         return@async graphItem
     }

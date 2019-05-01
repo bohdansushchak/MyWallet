@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
-
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,7 +16,6 @@ import androidx.lifecycle.ViewModelProviders
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.ExpandableListProductAdapter
 import bohdan.sushchak.mywallet.adapters.MySpinnerAdapter
-
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
@@ -56,6 +54,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         btnClearAll.setOnClickListener { clearProductList() }
         btnSaveOrder.setOnClickListener { saveOrder() }
         tvOrderDate.setOnClickListener { pickDate(viewModel.orderDate) }
+
+        context?.let { hideKeyboardIfLostFocus(it, edProductPrice, edProductTitle) }
 
         bindUI()
     }
@@ -105,9 +105,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     }
 
     private fun updateCategoryList(categoryWithProduct: MutableList<CategoryWithProducts>) {
-
         adapter = ExpandableListProductAdapter(context!!, categoryWithProduct)
-
         adapter.onLongClick = { view, product ->
             showPopupEditRemove(view,
                 edit = {
@@ -158,21 +156,23 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     }
 
     private fun clearProductList() {
-        if (viewModel.productList.value!!.size > 0)
-            showDialog(R.string.d_clear_products,
-                R.string.d_clear_products_are_you_sure, yes = {
-                    viewModel.clearProductList()
-                })
-        else makeToast(R.string.t_product_list_is_empty)
+        if (viewModel.productList.value == null)
+            makeToast(R.string.t_product_list_is_empty)
+        else {
+            if (viewModel.productList.value!!.size > 0)
+                showDialog(R.string.d_clear_products,
+                    R.string.d_clear_products_are_you_sure, yes = {
+                        viewModel.clearProductList()
+                    })
+            else makeToast(R.string.t_product_list_is_empty)
+        }
     }
 
     private fun saveOrder() {
-
         if (viewModel.isProductListEmpty())
             makeToast(R.string.t_product_list_cant_be_empty)
         else {
             showEntryDialog(R.string.d_order_title, R.string.d_order_title_please_enter, yes = { strMsg ->
-
                 viewModel.addOrder(strMsg)
                 fragmentManager?.popBackStack()
             })
@@ -180,7 +180,6 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     }
 
     private fun spinnerUpdate(categoryEntities: List<CategoryEntity>) {
-
         val adapter = MySpinnerAdapter(context!!, categoryEntities)
 
         spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -260,17 +259,20 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
+        activity?.let {
+            val dpd = DatePickerDialog(it, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
 
-            calendar.apply {
-                clear()
-                set(Calendar.YEAR, year_)
-                set(Calendar.MONTH, monthOfYear)
-                set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            }
-            setDate(calendar.getOnlyDate())
-        }, year, month, day)
-        dpd.show()
+                calendar.apply {
+                    clear()
+                    set(Calendar.YEAR, year_)
+                    set(Calendar.MONTH, monthOfYear)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                }
+                setDate(calendar.getOnlyDate())
+            }, year, month, day)
+            dpd.show()
+        }
+
     }
 
     private fun setDate(date: Date) {

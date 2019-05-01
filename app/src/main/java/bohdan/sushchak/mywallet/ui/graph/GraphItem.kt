@@ -1,4 +1,4 @@
-package bohdan.sushchak.mywallet.data.model
+package bohdan.sushchak.mywallet.ui.graph
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,28 +11,21 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.graph_item.*
 
-class GraphItem : Item() {
-
-    var titleResId: Int = 0
-
-    var seriesList: MutableList<Series<DataPoint>> = mutableListOf()
-
-    var isShowLegend: Boolean = false
-
-    var legendItems: MutableList<LegendItem>? = null
-
-    var isXAxisBoundsManual: Boolean = false
-    var isYAxisBoundsManual: Boolean = false
-
-    var minX: Double = 0.0
-    var minY: Double = 0.0
-    var maxX: Double = 0.0
-    var maxY: Double = 0.0
-
-    var isHasSubItems = false
-
-    var labelFormatter: LabelFormatter? = null
-
+class GraphItem(
+    private val moreInfoItems: List<MoreInfoItem>? = null,
+    private val legendItems: List<LegendItem>? = null,
+    private val seriesList: List<Series<DataPoint>> = listOf(),
+    private val titleResId: Int,
+    private val minX: Double = 0.0,
+    private val minY: Double = 0.0,
+    private val maxX: Double = 0.0,
+    private val maxY: Double = 0.0,
+    private val isShowLegend: Boolean = false,
+    private val isXAxisBoundsManual: Boolean = false,
+    private val isYAxisBoundsManual: Boolean = false,
+    private var isHasSubItems: Boolean = false,
+    private val labelFormatter: LabelFormatter? = null
+) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         if (titleResId != 0)
             viewHolder.tvGraphTitle.setText(titleResId)
@@ -58,7 +51,7 @@ class GraphItem : Item() {
         if (isShowLegend)
             bindLegend(viewHolder)
 
-        if(isHasSubItems)
+        if (isHasSubItems)
             bindSubItems(viewHolder)
     }
 
@@ -79,9 +72,17 @@ class GraphItem : Item() {
             viewHolder.rcLegend.visibility = View.GONE
     }
 
-    private fun bindSubItems(viewHolder: ViewHolder){
-        viewHolder.itemView.setOnClickListener {
-            viewHolder.rcCategoryPrice.visibility = if(viewHolder.rcCategoryPrice.visibility == View.VISIBLE)
+    private fun bindSubItems(viewHolder: ViewHolder) {
+        if (moreInfoItems != null)
+            viewHolder.rvMoreInfo.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = GroupAdapter<com.xwray.groupie.ViewHolder>().apply {
+                    addAll(moreInfoItems)
+                }
+            }
+
+        viewHolder.ibtnShowMoreInfo.setOnClickListener {
+            viewHolder.rvMoreInfo.visibility = if (viewHolder.rvMoreInfo.visibility == View.VISIBLE)
                 View.GONE
             else View.VISIBLE
         }

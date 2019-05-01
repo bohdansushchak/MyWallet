@@ -1,9 +1,12 @@
 package bohdan.sushchak.mywallet.ui.settings
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,29 +25,37 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
+const val CURRENCY_KEY_PREF = "currency"
+
 class SettingsFragment : BaseFragment(), KodeinAware {
 
     override val kodein: Kodein by closestKodein()
+    private lateinit var preferences: SharedPreferences
 
     private val viewModelFactory: SettingsViewModelFactory by instance()
     private lateinit var viewModel: SettingsViewModel
 
     private lateinit var categoryAdapter: CategoryAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.settings_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(SettingsViewModel::class.java)
+            .get(SettingsViewModel::class.java)
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(context)
         bindUI()
     }
 
     private fun bindUI() = launch {
+        initViews()
+
         val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
 
         dividerItemDecoration.setDrawable(context!!.getDrawable(R.drawable.divider_black)!!)
@@ -52,9 +63,24 @@ class SettingsFragment : BaseFragment(), KodeinAware {
 
         val categoryList = viewModel.categories.await()
         categoryList.observe(this@SettingsFragment, Observer { categories ->
-            tvNoCategories.visibility = if(categories.isEmpty()) View.VISIBLE else View.GONE
+            tvNoCategories.visibility = if (categories.isEmpty()) View.VISIBLE else View.GONE
             updateCategory(categories)
         })
+    }
+
+    private fun initViews() {
+        edCurrency.setText(preferences.getString(CURRENCY_KEY_PREF, ""))
+        edCurrency.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus && v is EditText) {
+                val preferencesEditor = preferences.edit()
+                preferencesEditor.apply {
+                    putString(CURRENCY_KEY_PREF, v.text.toString())
+                    apply()
+                }
+            }
+        }
+
+        context?.let { hideKeyboardIfLostFocus(it, edCurrency)}
     }
 
     private fun updateCategory(categoryEntities: List<CategoryEntity>) {
@@ -75,17 +101,16 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         initButton(categoryEntities)
     }
 
-    private fun initButton(list: List<CategoryEntity>){
+    private fun initButton(list: List<CategoryEntity>) {
         btnAddCategory.setOnClickListener {
-            if(list.size < Constants.MAX_CATEGORIES){
+            if (list.size < Constants.MAX_CATEGORIES) {
                 val ft = fragmentManager?.beginTransaction()
                 val category = CategoryEntity.emptyCategoryEntity
                 val fragment = CreateCategoryDialogFragment(category)
                 fragment.show(ft, "")
 
                 fragment.onResult = { newCategory -> viewModel.addCategory(newCategory) }
-            }
-            else{
+            } else {
                 showDialog(R.string.d_title_max_categories, R.string.d_msg_max_categories)
             }
         }
@@ -103,11 +128,11 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         if (::categoryAdapter.isInitialized)
             categoryAdapter.onLongClick = { view, position ->
                 showPopupEditRemove(view,
-                        edit = { editCategory(categoryEntities[position]) },
-                        remove = {
-                            showDialog(R.string.d_remove_category, R.string.d_remove_category_are_you_sure,
-                                    yes = { viewModel.removeCategory(categoryEntities[position]) })
-                        })
+                    edit = { editCategory(categoryEntities[position]) },
+                    remove = {
+                        showDialog(R.string.d_remove_category, R.string.d_remove_category_are_you_sure,
+                            yes = { viewModel.removeCategory(categoryEntities[position]) })
+                    })
             }
     }
 }

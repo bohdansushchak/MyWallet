@@ -54,5 +54,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/frameLayout"/>
 
+    <TextView
+            style="@style/TextViewCategoryStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_currency"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:id="@+id/tv_currency"
+            app:layout_constraintTop_toBottomOf="@+id/btnAddCategory"/>
+
+    <EditText
+            android:id="@+id/edCurrency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:maxLines="1"
+            android:maxLength="5"
+            android:inputType="text"
+            android:hint="@string/ed_hint_enter_currency" app:layout_constraintTop_toBottomOf="@+id/tv_currency"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="Autofill"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

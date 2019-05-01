@@ -1,4 +1,4 @@
-package bohdan.sushchak.mywallet.data.model
+package bohdan.sushchak.mywallet.ui.graph
 
 import androidx.annotation.ColorInt
 import bohdan.sushchak.mywallet.R

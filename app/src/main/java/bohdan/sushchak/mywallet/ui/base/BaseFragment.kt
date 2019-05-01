@@ -6,10 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.PopupMenu
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import bohdan.sushchak.mywallet.R
 import kotlinx.coroutines.CoroutineScope
@@ -129,7 +126,6 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
                 }
 
                 R.id.popupRemove -> {
-
                     remove?.invoke()
                     return@setOnMenuItemClickListener true
                 }
@@ -139,7 +135,6 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     protected fun makeToast(msg: Int) {
-
         fun toastShow() {
             mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT)
             mToast.show()
@@ -155,13 +150,24 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
         toastShow()
     }
-
-
+/*
     protected fun hideKeyboard(context: Context, view: View) {
         val imm = with(context) {
             getSystemService(Activity.INPUT_METHOD_SERVICE)
         } as InputMethodManager
 
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }*/
+
+    protected fun hideKeyboardIfLostFocus(context: Context, vararg view: TextView) {
+        val imm = with(context) {
+            getSystemService(Activity.INPUT_METHOD_SERVICE)
+        } as InputMethodManager
+        view.forEach {
+            it.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus)
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+            }
+        }
     }
 }
