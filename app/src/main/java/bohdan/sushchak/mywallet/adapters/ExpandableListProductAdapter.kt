@@ -11,6 +11,8 @@ import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.internal.getSavedCurrency
+import bohdan.sushchak.mywallet.internal.myToString
 
 class ExpandableListProductAdapter(
         private val context: Context,
@@ -18,6 +20,8 @@ class ExpandableListProductAdapter(
     : BaseExpandableListAdapter() {
 
     var onLongClick: ((view: View, product: ProductEntity) -> Unit)? = null
+
+    private val currency = getSavedCurrency(context)
 
     override fun getGroup(groupPosition: Int): CategoryEntity {
         return items[groupPosition].categoryEntity
@@ -56,7 +60,7 @@ class ExpandableListProductAdapter(
         return groupPosition.toLong()
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "SetTextI18n")
     override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View {
         var view = convertView
         if (view == null) {
@@ -68,12 +72,14 @@ class ExpandableListProductAdapter(
         val tvProductPrice = view.findViewById<TextView>(R.id.tvProductPrice)
 
         tvProductName.text = getChild(groupPosition, childPosition).title
-        tvProductPrice.text = getChild(groupPosition, childPosition).price.toString()
+
+        val priceStr = getChild(groupPosition, childPosition)
+            .price
+            .myToString()
+        tvProductPrice.text = "$priceStr $currency"
 
         view.setOnLongClickListener { v ->
-
             onLongClick?.invoke(v, getChild(groupPosition, childPosition))
-
             return@setOnLongClickListener (onLongClick != null)
         }
 

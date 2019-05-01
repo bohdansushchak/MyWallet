@@ -79,8 +79,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         })
 
         viewModel.totalPrice.observe(this@CreateOrderFragment, Observer { totalPrice ->
-            tvTotalPrice.text = totalPrice.myToString()
-            Log.d("Total", "Total: $totalPrice")
+            val currency = context?.let { getSavedCurrency(it) }
+            tvTotalPrice.text = "${totalPrice.myToString()} $currency"
         })
 
         viewModel.foundedCategoryEntity.observe(this@CreateOrderFragment, Observer { category ->

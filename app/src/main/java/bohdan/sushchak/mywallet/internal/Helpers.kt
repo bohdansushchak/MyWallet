@@ -1,7 +1,10 @@
 package bohdan.sushchak.mywallet.internal
 
+import android.content.Context
+import androidx.preference.PreferenceManager
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
+import bohdan.sushchak.mywallet.internal.Constants.CURRENCY_KEY_PREF
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.absoluteValue
@@ -88,4 +91,7 @@ fun multipleOfTen(value: Double): Int {
         multipleOfTen(valueAbs / 10) + 1
     else 0
 }
+
+fun getSavedCurrency(context: Context, default: String = "") =
+    PreferenceManager.getDefaultSharedPreferences(context).getString(CURRENCY_KEY_PREF, default)!!
 

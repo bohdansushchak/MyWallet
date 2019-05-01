@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.formatDate
+import bohdan.sushchak.mywallet.internal.getSavedCurrency
 import bohdan.sushchak.mywallet.internal.myToString
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
@@ -39,7 +41,8 @@ class OrdersByDateAdapter(private val context: Context,
         val ordersByDateGroup = group as OrdersByDateGroup
         val order = ordersByDateGroup.orders[childIndex]
 
-        holder?.bind(order)
+        val currency = getSavedCurrency(context)
+        holder?.bind(order, currency)
 
         holder?.itemView?.setOnLongClickListener {
             onLongClick?.invoke(it, order)
@@ -58,7 +61,6 @@ class OrdersByDateAdapter(private val context: Context,
     }
 
     class DateViewHolder(view: View) : GroupViewHolder(view) {
-
         private var context: Context = itemView.context
         private val tvDate = view.tvDate
 
@@ -94,13 +96,13 @@ class OrdersByDateAdapter(private val context: Context,
     }
 
     class OrderViewHolder(view: View) : ChildViewHolder(view) {
-
         private val tvOrderTitle = view.tvOrderTitle
         private val tvOrderPrice = view.tvOrderPrice
 
-        fun bind(order: OrderEntity): Unit {
+        @SuppressLint("SetTextI18n")
+        fun bind(order: OrderEntity, currency: String): Unit {
             tvOrderTitle.text = order.title
-            tvOrderPrice.text = order.price.myToString()
+            tvOrderPrice.text = "${order.price.myToString()} $currency"
         }
     }
 }

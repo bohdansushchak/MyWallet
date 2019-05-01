@@ -34,15 +34,17 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
 
     private lateinit var adapter: OrdersByDateAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.order_list_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(OrderListViewModel::class.java)
+            .get(OrderListViewModel::class.java)
 
         bindUI()
 
@@ -78,20 +80,20 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
     }
 
     private fun updateOrderList(ordersByDate: List<OrdersByDateGroup>) {
-
         adapter = OrdersByDateAdapter(context!!, ordersByDate)
 
-        rcViewOrders.adapter = adapter
-        rcViewOrders.layoutManager = LinearLayoutManager(context)
+        rcViewOrders.apply {
+            adapter = adapter
+            layoutManager = LinearLayoutManager(context)
+        }
 
         adapter.onLongClick = { view, order ->
             showPopupEditRemove(view,
-                    edit = { editOrder(order) },
-                    remove = {
-                        removeCategory(order)
-                    })
+                edit = { editOrder(order) },
+                remove = {
+                    removeCategory(order)
+                })
         }
-
         adapter.onClick = { order ->
             viewOrder(order)
         }
@@ -112,7 +114,7 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
     private fun removeCategory(order: OrderEntity) {
 
         showDialog(title = R.string.d_remove_order, msg = R.string.d_remove_order_are_you_sure,
-                yes = { viewModel.removeOrder(order) })
+            yes = { viewModel.removeOrder(order) })
     }
 
     private fun editOrder(order: OrderEntity) {
@@ -138,20 +140,22 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
     @SuppressLint("RestrictedApi")
     private fun recyclerTouchShowOrGoneFab(event: MotionEvent?) {
         when (event?.action) {
-            MotionEvent.ACTION_MOVE -> if(downY == -1f) downY = event.y
-            MotionEvent.ACTION_DOWN -> if(downY == -1f) downY = event.y
+            MotionEvent.ACTION_MOVE -> if (downY == -1f) downY = event.y
+            MotionEvent.ACTION_DOWN -> if (downY == -1f) downY = event.y
 
             MotionEvent.ACTION_UP -> {
                 upY = event.y
 
                 Log.d("ACTION UP", "$downY  $upY")
 
-                if (downY < upY && fabCreateOrder.visibility == View.GONE ) {
-                    val animMoveDown = AnimationUtils.loadAnimation(context, R.anim.move_from_bottom_to_current_position)
+                if (downY < upY && fabCreateOrder.visibility == View.GONE) {
+                    val animMoveDown =
+                        AnimationUtils.loadAnimation(context, R.anim.move_from_bottom_to_current_position)
                     fabCreateOrder.startAnimation(animMoveDown)
                     fabCreateOrder.visibility = View.VISIBLE
                 } else if (downY > upY && fabCreateOrder.visibility == View.VISIBLE) {
-                    val animMoveDown = AnimationUtils.loadAnimation(context, R.anim.move_from_current_position_to_bottom)
+                    val animMoveDown =
+                        AnimationUtils.loadAnimation(context, R.anim.move_from_current_position_to_bottom)
                     fabCreateOrder.startAnimation(animMoveDown)
                     fabCreateOrder.visibility = View.GONE
                 }

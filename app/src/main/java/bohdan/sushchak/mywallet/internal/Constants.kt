@@ -14,4 +14,6 @@ object Constants {
 
     const val MAX_CATEGORIES = 10
 
+    const val CURRENCY_KEY_PREF = "currency"
+
 }

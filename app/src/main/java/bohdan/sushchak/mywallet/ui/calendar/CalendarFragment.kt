@@ -13,10 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.OrderAdapter
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
-import bohdan.sushchak.mywallet.internal.Constants
-import bohdan.sushchak.mywallet.internal.formatDate
-import bohdan.sushchak.mywallet.internal.getOnlyDate
-import bohdan.sushchak.mywallet.internal.myToString
+import bohdan.sushchak.mywallet.internal.*
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import kotlinx.android.synthetic.main.calendar_fragment.*
@@ -65,12 +62,12 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         })
 
         viewModel.calendarDates.await().observe(this@CalendarFragment, Observer { events ->
-
             calendarView.addEvents(events.toMutableList())
         })
 
         viewModel.totalPrice.observe(this@CalendarFragment, Observer { totalPrice ->
-            tvTotal.text = totalPrice.myToString()
+            val currency = context?.let { getSavedCurrency(it) }
+            tvTotal.text = "${totalPrice.myToString()} $currency"
         })
     }
 
