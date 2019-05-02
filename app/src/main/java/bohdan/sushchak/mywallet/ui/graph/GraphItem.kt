@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.ui.graph
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -33,7 +34,7 @@ class GraphItem(
             viewHolder.tvGraphTitle.setText(titleResId)
 
         viewHolder.graph.apply {
-            if (seriesList.size == 0)
+            if (seriesList.isEmpty())
                 removeAllSeries()
 
             viewport.isXAxisBoundsManual = isXAxisBoundsManual
@@ -58,6 +59,10 @@ class GraphItem(
 
     private fun bindLegend(viewHolder: ViewHolder) {
         if (legendItems != null) {
+            val context = viewHolder.itemView.context
+            val legendAnimation = AnimationUtils
+                .loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+
             val groupAdapter = GroupAdapter<ViewHolder>()
                 .apply {
                     addAll(legendItems)
@@ -67,6 +72,7 @@ class GraphItem(
                 visibility = View.VISIBLE
                 adapter = groupAdapter
                 layoutManager = LinearLayoutManager(context)
+                layoutAnimation = legendAnimation
             }
         } else
             viewHolder.rcLegend.visibility = View.GONE
@@ -93,9 +99,10 @@ class GraphItem(
             viewHolder.ibtnShowMoreInfo.visibility = View.GONE
     }
 
+    @SuppressLint("PrivateResource")
     private fun startExpandAnimation(viewHolder: ViewHolder) {
         val context = viewHolder.itemView.context
-        val buttonAnim = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in)
+        val buttonAnim = AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_top)
         val recyclerAnimation = AnimationUtils
             .loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 
@@ -107,9 +114,10 @@ class GraphItem(
         )
     }
 
+    @SuppressLint("PrivateResource")
     private fun startCollapseAnimation(viewHolder: ViewHolder) {
         val context = viewHolder.itemView.context
-        val buttonAnim = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in)
+        val buttonAnim = AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom)
 
         startAnimation(viewHolder = viewHolder,
             buttonAnimation = buttonAnim,

@@ -62,6 +62,7 @@
 
     <string name="graph_title_category_by_month">Spend money for category by month</string>
     <string name="graph_title_spend_money_for_each_day_in_month">Spend money for each day in month</string>
+    <string name="graph_title_growing_line">Growing line graph</string>
 
     <string name="graph_title_category_by_year">Spend money for category by year</string>
     <string name="graph_title_spend_money_for_each_day_in_year">Spend money for each day in year</string>

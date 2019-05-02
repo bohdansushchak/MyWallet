@@ -48,6 +48,7 @@ class GraphFragment : BaseFragment(), KodeinAware {
     private fun bindUI() = launch {
         viewModel.graphItems.observe(this@GraphFragment, Observer {
             updateGraphList(it)
+            group_loading.visibility = View.GONE
         })
     }
 

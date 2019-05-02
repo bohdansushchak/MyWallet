@@ -48,10 +48,12 @@ class GraphViewModel(
                 getBarGraphAsync(R.string.graph_title_category_by_month, listCategoryPriceByMonth)
             val itemMoneyByDateByMonth =
                 getLineGraphAsync(R.string.graph_title_spend_money_for_each_day_in_month, listMoneyByDateByMonth)
+            val itemGrowingLineGraph = getGrowingLineGraphAsync(R.string.graph_title_growing_line, listMoneyByDateByMonth)
 
             graphItemsList.apply {
                 add(itemCategoryPriceByMonth.await())
                 add(itemMoneyByDateByMonth.await())
+                add(itemGrowingLineGraph.await())
             }
 
             _graphItems.postValue(graphItemsList)
@@ -143,12 +145,43 @@ class GraphViewModel(
         return legendItemsList
     }
 
+    private fun getGrowingLineGraphAsync(resTitle: Int, listMoneyByDate: List<MoneyByDate>): Deferred<GraphItem> {
+        return GlobalScope.async {
+            val dataPoints: MutableList<DataPoint> = mutableListOf()
+            val cal = Calendar.getInstance()
+            var sumOfTotalPrices = 0.0
+
+            listMoneyByDate.forEach { moneyByDate ->
+                val date = Date(moneyByDate.date)
+                cal.time = date
+                val day = cal.get(Calendar.DAY_OF_MONTH).toDouble()
+                sumOfTotalPrices = sumOfTotalPrices.myPlus(moneyByDate.totalPrice)
+                val dataPoint = DataPoint(day, sumOfTotalPrices)
+                dataPoints.add(dataPoint)
+            }
+            dataPoints.sortBy { it.x }
+
+            val lineGraphSeries = LineGraphSeries<DataPoint>(dataPoints.toTypedArray())
+            lineGraphSeries.setAnimated(true)
+
+            val graphItem = GraphItem(
+                titleResId = resTitle,
+                seriesList = listOf(lineGraphSeries),
+                maxX = 32.0, //TODO: fix this
+                isXAxisBoundsManual = true,
+                labelFormatter = LineLabelFormatter()
+            )
+
+            return@async graphItem
+        }
+    }
+
     private fun getLineGraphAsync(graphTitleResId: Int, listMoneyByDate: List<MoneyByDate>): Deferred<GraphItem> {
         return GlobalScope.async {
             val dataPoints: MutableList<DataPoint> = mutableListOf()
+            val cal = Calendar.getInstance()
             listMoneyByDate.forEach { moneyByDate ->
                 val date = Date(moneyByDate.date)
-                val cal = Calendar.getInstance()
                 cal.time = date
                 val day = cal.get(Calendar.DAY_OF_MONTH).toDouble()
                 val dataPoint = DataPoint(day, moneyByDate.totalPrice)
@@ -162,14 +195,10 @@ class GraphViewModel(
             val graphItem = GraphItem(
                 titleResId = graphTitleResId,
                 seriesList = listOf(lineGraphSeries),
-                maxX = 32.0,
+                maxX = 32.0, //TODO: fix this
                 isXAxisBoundsManual = true,
                 labelFormatter = LineLabelFormatter()
             )
-
-            graphItem.apply {
-
-            }
             return@async graphItem
         }
     }
