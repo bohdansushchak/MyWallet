@@ -32,7 +32,7 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
     private val viewModelFactory: OrderListViewModelFactory by instance()
     private lateinit var viewModel: OrderListViewModel
 
-    private lateinit var adapter: OrdersByDateAdapter
+    private lateinit var orderAdapter: OrdersByDateAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +64,6 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
     }
 
     private fun initButtonCreateOrder(list: List<CategoryEntity>) {
-
         fabCreateOrder.setOnClickListener {
 
             val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
@@ -80,35 +79,35 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
     }
 
     private fun updateOrderList(ordersByDate: List<OrdersByDateGroup>) {
-        adapter = OrdersByDateAdapter(context!!, ordersByDate)
+        orderAdapter = OrdersByDateAdapter(context!!, ordersByDate).apply {
+            onLongClick = { view, order ->
+                showPopupEditRemove(view,
+                    edit = { editOrder(order) },
+                    remove = {
+                        removeCategory(order)
+                    })
+            }
+            onClick = { order ->
+                viewOrder(order)
+            }
+        }
 
         rcViewOrders.apply {
-            adapter = adapter
+            adapter = orderAdapter
             layoutManager = LinearLayoutManager(context)
-        }
-
-        adapter.onLongClick = { view, order ->
-            showPopupEditRemove(view,
-                edit = { editOrder(order) },
-                remove = {
-                    removeCategory(order)
-                })
-        }
-        adapter.onClick = { order ->
-            viewOrder(order)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (::adapter.isInitialized)
-            adapter.onSaveInstanceState(outState)
+        if (::orderAdapter.isInitialized)
+            orderAdapter.onSaveInstanceState(outState)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        if (::adapter.isInitialized)
-            adapter.onRestoreInstanceState(savedInstanceState)
+        if (::orderAdapter.isInitialized)
+            orderAdapter.onRestoreInstanceState(savedInstanceState)
     }
 
     private fun removeCategory(order: OrderEntity) {

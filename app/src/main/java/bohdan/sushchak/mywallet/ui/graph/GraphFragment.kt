@@ -52,7 +52,6 @@ class GraphFragment : BaseFragment(), KodeinAware {
     }
 
     private fun updateGraphList(graphItems: List<GraphItem>) {
-
         if (::groupAdapter.isInitialized) {
             groupAdapter.update(graphItems)
             return

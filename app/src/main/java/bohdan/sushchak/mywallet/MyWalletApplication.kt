@@ -18,7 +18,6 @@ import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
 class MyWalletApplication() : Application(), KodeinAware{
-
     override val kodein = Kodein.lazy {
         import(androidXModule(this@MyWalletApplication))
 
@@ -36,7 +35,7 @@ class MyWalletApplication() : Application(), KodeinAware{
         bind() from provider { OrderListViewModelFactory(instance()) }
         bind() from provider { SettingsViewModelFactory(instance()) }
         bind() from provider { CalendarViewModelFactory(instance()) }
-        bind() from provider { GraphViewModelFactory(instance()) }
+        bind() from provider { GraphViewModelFactory(instance(), instance()) }
         //endregion
     }
 
