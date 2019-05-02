@@ -98,7 +98,8 @@ class GraphViewModel(
             MoreInfoItem(
                 titleResId = R.string.total,
                 data = totalPrice.myToString(),
-                currency = currency
+                currency = currency,
+                isTextBold = true
             )
         )
         return moreInfoItemList

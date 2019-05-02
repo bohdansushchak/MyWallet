@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
-                android:src="@android:drawable/arrow_down_float"
+                android:background="@drawable/ic_arrow_expand"
                 tools:ignore="ContentDescription"/>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -1,8 +1,9 @@
 package bohdan.sushchak.mywallet.ui.graph
 
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ImageButton
+import android.view.animation.LayoutAnimationController
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
 import com.jjoe64.graphview.LabelFormatter
@@ -12,11 +13,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.graph_item.*
-import org.jetbrains.anko.Android
-import android.view.animation.LayoutAnimationController
-
-
-
 
 class GraphItem(
     private val moreInfoItems: List<MoreInfoItem>? = null,
@@ -87,23 +83,54 @@ class GraphItem(
             }
 
             viewHolder.ibtnShowMoreInfo.setOnClickListener {
-                val ibtn = it as ImageButton
                 if (viewHolder.rvMoreInfo.visibility == View.VISIBLE) {
-                    val anim = AnimationUtils.loadAnimation(ibtn.context, R.anim.collapse) //TODO: change it
-                    ibtn.startAnimation(anim)
-                    ibtn.setImageResource(R.drawable.ic_add)
-
-                    viewHolder.rvMoreInfo.visibility = View.GONE
+                    startCollapseAnimation(viewHolder)
                 } else {
-                    val anim = AnimationUtils.loadAnimation(ibtn.context, R.anim.expand) //TODO: change it
-                    ibtn.startAnimation(anim)
-                    ibtn.setImageResource(R.drawable.ic_arrow_down_24dp)
-
-                    viewHolder.rvMoreInfo.visibility = View.VISIBLE
+                    startExpandAnimation(viewHolder)
                 }
             }
         } else
             viewHolder.ibtnShowMoreInfo.visibility = View.GONE
+    }
+
+    private fun startExpandAnimation(viewHolder: ViewHolder) {
+        val context = viewHolder.itemView.context
+        val buttonAnim = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in)
+        val recyclerAnimation = AnimationUtils
+            .loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+
+        startAnimation(viewHolder = viewHolder,
+            buttonAnimation = buttonAnim,
+            recyclerAnimation = recyclerAnimation,
+            recyclerVisibility = View.VISIBLE,
+            buttonBackgroundResource = R.drawable.ic_arrow_collapse
+        )
+    }
+
+    private fun startCollapseAnimation(viewHolder: ViewHolder) {
+        val context = viewHolder.itemView.context
+        val buttonAnim = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in)
+
+        startAnimation(viewHolder = viewHolder,
+            buttonAnimation = buttonAnim,
+            recyclerVisibility = View.GONE,
+            buttonBackgroundResource = R.drawable.ic_arrow_expand
+        )
+    }
+
+    private fun startAnimation(viewHolder: ViewHolder,
+                               buttonAnimation: Animation,
+                               recyclerAnimation: LayoutAnimationController? = null,
+                               recyclerVisibility: Int,
+                               buttonBackgroundResource: Int) {
+        viewHolder.ibtnShowMoreInfo.apply {
+            startAnimation(buttonAnimation)
+            setBackgroundResource(buttonBackgroundResource)
+        }
+        viewHolder.rvMoreInfo.apply {
+            layoutAnimation = recyclerAnimation
+            visibility = recyclerVisibility
+        }
     }
 }
 
