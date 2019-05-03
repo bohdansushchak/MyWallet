@@ -37,6 +37,8 @@
     <string name="t_please_enter_product_price">Please enter product price</string>
     <string name="t_please_select_a_category">Select a category</string>
     <string name="t_price_should_be_a_number">Price should be a number</string>
+    <string name="t_from_date_cant_be_greater_than_to_date">From date can\'t be greater than to date</string>
+    <string name="t_to_date_cant_be_less_than_from_date">To date can\'t be less than from date</string>
 
     <!-- dialogs -->
     <string name="d_order_title">Order title</string>

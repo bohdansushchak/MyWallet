@@ -1,9 +1,9 @@
-package bohdan.sushchak.mywallet.internal
+package bohdan.sushchak.mywallet.data.model
 
 import java.util.concurrent.TimeUnit
 
 
-data class DateLimit(
+open class DateRange(
     var startDate: Long,
     var endDate: Long
 ) {
@@ -16,3 +16,10 @@ data class DateLimit(
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
     }
 }
+
+class DateLimit(
+    val leastDate: Long,
+    val biggestDate: Long,
+    startDate: Long,
+    endDate: Long
+) : DateRange(startDate, endDate)

@@ -18,6 +18,7 @@ import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
 import bohdan.sushchak.mywallet.internal.*
+import bohdan.sushchak.mywallet.internal.view.startFadeInAnimation
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.create_order_fragment.*
 import kotlinx.coroutines.launch
@@ -76,9 +77,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             spinnerUpdate(categories)
         })
 
-        viewModel.totalPrice.observe(this@CreateOrderFragment, Observer { totalPrice ->
-            val currency = context?.let { getSavedCurrency(it) }
-            tvTotalPrice.text = "${totalPrice.myToString()} $currency"
+        viewModel.totalPrice.observe(this@CreateOrderFragment, Observer {
+            updateTotalPrice(it)
         })
 
         viewModel.foundedCategoryEntity.observe(this@CreateOrderFragment, Observer { category ->
@@ -87,8 +87,16 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         })
     }
 
-    private fun initTextWatcher(editText: EditText) {
+    private fun updateTotalPrice(totalPrice: Double) {
+        val currency = context?.let {
+            getSavedCurrency(it)
+        }
 
+        tvTotalPrice.text = "${totalPrice.myToString()} $currency"
+        tvTotalPrice.startFadeInAnimation(context)
+    }
+
+    private fun initTextWatcher(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
@@ -248,5 +256,6 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     private fun setDate(date: Date) {
         tvOrderDate.text = formatDate(date, Constants.DATE_FORMAT)
         viewModel.orderDate = date.time
+
     }
 }

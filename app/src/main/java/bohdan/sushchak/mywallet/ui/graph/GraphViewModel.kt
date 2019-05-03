@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.model.CategoryPrice
+import bohdan.sushchak.mywallet.data.model.DateLimit
+import bohdan.sushchak.mywallet.data.model.DateRange
 import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.*
@@ -15,7 +17,6 @@ import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import com.jjoe64.graphview.series.Series
 import kotlinx.coroutines.*
-import java.util.*
 
 class GraphViewModel(
     private val myWalletRepository: MyWalletRepository,
@@ -27,64 +28,54 @@ class GraphViewModel(
         get() = _graphItems
 
     val dateLimit: LiveData<DateLimit>
-        get() = _dateLimit
+        get() = _dateLimitLive
 
     //endregion
 
     private val _graphItems by lazy { MutableLiveData<List<GraphItem>>() }
-    private val _dateLimit by lazy {
-        MutableLiveData<DateLimit>()
-            .apply {
-                value = getActualDateLimit()
-            }
-    }
-    private val countOfDays
-        get() = dateLimit.value!!.getCountOfDays().toDouble()
+    private val _dateLimitLive by lazy { MutableLiveData<DateLimit>() }
+    private lateinit var _dateLimit: DateLimit
 
     init {
-        updateGraphItems(_dateLimit.value)
+        GlobalScope.launch(Dispatchers.Main) {
+            _dateLimit = myWalletRepository.getDateLimit()
+            _dateLimitLive.postValue(_dateLimit)
+            updateGraphItems(_dateLimit)
+        }
     }
 
     fun updateDateLimit(startDate: Long? = null, endDate: Long? = null) {
         if (startDate == null && endDate == null)
             return
+        GlobalScope.launch(Dispatchers.Main) {
+            val newDateLimit = _dateLimit
+            startDate?.let {
+                newDateLimit.startDate = it
+            }
+            endDate?.let {
+                newDateLimit.endDate = it
+            }
 
-        val newDateLimit = _dateLimit.value ?: getActualDateLimit()
-        startDate?.let {
-            newDateLimit.startDate = it
+            _dateLimitLive.postValue(newDateLimit)
+            _dateLimit = newDateLimit
+            updateGraphItems(_dateLimit)
         }
-        endDate?.let {
-            newDateLimit.endDate = it
-        }
-
-        _dateLimit.postValue(newDateLimit)
-        updateGraphItems(_dateLimit.value)
     }
 
-    private fun getActualDateLimit(): DateLimit {
-        val c = Calendar.getInstance()
-        val currentMonth = c.get(Calendar.MONTH)
-        val currentYear = c.get(Calendar.YEAR)
-
-        return getDateLimit(month = currentMonth, year = currentYear)
-    }
-
-    private fun updateGraphItems(dateLimit: DateLimit?) {
-        if (dateLimit == null)
+    private fun updateGraphItems(dateRange: DateRange?) {
+        if (dateRange == null)
             return
         GlobalScope.launch(Dispatchers.IO) {
-            val startDate = dateLimit.startDate
-            val endDate = dateLimit.endDate
+            val startDate = dateRange.startDate
+            val endDate = dateRange.endDate
             val graphItemsList = mutableListOf<GraphItem>()
+
             val listCategoryPriceByMonth = myWalletRepository.getCategoriesPrice(startDate, endDate)
             val listMoneyByDateByMonth = myWalletRepository.getTotalPriceByDate(startDate, endDate)
 
-            val itemCategoryPriceByMonth =
-                getBarGraphAsync(R.string.graph_title_category_by_month, listCategoryPriceByMonth)
-            val itemMoneyByDateByMonth =
-                getLineGraphAsync(R.string.graph_title_spend_money_for_each_day_in_month, listMoneyByDateByMonth)
-            val itemGrowingLineGraph =
-                getGrowingLineGraphAsync(R.string.graph_title_growing_line, listMoneyByDateByMonth)
+            val itemCategoryPriceByMonth = getBarGraphAsync(listCategoryPriceByMonth)
+            val itemMoneyByDateByMonth = getLineGraphAsync(listMoneyByDateByMonth)
+            val itemGrowingLineGraph = getGrowingLineGraphAsync(listMoneyByDateByMonth)
 
             graphItemsList.apply {
                 add(itemCategoryPriceByMonth.await())
@@ -96,7 +87,7 @@ class GraphViewModel(
         }
     }
 
-    private fun getBarGraphAsync(graphTitleResId: Int, listCategoryPrice: List<CategoryPrice>): Deferred<GraphItem> {
+    private fun getBarGraphAsync(listCategoryPrice: List<CategoryPrice>): Deferred<GraphItem> {
         return GlobalScope.async {
             val legendItemsList = getLegendItemsBarGraph(listCategoryPrice)
             val listSeries = convertToSeries(listCategoryPrice)
@@ -106,7 +97,7 @@ class GraphViewModel(
             val graphItem = GraphItem(
                 seriesList = listSeries,
                 legendItems = legendItemsList,
-                titleResId = graphTitleResId,
+                titleResId = R.string.graph_title_category_by_month,
                 maxX = (listCategoryPrice.size + 2).toDouble(),
                 isXAxisBoundsManual = true,
                 labelFormatter = BarLabelFormatter(),
@@ -177,65 +168,54 @@ class GraphViewModel(
 
             legendItemsList.add(legendItem)
         }
-
         return legendItemsList
     }
 
-    private fun getGrowingLineGraphAsync(resTitle: Int, listMoneyByDate: List<MoneyByDate>): Deferred<GraphItem> {
+    private fun getGrowingLineGraphAsync(listMoneyByDate: List<MoneyByDate>): Deferred<GraphItem> {
         return GlobalScope.async {
             val dataPoints: MutableList<DataPoint> = mutableListOf()
-            val cal = Calendar.getInstance()
             var sumOfTotalPrices = 0.0
+            val minDateInList = listMoneyByDate.minBy { it.date }?.date ?: 0
+            val dayOfYearForMinDate = getDayOfYear(minDateInList)
+            val countOfDays = _dateLimit.getCountOfDays().toDouble()
 
             listMoneyByDate.forEach { moneyByDate ->
-                val date = Date(moneyByDate.date)
-                cal.time = date
-                val day = cal.get(Calendar.DAY_OF_MONTH).toDouble()
+                val day = getDayOfYear(moneyByDate.date) - dayOfYearForMinDate + 2
                 sumOfTotalPrices = sumOfTotalPrices.myPlus(moneyByDate.totalPrice)
-                val dataPoint = DataPoint(day, sumOfTotalPrices)
+                val dataPoint = DataPoint(day.toDouble(), sumOfTotalPrices)
                 dataPoints.add(dataPoint)
             }
-            dataPoints.sortBy { it.x }
 
-            val lineGraphSeries = LineGraphSeries<DataPoint>(dataPoints.toTypedArray())
-            lineGraphSeries.setAnimated(true)
-            lineGraphSeries.isDrawDataPoints = true
-            lineGraphSeries.dataPointsRadius = 5f
-
+            val lineGraphSeries = getLineGraphSeries(dataPoints)
             val graphItem = GraphItem(
-                titleResId = resTitle,
+                titleResId = R.string.graph_title_growing_line,
                 seriesList = listOf(lineGraphSeries),
-                maxX = if(countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
+                maxX = if (countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
                 isXAxisBoundsManual = true,
                 labelFormatter = LineLabelFormatter()
             )
-
             return@async graphItem
         }
     }
 
-    private fun getLineGraphAsync(graphTitleResId: Int, listMoneyByDate: List<MoneyByDate>): Deferred<GraphItem> {
+    private fun getLineGraphAsync(listMoneyByDate: List<MoneyByDate>): Deferred<GraphItem> {
         return GlobalScope.async {
             val dataPoints: MutableList<DataPoint> = mutableListOf()
-            val cal = Calendar.getInstance()
+            val minDateInList = listMoneyByDate.minBy { it.date }?.date ?: 0
+            val dayOfYearForMinDate = getDayOfYear(minDateInList)
+            val countOfDays = _dateLimit.getCountOfDays().toDouble()
+
             listMoneyByDate.forEach { moneyByDate ->
-                val date = Date(moneyByDate.date)
-                cal.time = date
-                val day = cal.get(Calendar.DAY_OF_MONTH).toDouble()
-                val dataPoint = DataPoint(day, moneyByDate.totalPrice)
+                val day = getDayOfYear(moneyByDate.date) - dayOfYearForMinDate + 2
+                val dataPoint = DataPoint(day.toDouble(), moneyByDate.totalPrice)
                 dataPoints.add(dataPoint)
             }
-            dataPoints.sortBy { it.x }
 
-            val lineGraphSeries = LineGraphSeries<DataPoint>(dataPoints.toTypedArray())
-            lineGraphSeries.setAnimated(true)
-            lineGraphSeries.isDrawDataPoints = true
-            lineGraphSeries.dataPointsRadius = 5f
-
+            val lineGraphSeries = getLineGraphSeries(dataPoints)
             val graphItem = GraphItem(
-                titleResId = graphTitleResId,
+                titleResId = R.string.graph_title_spend_money_for_each_day_in_month,
                 seriesList = listOf(lineGraphSeries),
-                maxX = if(countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
+                maxX = if (countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
                 isXAxisBoundsManual = true,
                 labelFormatter = LineLabelFormatter()
             )
@@ -243,5 +223,11 @@ class GraphViewModel(
         }
     }
 
-
+    private fun getLineGraphSeries(listDataPoint: List<DataPoint>): LineGraphSeries<DataPoint>{
+        val lineGraphSeries = LineGraphSeries<DataPoint>(listDataPoint.toTypedArray())
+        lineGraphSeries.setAnimated(true)
+        lineGraphSeries.isDrawDataPoints = true
+        lineGraphSeries.dataPointsRadius = 5f
+        return lineGraphSeries
+    }
 }

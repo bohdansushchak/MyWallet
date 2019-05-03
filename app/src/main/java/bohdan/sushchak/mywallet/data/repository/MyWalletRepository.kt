@@ -1,14 +1,12 @@
 package bohdan.sushchak.mywallet.data.repository
 
 import androidx.lifecycle.LiveData
-import bohdan.sushchak.mywallet.data.model.OrderWithProducts
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
-import bohdan.sushchak.mywallet.data.model.CategoryCount
-import bohdan.sushchak.mywallet.data.model.CategoryPrice
-import bohdan.sushchak.mywallet.data.model.MoneyByDate
+import bohdan.sushchak.mywallet.data.model.*
 import com.github.sundeepk.compactcalendarview.domain.Event
+import kotlinx.coroutines.Deferred
 
 
 interface MyWalletRepository {
@@ -49,5 +47,7 @@ interface MyWalletRepository {
     //endregion
 
     suspend fun viewDataBase()
+
+    suspend fun getDateLimit(): DateLimit
 
 }

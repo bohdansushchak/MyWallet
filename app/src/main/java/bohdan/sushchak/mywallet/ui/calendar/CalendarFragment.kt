@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,6 +15,7 @@ import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.OrderAdapter
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.internal.*
+import bohdan.sushchak.mywallet.internal.view.startFadeInAnimation
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import kotlinx.android.synthetic.main.calendar_fragment.*
@@ -28,7 +30,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
 
     override val kodein by closestKodein()
 
-    private lateinit var adapter: OrderAdapter
+    private lateinit var orderAdapter: OrderAdapter
 
     private val viewModelFactory: CalendarViewModelFactory by instance()
     private lateinit var viewModel: CalendarViewModel
@@ -66,30 +68,43 @@ class CalendarFragment : BaseFragment(), KodeinAware {
             calendarView.addEvents(events.toMutableList())
         })
 
-        viewModel.totalPrice.observe(this@CalendarFragment, Observer { totalPrice ->
-            val currency = context?.let { getSavedCurrency(it) }
-            tvTotal.text = "${totalPrice.myToString()} $currency"
+        viewModel.totalPrice.observe(this@CalendarFragment, Observer {
+            updateTotalPrice(it)
         })
     }
 
+    private fun updateTotalPrice(totalPrice: Double) {
+        val currency = context?.let { getSavedCurrency(it) }
+        tvTotal.text = "${totalPrice.myToString()} $currency"
+
+        tvTotal.startFadeInAnimation(context)
+    }
+
     private fun updateListOrder(orders: List<OrderEntity>) {
-        if (::adapter.isInitialized) {
-            adapter.update(orders)
-            adapter.notifyDataSetChanged()
+        if (::orderAdapter.isInitialized) {
+            orderAdapter.update(orders)
+            orderAdapter.notifyDataSetChanged()
+            recyclerViewOrders.scheduleLayoutAnimation()
             initLongClick(orders)
             return
         }
 
-        adapter = OrderAdapter(context!!, orders)
-        val layoutManager = LinearLayoutManager(context)
+        orderAdapter = OrderAdapter(context!!, orders)
+        val llManager = LinearLayoutManager(context)
 
-        recyclerViewOrders.adapter = adapter
-        recyclerViewOrders.layoutManager = layoutManager
+        val recyclerAnimation = AnimationUtils
+            .loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+
+        recyclerViewOrders.apply {
+            adapter = orderAdapter
+            layoutManager = llManager
+            layoutAnimation = recyclerAnimation
+        }
         initLongClick(orders)
     }
 
     private fun initLongClick(orders: List<OrderEntity>) {
-        adapter.onLongClick = { view, position ->
+        orderAdapter.onLongClick = { view, position ->
             showPopupEditRemove(view,
                 edit = {},
                 remove = {

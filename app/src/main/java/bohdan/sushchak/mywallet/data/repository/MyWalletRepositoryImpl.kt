@@ -8,18 +8,19 @@ import bohdan.sushchak.mywallet.data.db.dao.ProductDao
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
-import bohdan.sushchak.mywallet.data.model.CategoryCount
-import bohdan.sushchak.mywallet.data.model.CategoryPrice
-import bohdan.sushchak.mywallet.data.model.MoneyByDate
-import bohdan.sushchak.mywallet.data.model.OrderWithProducts
+import bohdan.sushchak.mywallet.data.model.*
+import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import com.github.sundeepk.compactcalendarview.domain.Event
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class MyWalletRepositoryImpl(
-        private val categoryDao: CategoryDao,
-        private val orderDao: OrderDao,
-        private val productDao: ProductDao
+    private val categoryDao: CategoryDao,
+    private val orderDao: OrderDao,
+    private val productDao: ProductDao
 ) : MyWalletRepository {
 
     override suspend fun getEvents(): LiveData<List<Event>> {
@@ -36,21 +37,21 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun addCategory(categoryEntity: CategoryEntity) {
-        categoryDao.insert(categoryEntity)
+        withContext(Dispatchers.IO) { categoryDao.insert(categoryEntity) }
     }
 
     override suspend fun removeCategory(categoryEntity: CategoryEntity) {
-        categoryDao.delete(categoryEntity)
+        withContext(Dispatchers.IO) { categoryDao.delete(categoryEntity) }
     }
 
     override suspend fun updateCategory(categoryEntity: CategoryEntity) {
-        categoryDao.update(categoryEntity)
+        withContext(Dispatchers.IO) { categoryDao.update(categoryEntity) }
     }
 
     override suspend fun getCategoryCountByProductTitle(categoryTitle: String): List<CategoryCount> {
         return withContext(Dispatchers.IO) {
             return@withContext productDao.getCategoriesCountByProductTitle(categoryTitle)
-                    ?: listOf()
+                ?: listOf()
         }
     }
 
@@ -92,15 +93,14 @@ class MyWalletRepositoryImpl(
         val categoryPriceAllList = mutableListOf<CategoryPrice>()
 
         val totalPriceForCategories = categoryDao.getTotalPriceCategories(startDate, endDate)
-                ?: listOf()
+            ?: listOf()
         val totalPriceCategoryNotSet = categoryDao.getTotalPriceCategoryNotSet(startDate, endDate)
-                ?: listOf()
+            ?: listOf()
 
         categoryPriceAllList.addAll(totalPriceForCategories)
         categoryPriceAllList.addAll(totalPriceCategoryNotSet)
 
         return categoryPriceAllList.toList()
-
     }
 
     override suspend fun getTotalPriceByDate(startDate: Long, endDate: Long): List<MoneyByDate> {
@@ -125,6 +125,29 @@ class MyWalletRepositoryImpl(
                 Log.d("TAG", it.toString())
             }
         }
+    }
+
+    override suspend fun getDateLimit(): DateLimit {
+        return withContext(Dispatchers.IO) {
+            val leastDate = orderDao.getLeastDateInDb() ?: 0L
+            val biggestDate = orderDao.getBiggestDateInDb() ?: 0L
+            val actualDateRange = getActualDateRange()
+
+            return@withContext DateLimit(
+                leastDate = leastDate,
+                biggestDate = biggestDate,
+                startDate = actualDateRange.startDate,
+                endDate = actualDateRange.endDate
+            )
+        }
+    }
+
+    private fun getActualDateRange(): DateRange {
+        val c = Calendar.getInstance()
+        val currentMonth = c.get(Calendar.MONTH)
+        val currentYear = c.get(Calendar.YEAR)
+
+        return dateRangeByYearAndMonth(month = currentMonth, year = currentYear)
     }
     //endregion
 }

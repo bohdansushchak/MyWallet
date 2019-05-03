@@ -1,6 +1,6 @@
 package bohdan.sushchak.mywallet.test_internal
 
-import bohdan.sushchak.mywallet.internal.getDateLimit
+import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -22,7 +22,7 @@ class SimpleTestMyCalendarHelper {
     fun calTestStartDate() {
         calendar.clear()
 
-        val dateLimit = getDateLimit(2019, Calendar.JANUARY)
+        val dateLimit = dateRangeByYearAndMonth(2019, Calendar.JANUARY)
 
         calendar.set(Calendar.YEAR, 2019)
         calendar.set(Calendar.MONTH, Calendar.JANUARY)
@@ -37,7 +37,7 @@ class SimpleTestMyCalendarHelper {
     fun calTestEndDate() {
         calendar.clear()
 
-        val dateLimit = getDateLimit(2019, Calendar.JANUARY)
+        val dateLimit = dateRangeByYearAndMonth(2019, Calendar.JANUARY)
 
         calendar.set(Calendar.YEAR, 2019)
         calendar.set(Calendar.MONTH, Calendar.JANUARY)
@@ -52,7 +52,7 @@ class SimpleTestMyCalendarHelper {
     fun calTestStartDateForYear() {
         calendar.clear()
 
-        val dateLimit = getDateLimit(2019)
+        val dateLimit = dateRangeByYearAndMonth(2019)
 
         calendar.set(Calendar.YEAR, 2019)
         calendar.set(Calendar.MONTH, Calendar.JANUARY)
@@ -67,7 +67,7 @@ class SimpleTestMyCalendarHelper {
     fun calTestEndDateForYear() {
         calendar.clear()
 
-        val dateLimit = getDateLimit(2019)
+        val dateLimit = dateRangeByYearAndMonth(2019)
 
         calendar.set(Calendar.YEAR, 2019)
         calendar.set(Calendar.MONTH, Calendar.DECEMBER)

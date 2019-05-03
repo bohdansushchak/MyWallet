@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.internal
 
+import bohdan.sushchak.mywallet.data.model.DateRange
 import java.security.InvalidParameterException
 import java.util.*
 
@@ -8,9 +9,9 @@ const val FIRST_MONTH_OF_YEAR = Calendar.JANUARY
 const val LAST_MONTH_OF_YEAR = Calendar.DECEMBER
 
 /***
- * if month is null get dateLimit for all year
+ * if month is null get dateRange for all year
  */
-fun getDateLimit(year: Int, month: Int? = null): DateLimit {
+fun dateRangeByYearAndMonth(year: Int, month: Int? = null): DateRange {
     val cal = Calendar.getInstance()
     val lastDay = getLastDayOfMonth(month ?: LAST_MONTH_OF_YEAR, year)
 
@@ -25,7 +26,7 @@ fun getDateLimit(year: Int, month: Int? = null): DateLimit {
     cal.set(Calendar.DAY_OF_MONTH, lastDay)
     val endDate = cal.timeInMillis
 
-    return DateLimit(startDate = startDate, endDate = endDate)
+    return DateRange(startDate = startDate, endDate = endDate)
 }
 
 private fun getLastDayOfMonth(month: Int, year: Int): Int {
@@ -42,4 +43,11 @@ private fun getLastDayOfMonth(month: Int, year: Int): Int {
 
         return cal.getActualMaximum(Calendar.DAY_OF_MONTH)
     } else throw InvalidParameterException("wrong mount number")
+}
+
+fun getDayOfYear(dateMilliseconds: Long): Int {
+    val cal = Calendar.getInstance()
+    val date = Date(dateMilliseconds)
+    cal.time = date
+    return cal.get(Calendar.DAY_OF_YEAR)
 }

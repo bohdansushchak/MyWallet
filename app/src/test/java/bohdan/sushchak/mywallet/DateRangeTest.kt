@@ -1,6 +1,6 @@
 package bohdan.sushchak.mywallet
 
-import bohdan.sushchak.mywallet.internal.getDateLimit
+import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -16,7 +16,7 @@ class DateRangeTest {
 
     @Test
     fun testRange(){
-        val actual = getDateLimit(2019, 0)
+        val actual = dateRangeByYearAndMonth(2019, 0)
 
         val firstDay = 1546297200000
         val lastDay = 1577746800000
