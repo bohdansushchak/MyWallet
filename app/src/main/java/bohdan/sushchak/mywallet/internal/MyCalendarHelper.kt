@@ -32,11 +32,11 @@ fun getDateLimit(year: Int, month: Int? = null): DateLimit {
 }
 
 private fun getLastDayOfMonth(month: Int, year: Int): Int {
-    val cal = Calendar.getInstance()
+    val cal = Calendar.getInstance().apply {
+        clear()
+    }
 
-    cal.clear()
-
-    if (year !in 2000..2200)
+    if (year !in 1900..2200)
         throw throw InvalidParameterException("wrong year")
 
     if (month in 0..11) {
@@ -45,5 +45,4 @@ private fun getLastDayOfMonth(month: Int, year: Int): Int {
 
         return cal.getActualMaximum(Calendar.DAY_OF_MONTH)
     } else throw InvalidParameterException("wrong mount number")
-
 }

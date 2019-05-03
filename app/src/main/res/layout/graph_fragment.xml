@@ -8,71 +8,64 @@
               android:orientation="vertical"
               tools:context=".ui.graph.GraphFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:visibility="gone">
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimary"
+            android:baselineAligned="false">
 
-        <ImageButton
-                android:id="@+id/iBtnLeft"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/ic_keyboard_arrow_left"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
 
         <TextView
-                android:id="@+id/tvMount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="month"
+                android:layout_marginStart="20dp"
+                android:layout_gravity="center_vertical"
+                android:text="From:"
                 android:textColor="@color/textColorBlack"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/iBtnRight"
-                app:layout_constraintStart_toEndOf="@+id/iBtnLeft"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-        <ImageButton
-                android:id="@+id/iBtnRight"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/ic_keyboard_arrow_right"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iBtnLeft"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         <TextView
-                android:id="@+id/tvYear"
+                android:id="@+id/tvDateFrom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="YEAR"
-                android:textColor="@color/textColorBlack"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iBtnRight"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:text="12.12.2019"
+                android:textColor="#fff"
+                android:textSize="18sp"/>
+        </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+        <TextView
+                android:layout_gravity="center_vertical"
+                android:text="To:"
+                android:textColor="@color/textColorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tvDateTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:text="15.12.2019"
+                android:textColor="#fff"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

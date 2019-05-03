@@ -11,6 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.internal.Constants.DATE_MONTH_YEAR
+import bohdan.sushchak.mywallet.internal.DateLimit
+import bohdan.sushchak.mywallet.internal.formatDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -50,26 +53,53 @@ class GraphFragment : BaseFragment(), KodeinAware {
             updateGraphList(it)
             group_loading.visibility = View.GONE
         })
+
+        viewModel.dateLimit.observe(this@GraphFragment, Observer { dateLimit ->
+            updateDateLimits(dateLimit)
+        })
+    }
+
+    private fun updateDateLimits(dateLimit: DateLimit) {
+        tvDateFrom.text = formatDate(dateLimit.startDate, DATE_MONTH_YEAR)
+        tvDateTo.text = formatDate(dateLimit.endDate, DATE_MONTH_YEAR)
+
+        tvDateFrom.setOnClickListener {
+            pickDate(
+                dateLimit.startDate,
+                maxDate = dateLimit.endDate
+            ) { pickedDate ->
+                viewModel.updateDateLimit(startDate = pickedDate.time)
+                group_loading.visibility = View.VISIBLE
+            }
+
+        }
+
+        tvDateTo.setOnClickListener {
+            pickDate(
+                dateLimit.endDate,
+                minDate = dateLimit.startDate
+            ) { pickedDate ->
+                viewModel.updateDateLimit(endDate = pickedDate.time)
+                group_loading.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun updateGraphList(graphItems: List<GraphItem>) {
-        if (::groupAdapter.isInitialized) {
-            groupAdapter.update(graphItems)
-            return
-        }
-
         groupAdapter = GroupAdapter<ViewHolder>().apply {
             addAll(graphItems)
         }
 
-        val decoration = DividerItemDecoration(context, VERTICAL)
-        val drawable = resources.getDrawable(R.drawable.transparent_decoration_drawable)
-        decoration.setDrawable(drawable)
-
         rcGraphList.apply {
             adapter = groupAdapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(decoration)
+        }
+
+        if (rcGraphList.itemDecorationCount == 0) {
+            val decoration = DividerItemDecoration(context, VERTICAL)
+            val drawable = resources.getDrawable(R.drawable.transparent_decoration_drawable)
+            decoration.setDrawable(drawable)
+            rcGraphList.addItemDecoration(decoration)
         }
     }
 }

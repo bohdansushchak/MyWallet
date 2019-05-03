@@ -7,12 +7,9 @@ import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.model.CategoryPrice
 import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
-import bohdan.sushchak.mywallet.internal.Constants
-import bohdan.sushchak.mywallet.internal.getDateLimit
+import bohdan.sushchak.mywallet.internal.*
 import bohdan.sushchak.mywallet.internal.label_formatter.BarLabelFormatter
 import bohdan.sushchak.mywallet.internal.label_formatter.LineLabelFormatter
-import bohdan.sushchak.mywallet.internal.myPlus
-import bohdan.sushchak.mywallet.internal.myToString
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
@@ -28,19 +25,55 @@ class GraphViewModel(
     //region public parameters
     val graphItems: LiveData<List<GraphItem>>
         get() = _graphItems
+
+    val dateLimit: LiveData<DateLimit>
+        get() = _dateLimit
+
     //endregion
 
     private val _graphItems by lazy { MutableLiveData<List<GraphItem>>() }
-
-    init {
-        val dateLimit = getDateLimit(2019)
-        updateGraphItems(dateLimit.startDate, dateLimit.endDate)
+    private val _dateLimit by lazy {
+        MutableLiveData<DateLimit>()
+            .apply {
+                value = getActualDateLimit()
+            }
     }
 
-    private fun updateGraphItems(startDate: Long, endDate: Long) {
-        GlobalScope.launch(Dispatchers.IO) {
-            val graphItemsList = mutableListOf<GraphItem>()
+    init {
+        updateGraphItems(_dateLimit.value)
+    }
 
+    fun updateDateLimit(startDate: Long? = null, endDate: Long? = null) {
+        if (startDate == null && endDate == null)
+            return
+
+        val newDateLimit = _dateLimit.value ?: getActualDateLimit()
+        startDate?.let {
+            newDateLimit.startDate = it
+        }
+        endDate?.let {
+            newDateLimit.endDate = it
+        }
+
+        _dateLimit.postValue(newDateLimit)
+        updateGraphItems(_dateLimit.value)
+    }
+
+    private fun getActualDateLimit(): DateLimit {
+        val c = Calendar.getInstance()
+        val currentMonth = c.get(Calendar.MONTH)
+        val currentYear = c.get(Calendar.YEAR)
+
+        return getDateLimit(month = currentMonth, year = currentYear)
+    }
+
+    private fun updateGraphItems(dateLimit: DateLimit?) {
+        if (dateLimit == null)
+            return
+        GlobalScope.launch(Dispatchers.IO) {
+            val startDate = dateLimit.startDate
+            val endDate = dateLimit.endDate
+            val graphItemsList = mutableListOf<GraphItem>()
             val listCategoryPriceByMonth = myWalletRepository.getCategoriesPrice(startDate, endDate)
             val listMoneyByDateByMonth = myWalletRepository.getTotalPriceByDate(startDate, endDate)
 
@@ -48,7 +81,8 @@ class GraphViewModel(
                 getBarGraphAsync(R.string.graph_title_category_by_month, listCategoryPriceByMonth)
             val itemMoneyByDateByMonth =
                 getLineGraphAsync(R.string.graph_title_spend_money_for_each_day_in_month, listMoneyByDateByMonth)
-            val itemGrowingLineGraph = getGrowingLineGraphAsync(R.string.graph_title_growing_line, listMoneyByDateByMonth)
+            val itemGrowingLineGraph =
+                getGrowingLineGraphAsync(R.string.graph_title_growing_line, listMoneyByDateByMonth)
 
             graphItemsList.apply {
                 add(itemCategoryPriceByMonth.await())

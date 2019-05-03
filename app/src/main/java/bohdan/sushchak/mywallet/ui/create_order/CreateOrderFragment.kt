@@ -1,11 +1,9 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,9 +51,9 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         ibtnAddProduct.setOnClickListener { addProduct() }
         btnClearAll.setOnClickListener { clearProductList() }
         btnSaveOrder.setOnClickListener { saveOrder() }
-        tvOrderDate.setOnClickListener { pickDate(viewModel.orderDate) }
+        tvOrderDate.setOnClickListener { pickDate(viewModel.orderDate) { setDate(it) } }
 
-        context?.let { hideKeyboardIfLostFocus(it, edProductPrice, edProductTitle) }
+        context?.let { hideKeyboardIfFocusLost(it, edProductPrice, edProductTitle) }
 
         bindUI()
     }
@@ -247,37 +245,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         true
     }
 
-    private fun pickDate(time: Long) {
-        val calendar = Calendar.getInstance()
-
-        if (0L != time) {
-            calendar.clear()
-            calendar.time = Date(time)
-        }
-
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        activity?.let {
-            val dpd = DatePickerDialog(it, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
-
-                calendar.apply {
-                    clear()
-                    set(Calendar.YEAR, year_)
-                    set(Calendar.MONTH, monthOfYear)
-                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                }
-                setDate(calendar.getOnlyDate())
-            }, year, month, day)
-            dpd.show()
-        }
-
-    }
-
     private fun setDate(date: Date) {
         tvOrderDate.text = formatDate(date, Constants.DATE_FORMAT)
         viewModel.orderDate = date.time
     }
-
 }

@@ -31,7 +31,6 @@ class CreateCategoryDialogFragment(var categoryEntity: CategoryEntity?) : Dialog
     }
 
     private fun bindUI() {
-
         val colorList = convertStringToIntList(activity!!.resources.getStringArray(R.array.colorCategoriesArray))
         adapter = PickColorAdapter(context!!, colorList)
 

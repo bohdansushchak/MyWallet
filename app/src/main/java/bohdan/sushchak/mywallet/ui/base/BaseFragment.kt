@@ -2,6 +2,7 @@ package bohdan.sushchak.mywallet.ui.base
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -9,10 +10,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.internal.getOnlyDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import java.util.*
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.max
 
 abstract class BaseFragment : Fragment(), CoroutineScope {
 
@@ -159,7 +163,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    protected fun hideKeyboardIfLostFocus(context: Context, vararg view: TextView) {
+    protected fun hideKeyboardIfFocusLost(context: Context, vararg view: TextView) {
         val imm = with(context) {
             getSystemService(Activity.INPUT_METHOD_SERVICE)
         } as InputMethodManager
@@ -168,6 +172,37 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
                 if (!hasFocus)
                     imm.hideSoftInputFromWindow(v.windowToken, 0)
             }
+        }
+    }
+
+    protected fun pickDate(actualTime: Long,
+                           minDate: Long? = null,
+                           maxDate: Long? = null,
+                           callBack: ((date: Date) -> Unit)) {
+        val calendar = Calendar.getInstance()
+
+        if (0L != actualTime) {
+            calendar.clear()
+            calendar.time = Date(actualTime)
+        }
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        activity?.let { activity ->
+            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
+                calendar.apply {
+                    clear()
+                    set(Calendar.YEAR, year_)
+                    set(Calendar.MONTH, monthOfYear)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                }
+                callBack.invoke(calendar.getOnlyDate())
+            }, year, month, day)
+            minDate?.let{dpd.datePicker.minDate = it }
+            maxDate?.let { dpd.datePicker.maxDate = it }
+            dpd.show()
         }
     }
 }

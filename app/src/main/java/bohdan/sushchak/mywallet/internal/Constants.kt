@@ -6,6 +6,8 @@ object Constants {
 
     const val DATE_FORMAT = "EEE, d MMM yyyy"
 
+    const val DATE_MONTH_YEAR = "dd.MM.yyyy"
+
     const val COLOR_EVENT = Color.BLACK
 
     const val MONTH_FORMAT = "MMMM yyyy"
