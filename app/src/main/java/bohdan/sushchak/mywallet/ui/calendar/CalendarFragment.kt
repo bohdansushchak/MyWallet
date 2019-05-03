@@ -58,6 +58,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         recyclerViewOrders.addItemDecoration(dividerItemDecoration)
 
         viewModel.orders.observe(this@CalendarFragment, Observer {
+            tvListIsEmpty.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
             updateListOrder(it)
         })
 

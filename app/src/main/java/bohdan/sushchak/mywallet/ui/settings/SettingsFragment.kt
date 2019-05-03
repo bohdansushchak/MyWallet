@@ -82,7 +82,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
     private fun updateCategory(categoryEntities: List<CategoryEntity>) {
         if (::categoryAdapter.isInitialized) {
             categoryAdapter.update(categoryEntities)
-            categoryAdapter.notifyDataSetChanged() //TODO fix this
+            categoryAdapter.notifyDataSetChanged()
             initLongClick(categoryEntities)
             initButton(categoryEntities)
             return

@@ -8,7 +8,7 @@
         tools:context=".ui.settings.SettingsFragment">
 
     <TextView
-            style="@style/TextViewCategoryStyle"
+            style="@style/TextViewSettingsCategoryStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tv_category_categories"
@@ -28,13 +28,10 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_categories">
 
         <TextView
-                android:textColor="@color/textColorBlack"
-                android:textSize="16sp"
                 android:id="@+id/tvNoCategories"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tv_no_categories"/>
+                style="@style/TextViewStyleListIsEmpty"/>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewCategory"
@@ -56,7 +53,7 @@
             app:layout_constraintTop_toBottomOf="@+id/frameLayout"/>
 
     <TextView
-            style="@style/TextViewCategoryStyle"
+            style="@style/TextViewSettingsCategoryStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tv_currency"

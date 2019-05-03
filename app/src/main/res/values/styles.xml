@@ -26,10 +26,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextViewCategoryStyle">
+    <style name="TextViewSettingsCategoryStyle">
         <item name="android:textStyle">italic</item>
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextViewStyleListIsEmpty">
+        <item name="android:text">@string/tv_list_is_empty</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/textColorGray</item>
+        <item name="android:visibility">gone</item>
     </style>
 
 

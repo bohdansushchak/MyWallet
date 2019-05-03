@@ -54,6 +54,7 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
     private fun bindUI() = launch {
 
         viewModel.orders.await().observe(this@OrderListFragment, Observer { orders ->
+            tvListIsEmpty.visibility = if (orders.isEmpty()) View.VISIBLE else View.GONE
             val ordersByDate = convertOrdersByDate(orders)
             updateOrderList(ordersByDate)
         })

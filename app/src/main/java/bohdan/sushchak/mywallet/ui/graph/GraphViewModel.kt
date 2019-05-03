@@ -205,7 +205,7 @@ class GraphViewModel(
             val graphItem = GraphItem(
                 titleResId = resTitle,
                 seriesList = listOf(lineGraphSeries),
-                maxX = if(countOfDays + 2 >= 5) countOfDays + 2 else 5.0, //TODO: fix this
+                maxX = if(countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
                 isXAxisBoundsManual = true,
                 labelFormatter = LineLabelFormatter()
             )
