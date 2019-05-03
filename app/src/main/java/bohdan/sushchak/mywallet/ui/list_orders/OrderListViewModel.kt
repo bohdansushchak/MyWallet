@@ -5,9 +5,8 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 
-import bohdan.sushchak.mywallet.internal.lazyDeffered
+import bohdan.sushchak.mywallet.internal.lazyDeferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -15,9 +14,9 @@ import kotlinx.coroutines.launch
 class OrderListViewModel(val myWalletRepository: MyWalletRepository) : ViewModel() {
 
     //region public parameters
-    val orders by lazyDeffered { myWalletRepository.getOrders() }
+    val orders by lazyDeferred { myWalletRepository.getOrders() }
 
-    val categories by lazyDeffered { myWalletRepository.getCategories() }
+    val categories by lazyDeferred { myWalletRepository.getCategories() }
 
     //endregion
 

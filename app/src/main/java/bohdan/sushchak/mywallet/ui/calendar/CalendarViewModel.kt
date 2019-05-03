@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
-import bohdan.sushchak.mywallet.internal.lazyDeffered
+import bohdan.sushchak.mywallet.internal.lazyDeferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -18,7 +18,7 @@ class CalendarViewModel(private val myWalletRepository: MyWalletRepository) : Vi
     val totalPrice: LiveData<Double>
     get() = _totalPrice
 
-    val calendarDates by lazyDeffered { myWalletRepository.getEvents() }
+    val calendarDates by lazyDeferred { myWalletRepository.getEvents() }
     //endregion
 
     private val _orders by lazy { MutableLiveData<List<OrderEntity>>() }

@@ -7,9 +7,6 @@ const val FIRST_DAY_OF_MONTH = 1
 const val FIRST_MONTH_OF_YEAR = Calendar.JANUARY
 const val LAST_MONTH_OF_YEAR = Calendar.DECEMBER
 
-//first//1546297200000
-//last//1577746800000
-
 /***
  * if month is null get dateLimit for all year
  */

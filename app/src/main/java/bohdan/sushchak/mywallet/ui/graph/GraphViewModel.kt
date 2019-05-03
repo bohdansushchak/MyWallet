@@ -38,6 +38,8 @@ class GraphViewModel(
                 value = getActualDateLimit()
             }
     }
+    private val countOfDays
+        get() = dateLimit.value!!.getCountOfDays().toDouble()
 
     init {
         updateGraphItems(_dateLimit.value)
@@ -197,11 +199,13 @@ class GraphViewModel(
 
             val lineGraphSeries = LineGraphSeries<DataPoint>(dataPoints.toTypedArray())
             lineGraphSeries.setAnimated(true)
+            lineGraphSeries.isDrawDataPoints = true
+            lineGraphSeries.dataPointsRadius = 5f
 
             val graphItem = GraphItem(
                 titleResId = resTitle,
                 seriesList = listOf(lineGraphSeries),
-                maxX = 32.0, //TODO: fix this
+                maxX = if(countOfDays + 2 >= 5) countOfDays + 2 else 5.0, //TODO: fix this
                 isXAxisBoundsManual = true,
                 labelFormatter = LineLabelFormatter()
             )
@@ -225,15 +229,19 @@ class GraphViewModel(
 
             val lineGraphSeries = LineGraphSeries<DataPoint>(dataPoints.toTypedArray())
             lineGraphSeries.setAnimated(true)
+            lineGraphSeries.isDrawDataPoints = true
+            lineGraphSeries.dataPointsRadius = 5f
 
             val graphItem = GraphItem(
                 titleResId = graphTitleResId,
                 seriesList = listOf(lineGraphSeries),
-                maxX = 32.0, //TODO: fix this
+                maxX = if(countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
                 isXAxisBoundsManual = true,
                 labelFormatter = LineLabelFormatter()
             )
             return@async graphItem
         }
     }
+
+
 }

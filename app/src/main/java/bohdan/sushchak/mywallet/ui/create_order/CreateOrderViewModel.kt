@@ -18,7 +18,7 @@ const val ZERO = 0.0
 class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) : ViewModel() {
 
     //region public parameters
-    val categories by lazyDeffered { myWalletRepository.getCategories() }
+    val categories by lazyDeferred { myWalletRepository.getCategories() }
 
     val productList: LiveData<MutableList<ProductEntity>>
         get() = _productList

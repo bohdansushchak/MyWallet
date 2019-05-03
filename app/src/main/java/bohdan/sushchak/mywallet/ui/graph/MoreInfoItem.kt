@@ -17,10 +17,11 @@ class MoreInfoItem(
 
     @SuppressLint("SetTextI18n")
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        if (titleResId != -1)
-            viewHolder.tvTitle.setText(titleResId)
-        else
-            viewHolder.tvTitle.text = title
+        when {
+            titleResId != -1 -> viewHolder.tvTitle.setText(titleResId)
+            title.isNotEmpty() -> viewHolder.tvTitle.text = title
+            else -> viewHolder.tvTitle.setText(R.string.non_set_category)
+        }
 
         viewHolder.tvData.text = "$data $currency"
 
