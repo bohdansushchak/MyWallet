@@ -19,13 +19,14 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import bohdan.sushchak.mywallet.internal.convertOrdersByDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
+import bohdan.sushchak.mywallet.ui.create_order.CreateOrderFragmentArgs
 import kotlinx.android.synthetic.main.order_list_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
+class OrderListFragment : BaseFragment(), KodeinAware {
 
     override val kodein by closestKodein()
 
@@ -48,11 +49,10 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
 
         bindUI()
 
-        rcViewOrders.setOnTouchListener(this)
+        rcViewOrders.setOnTouchListener{_, event -> recyclerTouchShowOrGoneFab(event) }
     }
 
     private fun bindUI() = launch {
-
         viewModel.orders.await().observe(this@OrderListFragment, Observer { orders ->
             tvListIsEmpty.visibility = if (orders.isEmpty()) View.VISIBLE else View.GONE
             val ordersByDate = convertOrdersByDate(orders)
@@ -70,7 +70,7 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
             val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
 
             if (list.isNotEmpty())
-                navigationController.navigate(R.id.action_orderListFragment_to_createOrderFragment)
+                navigationController.navigate(R.id.actionCreateOrder)
             else {
                 showDialog(R.string.d_title_no_categories, R.string.d_msg_no_categories, yes = {
                     navigationController.navigate(R.id.action_orderListFragment_to_settingsFragment)
@@ -83,13 +83,13 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
         orderAdapter = OrdersByDateAdapter(context!!, ordersByDate).apply {
             onLongClick = { view, order ->
                 showPopupEditRemove(view,
-                    edit = { editOrder(order) },
+                    edit = { editOrder(view, order) },
                     remove = {
                         removeCategory(order)
                     })
             }
-            onClick = { order ->
-                viewOrder(order)
+            onClick = { v, order ->
+                viewOrder(v, order)
             }
         }
 
@@ -112,33 +112,25 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
     }
 
     private fun removeCategory(order: OrderEntity) {
-
         showDialog(title = R.string.d_remove_order, msg = R.string.d_remove_order_are_you_sure,
             yes = { viewModel.removeOrder(order) })
     }
 
-    private fun editOrder(order: OrderEntity) {
-
+    private fun editOrder(view: View, order: OrderEntity) {
+        val action = OrderListFragmentDirections.actionCreateOrder()
+        action.order = order
+        getNavController(view).navigate(action)
     }
 
-    private fun viewOrder(order: OrderEntity) {
+    private fun viewOrder(view: View, order: OrderEntity) {
 
     }
 
     private var downY: Float = -1f
     private var upY: Float = -1f
 
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        recyclerTouchShowOrGoneFab(event)
-
-        Log.d("EVENT", event.toString())
-
-        return false
-    }
-
     @SuppressLint("RestrictedApi")
-    private fun recyclerTouchShowOrGoneFab(event: MotionEvent?) {
+    private fun recyclerTouchShowOrGoneFab(event: MotionEvent?): Boolean {
         when (event?.action) {
             MotionEvent.ACTION_MOVE -> if (downY == -1f) downY = event.y
             MotionEvent.ACTION_DOWN -> if (downY == -1f) downY = event.y
@@ -164,5 +156,6 @@ class OrderListFragment : BaseFragment(), KodeinAware, View.OnTouchListener {
                 upY = -1f
             }
         }
+        return false
     }
 }

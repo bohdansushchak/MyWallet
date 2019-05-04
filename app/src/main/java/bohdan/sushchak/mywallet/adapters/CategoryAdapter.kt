@@ -29,14 +29,14 @@ class CategoryAdapter(private val context: Context,
 
         holder.bind(item)
 
-        Log.d("TAG", "${item.title} and ${item.color}")
+        Log.d("TAG", "${item.categoryTitle} and ${item.color}")
     }
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvCategory = itemView.tvCategory
 
         fun bind(category: CategoryEntity){
-            tvCategory.text = category.title
+            tvCategory.text = category.categoryTitle
             tvCategory.textColor = category.color
         }
     }

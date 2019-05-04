@@ -10,13 +10,13 @@ import android.widget.TextView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
-import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import bohdan.sushchak.mywallet.internal.getSavedCurrency
 import bohdan.sushchak.mywallet.internal.myToString
 
 class ExpandableListProductAdapter(
         private val context: Context,
-        private val items: MutableList<CategoryWithProducts>)
+        private val items: MutableList<CategoryWithListProducts>)
     : BaseExpandableListAdapter() {
 
     var onLongClick: ((view: View, product: ProductEntity) -> Unit)? = null
@@ -44,7 +44,7 @@ class ExpandableListProductAdapter(
         }
 
         val tvCategory = view!!.findViewById<TextView>(R.id.tvCategory)
-        tvCategory.text = getGroup(groupPosition).title
+        tvCategory.text = getGroup(groupPosition).categoryTitle
         return view
     }
 

@@ -14,7 +14,11 @@ import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.internal.Converters
 
 
-@Database(entities = [ProductEntity::class, OrderEntity::class, CategoryEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [ProductEntity::class, OrderEntity::class, CategoryEntity::class],
+    version = 2,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class MyWalletDatabase : RoomDatabase() {
 
@@ -23,7 +27,8 @@ abstract class MyWalletDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
 
     companion object {
-        @Volatile private var instance: MyWalletDatabase? = null
+        @Volatile
+        private var instance: MyWalletDatabase? = null
         private val LOCK = Any()
 
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
@@ -31,8 +36,11 @@ abstract class MyWalletDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context) =
-                Room.databaseBuilder(context.applicationContext,
-                        MyWalletDatabase::class.java, "my_wallet.db")
-                        .build()
+            Room.databaseBuilder(
+                context.applicationContext,
+                MyWalletDatabase::class.java, "my_wallet.db"
+            )
+                .fallbackToDestructiveMigration()
+                .build()
     }
 }

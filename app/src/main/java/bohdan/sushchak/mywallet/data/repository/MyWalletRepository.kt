@@ -6,7 +6,6 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.*
 import com.github.sundeepk.compactcalendarview.domain.Event
-import kotlinx.coroutines.Deferred
 
 
 interface MyWalletRepository {
@@ -49,5 +48,7 @@ interface MyWalletRepository {
     suspend fun viewDataBase()
 
     suspend fun getDateLimit(): DateLimit
+
+    suspend fun getProductCategoryList(orderId: Long): List<CategoryProduct>
 
 }

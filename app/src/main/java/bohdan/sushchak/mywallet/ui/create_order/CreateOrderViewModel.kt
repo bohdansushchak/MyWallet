@@ -1,17 +1,20 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
-import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.lang.IllegalStateException
 
 const val ZERO = 0.0
 
@@ -26,25 +29,51 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     val totalPrice: LiveData<Double>
         get() = _totalPrice
 
-    val foundedCategoryEntity: LiveData<CategoryEntity>
-        get() = _foundedCategoryEntity
+    val recommendCategory: LiveData<CategoryEntity>
+        get() = _recommendCategory
 
-    val categoryProductList: LiveData<MutableList<CategoryWithProducts>>
+    val categoryProductList: LiveData<MutableList<CategoryWithListProducts>>
     get() = _categoryProductList
 
     var orderDate: Long = 0
     //endregion
 
-    private val _totalPrice by lazy { MutableLiveData<Double>()  }
+    private val _totalPrice by lazy { MutableLiveData<Double>() }
     private val _productList by lazy { MutableLiveData<MutableList<ProductEntity>>() }
-    private val _foundedCategoryEntity by lazy { MutableLiveData<CategoryEntity>() }
-    private val _categoryProductList: MutableLiveData<MutableList<CategoryWithProducts>> = MutableLiveData()
+    private val _recommendCategory by lazy { MutableLiveData<CategoryEntity>() }
+    private val _categoryProductList by lazy { MutableLiveData<MutableList<CategoryWithListProducts>>() }
     var selectedCategory = CategoryEntity.emptyCategoryEntity
 
     init {
         //productList.value = mutableListOf()
         _categoryProductList.value = mutableListOf()
         _totalPrice.value = ZERO
+    }
+
+    fun initOrder(order: OrderEntity){
+        if(order.orderId == null)
+            throw IllegalStateException("Order categoryId can't be null")
+
+        GlobalScope.launch(Dispatchers.IO) {
+           val list = myWalletRepository.getProductCategoryList(order.orderId!!)
+
+            list.forEach {
+                Log.d("Product", it.toString())
+            }
+
+            /*
+            val productList = list.map {
+                ProductEntity(
+                    categoryId = it.categoryId,
+                    categoryTitle = it.productTitle,
+                    price = it.price,
+                    categoryId = it.
+                )
+            }*/
+            
+            //_categoryProductList.postValue(list.toMutableList())
+            _totalPrice.postValue(order.price)
+        }
     }
 
     fun searchCategoryCount(productTitle: String) {
@@ -58,7 +87,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
 
             if (categoryCount?.categoryId != null) {
                 val category = let { myWalletRepository.getCategoryById(categoryCount.categoryId!!) }
-                _foundedCategoryEntity.postValue(category)
+                _recommendCategory.postValue(category)
             }
         }
     }
@@ -74,7 +103,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
         val newCategoryProductList = _categoryProductList.value ?: mutableListOf()
 
         if (!newCategoryProductList.containCategory(selectedCategory)) {
-            val categoryProductObj = CategoryWithProducts(selectedCategory, mutableListOf(product))
+            val categoryProductObj = CategoryWithListProducts(selectedCategory, mutableListOf(product))
             newCategoryProductList.add(categoryProductObj)
         } else {
             val index = newCategoryProductList.indexOfCategory(selectedCategory)
@@ -110,11 +139,10 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
 
     fun addOrder(title: String) {
         GlobalScope.launch {
-
             if(orderDate == 0L) throw IllegalArgumentException("Order date can't be 0")
 
             val order = OrderEntity(
-                id = null,
+                orderId = null,
                 title = title,
                 date = orderDate,
                 price = totalPrice.value ?: ZERO

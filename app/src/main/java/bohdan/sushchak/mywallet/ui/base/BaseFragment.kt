@@ -9,6 +9,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.internal.getOnlyDate
 import kotlinx.coroutines.CoroutineScope
@@ -204,5 +206,11 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
             maxDate?.let { dpd.datePicker.maxDate = it }
             dpd.show()
         }
+    }
+
+    protected fun getNavController(view: View): NavController {
+        val navController = Navigation.findNavController(view)
+        navController.setGraph(R.navigation.app_navigation)
+        return navController
     }
 }

@@ -27,9 +27,9 @@ class MySpinnerAdapter(private val context: Context,
         }
 
 
-        view!!.findViewById<TextView>(R.id.tvCategory).text = categoryEntities[position].title
+        view!!.findViewById<TextView>(R.id.tvCategory).text = categoryEntities[position].categoryTitle
         view!!.findViewById<TextView>(R.id.tvCategory).setTextColor(categoryEntities[position].color)
-        //convertView.findViewById<CardView>(R.id.boxColor).setBackgroundColor(categoryEntities[position].color)
+        //convertView.findViewById<CardView>(R.categoryId.boxColor).setBackgroundColor(categoryEntities[position].color)
 
         return view
     }
@@ -50,9 +50,9 @@ class MySpinnerAdapter(private val context: Context,
                     .inflate(R.layout.category_item_spinner, null)
         }
 
-        view!!.findViewById<TextView>(R.id.tvCategory).text = categoryEntities[position].title
+        view!!.findViewById<TextView>(R.id.tvCategory).text = categoryEntities[position].categoryTitle
         view.findViewById<TextView>(R.id.tvCategory).setTextColor(categoryEntities[position].color)
-        //convertView.findViewById<CardView>(R.id.boxColor).setBackgroundColor(categoryEntities[position].color)
+        //convertView.findViewById<CardView>(R.categoryId.boxColor).setBackgroundColor(categoryEntities[position].color)
 
         return view
     }

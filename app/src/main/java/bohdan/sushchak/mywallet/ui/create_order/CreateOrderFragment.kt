@@ -11,12 +11,13 @@ import android.widget.AdapterView
 import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.ExpandableListProductAdapter
 import bohdan.sushchak.mywallet.adapters.MySpinnerAdapter
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
-import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import bohdan.sushchak.mywallet.internal.*
 import bohdan.sushchak.mywallet.internal.view.startFadeInAnimation
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
@@ -36,6 +37,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     private val viewModelFactory: CreateOrderViewModelFactory by instance()
     private lateinit var viewModel: CreateOrderViewModel
 
+    private val args by navArgs<CreateOrderFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +51,8 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(CreateOrderViewModel::class.java)
+
+        args.order?.let { viewModel.initOrder(it) }
 
         ibtnAddProduct.setOnClickListener { addProduct() }
         btnClearAll.setOnClickListener { clearProductList() }
@@ -81,7 +86,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             updateTotalPrice(it)
         })
 
-        viewModel.foundedCategoryEntity.observe(this@CreateOrderFragment, Observer { category ->
+        viewModel.recommendCategory.observe(this@CreateOrderFragment, Observer { category ->
             if (category != null)
                 updateSpinner(category)
         })
@@ -110,7 +115,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         })
     }
 
-    private fun updateCategoryList(categoryWithProduct: MutableList<CategoryWithProducts>) {
+    private fun updateCategoryList(categoryWithProduct: MutableList<CategoryWithListProducts>) {
         adapter = ExpandableListProductAdapter(context!!, categoryWithProduct)
         adapter.onLongClick = { view, product ->
             showPopupEditRemove(view,
@@ -139,10 +144,10 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             ZERO
         }
 
-        val categoryId = viewModel.selectedCategory.id
+        val categoryId = viewModel.selectedCategory.categoryId
 
         val product = ProductEntity(
-            id = null,
+            productId = null,
             title = title,
             price = price,
             categoryId = categoryId,

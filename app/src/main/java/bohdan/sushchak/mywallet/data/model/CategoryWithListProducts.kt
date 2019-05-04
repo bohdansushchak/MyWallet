@@ -5,13 +5,22 @@ import androidx.room.Relation
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 
-data class CategoryWithProducts(
+data class CategoryWithListProducts(
 
         @Embedded
         var categoryEntity: CategoryEntity,
 
-        @Relation(parentColumn = "id",
+        @Relation(parentColumn = "categoryId",
                 entityColumn = "category_id")
         var products: MutableList<ProductEntity> = mutableListOf()
 )
+{
+        override fun toString(): String {
+                return "$categoryEntity ${products.joinToString(
+                        prefix = "{",
+                        postfix = "}",
+                        separator = ", "
+                ) { it.toString() }}"
+        }
+}
 

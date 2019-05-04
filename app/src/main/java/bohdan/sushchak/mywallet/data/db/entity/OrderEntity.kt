@@ -9,17 +9,17 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "orders")
 data class OrderEntity(
-        @PrimaryKey(autoGenerate = true)
-        @ColumnInfo(name = "id")
-        override var id: Long?,
+    @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "orderId")
+        var orderId: Long?,
 
-        @ColumnInfo(name = "title")
+    @ColumnInfo(name = "title")
         var title: String,
 
-        @ColumnInfo(name = "date")
+    @ColumnInfo(name = "date")
         var date: Long,
 
-        @ColumnInfo(name = "total_price")
+    @ColumnInfo(name = "total_price")
         var price: Double
 
 ) : BaseEntity(), Parcelable {
@@ -32,12 +32,12 @@ data class OrderEntity(
             parcel.readDouble())
 
     override fun toString(): String {
-        return "(id:$id, title:$title, date:$date, price:$price)"
+        return "(categoryId:$orderId, categoryTitle:$title, date:$date, price:$price)"
     }
 
     @Ignore
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeValue(id)
+        parcel.writeValue(orderId)
         parcel.writeString(title)
         parcel.writeLong(date)
         parcel.writeDouble(price)
@@ -62,10 +62,10 @@ data class OrderEntity(
 /*
     override fun equals(other: Any?): Boolean {
         return if (other is OrderEntity) {
-            this.id == other.id
+            this.categoryId == other.categoryId
                     && this.date == other.date
                     && this.price == other.price
-                    && this.title == other.title
+                    && this.categoryTitle == other.categoryTitle
         } else false
     }
     */

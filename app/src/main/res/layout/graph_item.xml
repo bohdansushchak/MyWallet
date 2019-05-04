@@ -63,7 +63,6 @@
                 android:background="@drawable/graph_legend_background"
                 android:padding="2dp"/>
 
-
     </FrameLayout>
 
 </androidx.cardview.widget.CardView>

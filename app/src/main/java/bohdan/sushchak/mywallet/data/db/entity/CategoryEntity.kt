@@ -7,14 +7,14 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "categories")
 data class CategoryEntity(
 
-        @PrimaryKey(autoGenerate = true)
-        @ColumnInfo(name = "id")
-        override val id: Long? = null,
+    @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "categoryId")
+        val categoryId: Long? = null,
 
-        @ColumnInfo(name = "title")
-        var title: String,
+    @ColumnInfo(name = "category_title")
+        var categoryTitle: String,
 
-        @ColumnInfo(name = "color")
+    @ColumnInfo(name = "color")
         var color: Int
 
 ): BaseEntity() {
@@ -26,13 +26,13 @@ data class CategoryEntity(
     }
 
     override fun toString(): String {
-        return "(id:$id, title:$title, color:$color)"
+        return "(categoryId:$categoryId, categoryTitle:$categoryTitle)"
     }
 
     override fun equals(other: Any?): Boolean {
         return other is CategoryEntity
-                && this.id == other.id
-                && this.title == other.title
+                && this.categoryId == other.categoryId
+                && this.categoryTitle == other.categoryTitle
                 && this.color == other.color
     }
 }

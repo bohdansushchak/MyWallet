@@ -25,7 +25,7 @@ class OrdersByDateAdapter(private val context: Context,
     : ExpandableRecyclerViewAdapter<OrdersByDateAdapter.DateViewHolder, OrdersByDateAdapter.OrderViewHolder>(items) {
 
     var onLongClick: ((view: View, order: OrderEntity) -> Unit)? = null
-    var onClick: ((order: OrderEntity) -> Unit)? = null
+    var onClick: ((view: View, order: OrderEntity) -> Unit)? = null
 
     override fun onCreateGroupViewHolder(parent: ViewGroup?, viewType: Int): DateViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.date_item, parent, false)
@@ -50,7 +50,7 @@ class OrdersByDateAdapter(private val context: Context,
         }
 
         holder?.itemView?.setOnClickListener{
-            onClick?.invoke(order)
+            onClick?.invoke(it, order)
             return@setOnClickListener
         }
     }

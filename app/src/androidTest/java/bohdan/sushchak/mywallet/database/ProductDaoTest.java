@@ -47,7 +47,7 @@ public class ProductDaoTest extends DatabaseBaseTest {
     public long getSomeOrderId() throws NullPointerException {
         List<OrderEntity> orderEntities = OrderTestHelper.createListOfOrders(1);
         orderDao.insert(orderEntities.get(0));
-        long orderId = orderDao.getOrdersNonLive().get(0).getId();
+        long orderId = orderDao.getOrdersNonLive().get(0).getOrderId();
 
         return orderId;
     }
@@ -55,7 +55,7 @@ public class ProductDaoTest extends DatabaseBaseTest {
     public long getSomeCategoryId() throws NullPointerException {
         List<CategoryEntity> categories = CategoryTestHelper.Companion.createListOfCategory(1);
         categoryDao.insert(categories.get(0));
-        long categoryId = categoryDao.getAllCategoriesNonLive().get(0).getId();
+        long categoryId = categoryDao.getAllCategoriesNonLive().get(0).getCategoryId();
 
         return categoryId;
     }

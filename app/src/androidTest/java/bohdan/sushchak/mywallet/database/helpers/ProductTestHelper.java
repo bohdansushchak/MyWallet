@@ -15,7 +15,7 @@ public final class ProductTestHelper {
             double somePrice = new Random().nextDouble();
             long id = Long.valueOf(i);
 
-            ProductEntity obj = new ProductEntity(id, "title " + i, somePrice, categoryId, orderId);
+            ProductEntity obj = new ProductEntity(id, "categoryTitle " + i, somePrice, categoryId, orderId);
             productEntityList.add(obj);
         }
 
@@ -23,7 +23,7 @@ public final class ProductTestHelper {
     }
 
     public static boolean productsAreIdentical(ProductEntity productEntity1, ProductEntity productEntity2) throws NullPointerException{
-        return productEntity1.getId().equals(productEntity2.getId())
+        return productEntity1.getProductId().equals(productEntity2.getProductId())
                 && productEntity1.getOrderId().equals(productEntity2.getOrderId())
                 && productEntity1.getPrice() == productEntity2.getPrice()
                 && productEntity1.getTitle().equals(productEntity2.getTitle())

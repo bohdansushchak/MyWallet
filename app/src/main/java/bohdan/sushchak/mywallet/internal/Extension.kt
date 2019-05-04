@@ -2,7 +2,7 @@ package bohdan.sushchak.mywallet.internal
 
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
-import bohdan.sushchak.mywallet.data.model.CategoryWithProducts
+import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import org.jetbrains.anko.collections.forEachWithIndex
 import java.util.*
@@ -13,7 +13,7 @@ fun List<ProductEntity>.setOrderId(orderId: Long) {
     }
 }
 
-fun MutableList<CategoryWithProducts>.containCategory(categoryEntity: CategoryEntity): Boolean {
+fun MutableList<CategoryWithListProducts>.containCategory(categoryEntity: CategoryEntity): Boolean {
     var isExist = false
 
     loop@ for (categoryWithProducts in this) {
@@ -26,7 +26,7 @@ fun MutableList<CategoryWithProducts>.containCategory(categoryEntity: CategoryEn
     return isExist
 }
 
-fun MutableList<CategoryWithProducts>.indexOfCategory(categoryEntity: CategoryEntity): Int {
+fun MutableList<CategoryWithListProducts>.indexOfCategory(categoryEntity: CategoryEntity): Int {
     var index = -1
 
     this.forEachWithIndex { i, categoryWithProducts ->
@@ -37,8 +37,8 @@ fun MutableList<CategoryWithProducts>.indexOfCategory(categoryEntity: CategoryEn
     return index
 }
 
-fun MutableList<CategoryWithProducts>.removeProduct(product: ProductEntity) {
-    var categoryToRemove: CategoryWithProducts? = null
+fun MutableList<CategoryWithListProducts>.removeProduct(product: ProductEntity) {
+    var categoryToRemove: CategoryWithListProducts? = null
 
     this.forEach { categoryWithProducts ->
         categoryWithProducts.products.remove(product)

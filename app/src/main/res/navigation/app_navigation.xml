@@ -29,6 +29,8 @@
                 android:name="isBottomNavigationGone"
                 app:argType="boolean"
                 android:defaultValue="true"/>
+        <argument android:name="order" app:argType="bohdan.sushchak.mywallet.data.db.entity.OrderEntity"
+                  app:nullable="true" android:defaultValue="@null"/>
     </fragment>
     <fragment
             android:id="@+id/diagramFragment"
@@ -46,8 +48,8 @@
             android:label="@string/list_order_fragment_title"
             tools:layout="@layout/order_list_fragment">
         <action
-                android:id="@+id/action_orderListFragment_to_createOrderFragment"
-                app:destination="@id/createOrderFragment"/>
+                android:id="@+id/actionCreateOrder"
+                app:destination="@+id/createOrderFragment"/>
         <argument
                 android:name="isStart"
                 app:argType="boolean"

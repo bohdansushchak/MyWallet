@@ -3,7 +3,7 @@ package bohdan.sushchak.mywallet.data.model
 import androidx.room.ColumnInfo
 
 data class CategoryPrice(
-        @ColumnInfo(name = "title")
+        @ColumnInfo(name = "category_title")
         val title: String?,
         @ColumnInfo(name = "color")
         val color: Int?,

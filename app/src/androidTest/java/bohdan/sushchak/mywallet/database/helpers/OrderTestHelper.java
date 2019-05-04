@@ -16,7 +16,7 @@ public final class OrderTestHelper {
             double somePrice = new Random().nextDouble();
             long id = Long.valueOf(i);
 
-            OrderEntity obj = new OrderEntity(id, "title " + i, someDate, somePrice);
+            OrderEntity obj = new OrderEntity(id, "categoryTitle " + i, someDate, somePrice);
             orderEntityList.add(obj);
         }
 
@@ -24,7 +24,7 @@ public final class OrderTestHelper {
     }
 
     public static boolean ordersAreIdentical(OrderEntity orderEntity1, OrderEntity orderEntity2) throws NullPointerException {
-        return orderEntity1.getId().equals(orderEntity2.getId())
+        return orderEntity1.getOrderId().equals(orderEntity2.getOrderId())
                 && orderEntity1.getDate() == orderEntity2.getDate()
                 && orderEntity1.getPrice() == orderEntity2.getPrice()
                 && orderEntity1.getTitle().equals(orderEntity2.getTitle());

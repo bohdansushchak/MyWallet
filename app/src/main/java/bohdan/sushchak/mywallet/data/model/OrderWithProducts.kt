@@ -9,12 +9,12 @@ data class OrderWithProducts(
         @Embedded
         var order: OrderEntity,
 
-        @Relation(parentColumn = "id",
+        @Relation(parentColumn = "orderId",
                 entityColumn = "order_id")
         var products: List<ProductEntity> = listOf()
 ) {
     override fun toString(): String {
-        return "${order.toString()} :{ $products }"
+        return "${order} :{ $products }"
 
     }
 }

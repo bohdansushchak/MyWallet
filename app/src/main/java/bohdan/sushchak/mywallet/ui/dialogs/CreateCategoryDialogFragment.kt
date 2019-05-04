@@ -35,7 +35,7 @@ class CreateCategoryDialogFragment(var categoryEntity: CategoryEntity?) : Dialog
         adapter = PickColorAdapter(context!!, colorList)
 
         if (categoryEntity != null) {
-            edCategoryTitle.setText(categoryEntity!!.title)
+            edCategoryTitle.setText(categoryEntity!!.categoryTitle)
             val index = colorList.indexOf(categoryEntity!!.color)
             adapter.mSelectedItem = index
 
@@ -53,7 +53,7 @@ class CreateCategoryDialogFragment(var categoryEntity: CategoryEntity?) : Dialog
                 return@setOnClickListener
 
             categoryEntity!!.color = colorList[adapter.mSelectedItem]
-            categoryEntity!!.title = edCategoryTitle.text.toString().trim()
+            categoryEntity!!.categoryTitle = edCategoryTitle.text.toString().trim()
 
             onResult?.invoke(categoryEntity!!)
             dismiss()

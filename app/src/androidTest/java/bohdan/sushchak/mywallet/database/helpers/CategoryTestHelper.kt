@@ -13,7 +13,7 @@ class CategoryTestHelper {
             for (i in 0..amount){
                 val rand = Random(1)
                 val categoryEntity = CategoryEntity(i.toLong(),
-                        "title $i",
+                        "categoryTitle $i",
                         Color.argb(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256))
                 )
 
@@ -22,7 +22,7 @@ class CategoryTestHelper {
             return categories.toList()
         }
 
-        fun categoriesAreIdentical(cat1: CategoryEntity, cat2: CategoryEntity) = cat1.title == cat2.title
-                && cat1.id == cat1.id && cat1.color == cat2.color
+        fun categoriesAreIdentical(cat1: CategoryEntity, cat2: CategoryEntity) = cat1.categoryTitle == cat2.categoryTitle
+                && cat1.categoryId == cat1.categoryId && cat1.color == cat2.color
     }
 }

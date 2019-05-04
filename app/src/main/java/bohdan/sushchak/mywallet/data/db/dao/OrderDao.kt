@@ -15,7 +15,7 @@ abstract class OrderDao : BaseDao<OrderEntity> {
     @Query("select * from orders")
     abstract fun getOnlyOrders(): LiveData<List<OrderEntity>>
 
-    @Query("select * from orders where id = :id")
+    @Query("select * from orders where orderId = :id")
     abstract fun getOrder(id: Int): LiveData<OrderEntity>
 
     @Query("select * from orders")
@@ -24,7 +24,7 @@ abstract class OrderDao : BaseDao<OrderEntity> {
     @Query("select * from orders order by date asc")
     abstract fun getOrders(): LiveData<List<OrderEntity>>
 
-    @Query("select id from orders where date = :id")
+    @Query("select orderId from orders where date = :id")
     abstract fun getOrdersIdByDate(id: Long): List<Long>?
 
     @Query("select * from orders")

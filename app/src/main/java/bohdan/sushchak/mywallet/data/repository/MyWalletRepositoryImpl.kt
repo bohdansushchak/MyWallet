@@ -11,9 +11,7 @@ import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.*
 import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import com.github.sundeepk.compactcalendarview.domain.Event
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import java.util.*
 
@@ -110,20 +108,25 @@ class MyWalletRepositoryImpl(
 
     override suspend fun viewDataBase() {
         withContext(Dispatchers.Default) {
+            Log.d("TAG", "==============================================")
             Log.d("TAG", "Products")
             productDao.getProductsNonLive()?.forEach {
                 Log.d("TAG", it.toString())
             }
+            Log.d("TAG", "################################################")
 
             Log.d("TAG", "Orders")
             orderDao.getOrdersNonLive()?.forEach {
                 Log.d("TAG", it.toString())
             }
 
+            Log.d("TAG", "################################################")
+
             Log.d("TAG", "Categories")
             categoryDao.getAllCategoriesNonLive()?.forEach {
                 Log.d("TAG", it.toString())
             }
+            Log.d("TAG", "==============================================")
         }
     }
 
@@ -150,4 +153,11 @@ class MyWalletRepositoryImpl(
         return dateRangeByYearAndMonth(month = currentMonth, year = currentYear)
     }
     //endregion
+
+    override suspend fun getProductCategoryList(orderId: Long): List<CategoryProduct> {
+        return withContext(Dispatchers.IO) {
+            //return@withContext productDao.getProductsByOrderIdNonLive(orderId)?: listOf()
+            return@withContext productDao.getProductsByOrderIdwNonLive(orderId)?: listOf()
+        }
+    }
 }

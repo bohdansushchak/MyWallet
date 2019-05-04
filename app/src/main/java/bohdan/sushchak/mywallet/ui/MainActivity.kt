@@ -30,9 +30,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         }
 
         navController = Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment)
-
         bottom_nav.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener(this)
+        navController.addOnDestinationChangedListener(this@MainActivity)
     }
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onDestroy() {
         super.onDestroy()
-        navController.removeOnDestinationChangedListener(this)
+        navController.removeOnDestinationChangedListener(this@MainActivity)
     }
 
     private fun navigationBottomUpdate(isShouldGone: Boolean?) {
