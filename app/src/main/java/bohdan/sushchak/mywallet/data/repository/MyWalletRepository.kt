@@ -49,6 +49,6 @@ interface MyWalletRepository {
 
     suspend fun getDateLimit(): DateLimit
 
-    suspend fun getProductCategoryList(orderId: Long): List<CategoryProduct>
+    suspend fun getProductCategoryList(orderId: Long): List<CategoryWithListProducts>
 
 }

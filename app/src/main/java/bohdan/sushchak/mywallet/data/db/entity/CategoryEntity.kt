@@ -17,7 +17,7 @@ data class CategoryEntity(
     @ColumnInfo(name = "color")
         var color: Int
 
-): BaseEntity() {
+) {
     companion object {
         val emptyCategoryEntity: CategoryEntity
             get() {
@@ -26,7 +26,7 @@ data class CategoryEntity(
     }
 
     override fun toString(): String {
-        return "(categoryId:$categoryId, categoryTitle:$categoryTitle)"
+        return "($categoryId, $categoryTitle)"
     }
 
     override fun equals(other: Any?): Boolean {

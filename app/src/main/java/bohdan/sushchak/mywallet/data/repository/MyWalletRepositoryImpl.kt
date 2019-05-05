@@ -14,6 +14,7 @@ import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.HashSet
 
 class MyWalletRepositoryImpl(
     private val categoryDao: CategoryDao,
@@ -87,7 +88,6 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun getCategoriesPrice(startDate: Long, endDate: Long): List<CategoryPrice> {
-
         val categoryPriceAllList = mutableListOf<CategoryPrice>()
 
         val totalPriceForCategories = categoryDao.getTotalPriceCategories(startDate, endDate)
@@ -154,10 +154,21 @@ class MyWalletRepositoryImpl(
     }
     //endregion
 
-    override suspend fun getProductCategoryList(orderId: Long): List<CategoryProduct> {
+    override suspend fun getProductCategoryList(orderId: Long): List<CategoryWithListProducts> {
         return withContext(Dispatchers.IO) {
-            //return@withContext productDao.getProductsByOrderIdNonLive(orderId)?: listOf()
-            return@withContext productDao.getProductsByOrderIdwNonLive(orderId)?: listOf()
+            val list = productDao.getCategoryProductNonLive(orderId)?: listOf()
+            val productsSet = HashSet<ProductEntity>()
+            val categorySet = HashSet<CategoryEntity>()
+
+            list.forEach {
+                productsSet.add(it.productEntity)
+                categorySet.add(it.categoryEntity)
+            }
+
+            return@withContext categorySet.map { categoryEntity ->
+                val products = productsSet.filter { it.categoryId == categoryEntity.categoryId}.toMutableList()
+                CategoryWithListProducts(categoryEntity = categoryEntity, products = products)
+            }
         }
     }
 }

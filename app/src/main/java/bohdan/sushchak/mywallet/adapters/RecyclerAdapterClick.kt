@@ -1,13 +1,9 @@
 package bohdan.sushchak.mywallet.adapters
 
 import android.view.View
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import bohdan.sushchak.mywallet.adapters.callbacks.ItemDiffCallback
-import bohdan.sushchak.mywallet.data.db.entity.BaseEntity
 
-abstract class RecyclerAdapterClick<VH : RecyclerView.ViewHolder, T: BaseEntity>(items: List<T>) : BaseRecyclerAdapter<VH, T>(items) {
-
+abstract class RecyclerAdapterClick<VH : RecyclerView.ViewHolder, T>(items: List<T>) : BaseRecyclerAdapter<VH, T>(items) {
     var onLongClick: ((view: View, position: Int) -> Unit)? = null
     var onClick: ((view: View, position: Int) -> Unit)? = null
 

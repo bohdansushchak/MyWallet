@@ -53,7 +53,6 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     fun initOrder(order: OrderEntity){
         if(order.orderId == null)
             throw IllegalStateException("Order categoryId can't be null")
-
         GlobalScope.launch(Dispatchers.IO) {
            val list = myWalletRepository.getProductCategoryList(order.orderId!!)
 
@@ -70,8 +69,8 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
                     categoryId = it.
                 )
             }*/
-            
-            //_categoryProductList.postValue(list.toMutableList())
+
+            _categoryProductList.postValue(list.toMutableList())
             _totalPrice.postValue(order.price)
         }
     }

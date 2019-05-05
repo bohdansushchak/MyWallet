@@ -23,9 +23,9 @@ data class ProductEntity (
 
         @ColumnInfo(name = "order_id")
         var orderId: Long?
-): BaseEntity()
+)
 {
         override fun toString(): String {
-                return "(categoryId:$productId, categoryTitle:$title, price:$price, categoryId:$categoryId, orderId:$orderId)"
+                return "($productId, $title, $price, categoryId:$categoryId, orderId:$orderId)"
         }
 }

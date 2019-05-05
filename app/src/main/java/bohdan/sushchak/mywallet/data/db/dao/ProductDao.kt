@@ -9,7 +9,6 @@ import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 
 @Dao
 abstract class ProductDao : BaseDao<ProductEntity> {
-
     @Query("select category_id, count(category_id) as count from products where title like '%' || :productTitle || '%' group by category_id")
     abstract fun getCategoriesCountByProductTitle(productTitle: String): List<CategoryCount>?
 
@@ -20,6 +19,6 @@ abstract class ProductDao : BaseDao<ProductEntity> {
     abstract fun getProductsByOrderIdNonLive(orderId: Long): List<ProductEntity>?
 
     @Query("select * from categories inner join products on products.category_id = categories.categoryId where [products].[order_id] = :orderId") // where [products].[order_id] = :orderId group by category_id
-    abstract fun getProductsByOrderIdwNonLive(orderId: Long): List<CategoryProduct>?
+    abstract fun getCategoryProductNonLive(orderId: Long): List<CategoryProduct>?
 
 }

@@ -10,26 +10,20 @@ import android.widget.TextView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 
-class MySpinnerAdapter(private val context: Context,
-                       private val categoryEntities: List<CategoryEntity>)
-    : BaseAdapter() {
+class MySpinnerAdapter(
+    private val context: Context,
+    private val categoryEntities: List<CategoryEntity>
+) : BaseAdapter() {
 
     override fun getItem(position: Int): CategoryEntity? {
-        return categoryEntities.get(position)
+        return categoryEntities[position]
     }
 
-    @SuppressLint("InflateParams")
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var view = convertView
-        if(view == null){
-            view = LayoutInflater.from(context)
-                    .inflate(R.layout.category_item_spinner, null)
-        }
-
-
-        view!!.findViewById<TextView>(R.id.tvCategory).text = categoryEntities[position].categoryTitle
-        view!!.findViewById<TextView>(R.id.tvCategory).setTextColor(categoryEntities[position].color)
-        //convertView.findViewById<CardView>(R.categoryId.boxColor).setBackgroundColor(categoryEntities[position].color)
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        val view = convertView ?:  LayoutInflater.from(context)
+            .inflate(R.layout.category_item_spinner, null)
+        view.findViewById<TextView>(R.id.tvCategory).text = categoryEntities[position].categoryTitle
+        view.findViewById<TextView>(R.id.tvCategory).setTextColor(categoryEntities[position].color)
 
         return view
     }
@@ -44,16 +38,15 @@ class MySpinnerAdapter(private val context: Context,
 
     @SuppressLint("InflateParams")
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var view = convertView
-        if(view == null){
+ /*       var view = convertView
+        if (view == null) {
             view = LayoutInflater.from(context)
-                    .inflate(R.layout.category_item_spinner, null)
+                .inflate(R.layout.category_item_spinner, null)
         }
 
         view!!.findViewById<TextView>(R.id.tvCategory).text = categoryEntities[position].categoryTitle
         view.findViewById<TextView>(R.id.tvCategory).setTextColor(categoryEntities[position].color)
-        //convertView.findViewById<CardView>(R.categoryId.boxColor).setBackgroundColor(categoryEntities[position].color)
-
-        return view
+*/
+        return getView(position, convertView, parent)
     }
 }
