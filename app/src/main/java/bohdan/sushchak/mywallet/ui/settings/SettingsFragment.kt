@@ -79,6 +79,20 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         }
     }
 
+    private fun addNewCategory(list: List<CategoryEntity>) {
+        if (list.size < Constants.MAX_CATEGORIES) {
+            val ft = fragmentManager?.beginTransaction()
+            val category = CategoryEntity.emptyCategoryEntity
+            val fragment = CreateCategoryDialogFragment(category)
+            fragment.show(ft, "")
+
+            fragment.onResult = { newCategory -> viewModel.addCategory(newCategory) }
+        } else {
+            showDialog(R.string.d_title_max_categories, R.string.d_msg_max_categories)
+        }
+    }
+
+
     private fun updateCategory(categoryEntities: List<CategoryEntity>) {
         if (::categoryAdapter.isInitialized) {
             categoryAdapter.update(categoryEntities)
@@ -98,18 +112,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
     }
 
     private fun initButton(list: List<CategoryEntity>) {
-        btnAddCategory.setOnClickListener {
-            if (list.size < Constants.MAX_CATEGORIES) {
-                val ft = fragmentManager?.beginTransaction()
-                val category = CategoryEntity.emptyCategoryEntity
-                val fragment = CreateCategoryDialogFragment(category)
-                fragment.show(ft, "")
-
-                fragment.onResult = { newCategory -> viewModel.addCategory(newCategory) }
-            } else {
-                showDialog(R.string.d_title_max_categories, R.string.d_msg_max_categories)
-            }
-        }
+        btnAddCategory.setOnClickListener { addNewCategory(list) }
     }
 
     private fun editCategory(categoryEntity: CategoryEntity) {

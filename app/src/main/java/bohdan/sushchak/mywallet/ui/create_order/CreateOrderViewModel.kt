@@ -1,20 +1,19 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
+import bohdan.sushchak.mywallet.data.model.CategoryProduct
 import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.lang.IllegalStateException
 
 const val ZERO = 0.0
 
@@ -33,7 +32,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
         get() = _recommendCategory
 
     val categoryProductList: LiveData<MutableList<CategoryWithListProducts>>
-    get() = _categoryProductList
+        get() = _categoryProductList
 
     var orderDate: Long = 0
     //endregion
@@ -45,43 +44,29 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     var selectedCategory = CategoryEntity.emptyCategoryEntity
 
     init {
-        //productList.value = mutableListOf()
         _categoryProductList.value = mutableListOf()
         _totalPrice.value = ZERO
     }
 
-    fun initOrder(order: OrderEntity){
-        if(order.orderId == null)
+    fun initOrder(order: OrderEntity) {
+        if (order.orderId == null)
             throw IllegalStateException("Order categoryId can't be null")
         GlobalScope.launch(Dispatchers.IO) {
-           val list = myWalletRepository.getProductCategoryList(order.orderId!!)
+            val categoryProduct = myWalletRepository.getProductCategoryList(order.orderId!!)
+            val groupedProducts = groupProductsByCategory(categoryProduct)
+            val products = categoryProduct.map { it.productEntity }
 
-            list.forEach {
-                Log.d("Product", it.toString())
-            }
-
-            /*
-            val productList = list.map {
-                ProductEntity(
-                    categoryId = it.categoryId,
-                    categoryTitle = it.productTitle,
-                    price = it.price,
-                    categoryId = it.
-                )
-            }*/
-
-            _categoryProductList.postValue(list.toMutableList())
+            _productList.postValue(products.toMutableList())
+            _categoryProductList.postValue(groupedProducts.toMutableList())
             _totalPrice.postValue(order.price)
         }
     }
 
     fun searchCategoryCount(productTitle: String) {
-        GlobalScope.launch {
-            if (productTitle.isEmpty())
-                return@launch
-
+        if (productTitle.isEmpty())
+            return
+        GlobalScope.launch(Dispatchers.IO) {
             val categoryCountList = myWalletRepository.getCategoryCountByProductTitle(productTitle)
-
             val categoryCount = categoryCountList.maxBy { it.count }
 
             if (categoryCount?.categoryId != null) {
@@ -115,7 +100,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     }
 
     fun removeProduct(product: ProductEntity) {
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.IO) {
             val list = productList.value
             list?.remove(product)
 
@@ -137,9 +122,8 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     }
 
     fun addOrder(title: String) {
-        GlobalScope.launch {
-            if(orderDate == 0L) throw IllegalArgumentException("Order date can't be 0")
-
+        if (orderDate == 0L) throw IllegalArgumentException("Order date can't be 0")
+        GlobalScope.launch(Dispatchers.IO) {
             val order = OrderEntity(
                 orderId = null,
                 title = title,
@@ -154,10 +138,25 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
         }
     }
 
-    fun isProductListEmpty(): Boolean  {
-        if (productList.value != null){
-           return productList.value!!.isEmpty()
+    fun isProductListEmpty(): Boolean {
+        if (productList.value != null) {
+            return productList.value!!.isEmpty()
         }
         return true
+    }
+
+    private fun groupProductsByCategory(productCategoryList: List<CategoryProduct>): List<CategoryWithListProducts> {
+        val productsSet = HashSet<ProductEntity>()
+        val categorySet = HashSet<CategoryEntity>()
+
+        productCategoryList.forEach {
+            productsSet.add(it.productEntity)
+            categorySet.add(it.categoryEntity)
+        }
+
+        return categorySet.map { categoryEntity ->
+            val products = productsSet.filter { it.categoryId == categoryEntity.categoryId }.toMutableList()
+            CategoryWithListProducts(categoryEntity = categoryEntity, products = products)
+        }
     }
 }

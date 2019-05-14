@@ -14,7 +14,6 @@ import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.HashSet
 
 class MyWalletRepositoryImpl(
     private val categoryDao: CategoryDao,
@@ -55,14 +54,14 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun getCategoryById(id: Long): CategoryEntity? {
-        return categoryDao.getCategoryById(id)
+        return withContext(Dispatchers.IO) { return@withContext categoryDao.getCategoryById(id) }
     }
 
     //endregion
 
     //region OrderEntity
     override suspend fun createOrderWithProducts(order: OrderEntity, products: List<ProductEntity>) {
-        orderDao.insertOrderWithProducts(productDao, order, products)
+        withContext(Dispatchers.IO) { orderDao.insertOrderWithProducts(productDao, order, products) }
     }
 
     override suspend fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>> {
@@ -88,22 +87,26 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun getCategoriesPrice(startDate: Long, endDate: Long): List<CategoryPrice> {
-        val categoryPriceAllList = mutableListOf<CategoryPrice>()
+        return withContext(Dispatchers.IO) {
+            val categoryPriceAllList = mutableListOf<CategoryPrice>()
 
-        val totalPriceForCategories = categoryDao.getTotalPriceCategories(startDate, endDate)
-            ?: listOf()
-        val totalPriceCategoryNotSet = categoryDao.getTotalPriceCategoryNotSet(startDate, endDate)
-            ?: listOf()
+            val totalPriceForCategories = categoryDao.getTotalPriceCategories(startDate, endDate)
+                ?: listOf()
+            val totalPriceCategoryNotSet = categoryDao.getTotalPriceCategoryNotSet(startDate, endDate)
+                ?: listOf()
 
-        categoryPriceAllList.addAll(totalPriceForCategories)
-        categoryPriceAllList.addAll(totalPriceCategoryNotSet)
+            categoryPriceAllList.addAll(totalPriceForCategories)
+            categoryPriceAllList.addAll(totalPriceCategoryNotSet)
 
-        return categoryPriceAllList.toList()
+            return@withContext categoryPriceAllList.toList()
+        }
     }
 
     override suspend fun getTotalPriceByDate(startDate: Long, endDate: Long): List<MoneyByDate> {
-        viewDataBase()
-        return orderDao.getSpendMoneyByDateNonLive(startDate, endDate)
+        return withContext(Dispatchers.IO) {
+            viewDataBase()
+            return@withContext orderDao.getSpendMoneyByDateNonLive(startDate, endDate)
+        }
     }
 
     override suspend fun viewDataBase() {
@@ -154,21 +157,9 @@ class MyWalletRepositoryImpl(
     }
     //endregion
 
-    override suspend fun getProductCategoryList(orderId: Long): List<CategoryWithListProducts> {
+    override suspend fun getProductCategoryList(orderId: Long): List<CategoryProduct> {
         return withContext(Dispatchers.IO) {
-            val list = productDao.getCategoryProductNonLive(orderId)?: listOf()
-            val productsSet = HashSet<ProductEntity>()
-            val categorySet = HashSet<CategoryEntity>()
-
-            list.forEach {
-                productsSet.add(it.productEntity)
-                categorySet.add(it.categoryEntity)
-            }
-
-            return@withContext categorySet.map { categoryEntity ->
-                val products = productsSet.filter { it.categoryId == categoryEntity.categoryId}.toMutableList()
-                CategoryWithListProducts(categoryEntity = categoryEntity, products = products)
-            }
+            return@withContext productDao.getCategoryProductNonLive(orderId) ?: listOf()
         }
     }
 }
