@@ -8,7 +8,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import java.util.*
 
-@RunWith(JUnit4::class)
 class SimpleTestMyCalendarHelper {
 
     private lateinit var calendar: Calendar

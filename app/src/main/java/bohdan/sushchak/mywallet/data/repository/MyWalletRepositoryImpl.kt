@@ -15,12 +15,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
+/**
+ * Repository is main class to get and change data in whole application.
+ *
+ * @property categoryDao abstract class to manipulate table of categories
+ * @property orderDao abstract class to change data in order table
+ * @property productDao abstract class to make a CRUD methods on  product table
+ */
 class MyWalletRepositoryImpl(
     private val categoryDao: CategoryDao,
     private val orderDao: OrderDao,
     private val productDao: ProductDao
 ) : MyWalletRepository {
 
+    /**
+     * TODO
+     *
+     * @return a list with contain a date witch need to show event in grapch
+     */
     override suspend fun getEvents(): LiveData<List<Event>> {
         return withContext(Dispatchers.IO) {
             return@withContext orderDao.getAllEvents()

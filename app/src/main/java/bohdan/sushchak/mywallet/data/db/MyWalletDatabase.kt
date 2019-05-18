@@ -13,7 +13,11 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.internal.Converters
 
-
+/**
+ * Main class to create a database.
+ * @author Bohdan
+ * @version 2
+ */
 @Database(
     entities = [ProductEntity::class, OrderEntity::class, CategoryEntity::class],
     version = 2,
@@ -22,8 +26,22 @@ import bohdan.sushchak.mywallet.internal.Converters
 @TypeConverters(Converters::class)
 abstract class MyWalletDatabase : RoomDatabase() {
 
+    /**
+     * Method to get a instance of {@code CategoryDao} object
+     * @return A {@code CategoryDao} witch you can use to get access to table of categories
+     */
     abstract fun categoryDao(): CategoryDao
+
+    /**
+     * Method to get a instance of {@code OrderDao} object
+     * @return A {@code OrderDao} witch you can use to get access to table of orders
+     */
     abstract fun orderDao(): OrderDao
+
+    /**
+     * Method to get a instance of {@code ProductDao} object
+     * @return A {@code ProductDao} witch you can use to get access to table of products
+     */
     abstract fun productDao(): ProductDao
 
     companion object {
@@ -35,6 +53,11 @@ abstract class MyWalletDatabase : RoomDatabase() {
             instance ?: buildDatabase(context).also { instance = it }
         }
 
+        /**
+         * Method to build MyWalletDatabase
+         *
+         * @param context Context
+         */
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,

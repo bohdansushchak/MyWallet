@@ -3,6 +3,13 @@ package bohdan.sushchak.mywallet.adapters.callbacks
 import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 
+/**
+ * This class is helper for compare lists in adapter
+ *
+ * @param T some type
+ * @property oldList old list to compare
+ * @property newList a new list to compare
+ */
 class ItemDiffCallback<T>(private val oldList: List<T>,
                           private val newList: List<T>): DiffUtil.Callback() {
 

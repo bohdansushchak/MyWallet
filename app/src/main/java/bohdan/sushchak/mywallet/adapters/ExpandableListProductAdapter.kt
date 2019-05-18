@@ -14,10 +14,17 @@ import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import bohdan.sushchak.mywallet.internal.getSavedCurrency
 import bohdan.sushchak.mywallet.internal.myToString
 
+/**
+ * Adapter for recycler view what can make a list with a section
+ * it's will be like expandable list view
+ *
+ * @property context context need to have a access to layouts
+ * @property items list a products items grouped by category
+ */
 class ExpandableListProductAdapter(
-        private val context: Context,
-        private val items: MutableList<CategoryWithListProducts>)
-    : BaseExpandableListAdapter() {
+    private val context: Context,
+    private val items: MutableList<CategoryWithListProducts>
+) : BaseExpandableListAdapter() {
 
     var onLongClick: ((view: View, product: ProductEntity) -> Unit)? = null
 
@@ -61,11 +68,17 @@ class ExpandableListProductAdapter(
     }
 
     @SuppressLint("InflateParams", "SetTextI18n")
-    override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View {
+    override fun getChildView(
+        groupPosition: Int,
+        childPosition: Int,
+        isLastChild: Boolean,
+        convertView: View?,
+        parent: ViewGroup?
+    ): View {
         var view = convertView
         if (view == null) {
             view = LayoutInflater.from(context)
-                    .inflate(R.layout.product_item, null)
+                .inflate(R.layout.product_item, null)
         }
 
         val tvProductName = view!!.findViewById<TextView>(R.id.tvProductTitle)

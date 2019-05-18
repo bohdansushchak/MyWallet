@@ -8,6 +8,8 @@ apply plugin: "kotlin-kapt"
 
 apply plugin: 'androidx.navigation.safeargs'
 
+apply plugin: 'org.jetbrains.dokka-android'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -25,8 +27,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-}
 
+    dokka {
+        outputFormat = 'javadoc'
+        outputDirectory = "$buildDir/javadoc"
+    }
+}
 androidExtensions{
     experimental = true
 }
