@@ -19,7 +19,6 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.model.OrdersByDateGroup
 import bohdan.sushchak.mywallet.internal.convertOrdersByDate
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
-import bohdan.sushchak.mywallet.ui.create_order.CreateOrderFragmentArgs
 import kotlinx.android.synthetic.main.order_list_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware

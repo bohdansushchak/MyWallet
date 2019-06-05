@@ -9,6 +9,7 @@ apply plugin: "kotlin-kapt"
 apply plugin: 'androidx.navigation.safeargs'
 
 apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -33,7 +34,7 @@ android {
         outputDirectory = "$buildDir/javadoc"
     }
 }
-androidExtensions{
+androidExtensions {
     experimental = true
 }
 dependencies {
