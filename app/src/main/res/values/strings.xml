@@ -26,6 +26,7 @@
     <string name="btn_add_category">Add category</string>
     <string name="btn_text_save">Save</string>
     <string name="btn_log_in">Log in</string>
+    <string name="btn_sign_up">Sign up</string>
 
     <!-- editText hints-->
     <string name="ed_hint_write_product_name">Write product name</string>
