@@ -67,6 +67,8 @@ class AuthorizationActivity : BaseActivity() {
             etEmail.setText(email)
             etPassword.setText(password)
 
+            if (!isValid()) return@setOnClickListener
+
             when (authorizationType) {
                 AuthorizationType.SIGN_IN -> {
                     viewModel.signIn(email, password)
@@ -95,5 +97,21 @@ class AuthorizationActivity : BaseActivity() {
                 etRepeatPasswordLayout.visibility = View.GONE
             }
         }
+    }
+
+    private fun isValid(): Boolean {
+        val email = etEmail.text.toString().trim()
+        val password = etPassword.text.toString().trim()
+
+        if (authorizationType == AuthorizationType.SIGN_IN) {
+            return email.isNotEmpty() && password.isNotEmpty()
+        }
+
+        if (authorizationType == AuthorizationType.SIGN_UP) {
+            val repeatPassword = etRepeatPassword.text.toString().trim()
+            return email.isNotEmpty() && password.isNotEmpty() && repeatPassword.isNotEmpty()
+        }
+
+        return false
     }
 }

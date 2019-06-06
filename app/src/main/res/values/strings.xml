@@ -27,6 +27,7 @@
     <string name="btn_text_save">Save</string>
     <string name="btn_log_in">Log in</string>
     <string name="btn_sign_up">Sign up</string>
+    <string name="btn_sign_out">Sign out</string>
 
     <!-- editText hints-->
     <string name="ed_hint_write_product_name">Write product name</string>

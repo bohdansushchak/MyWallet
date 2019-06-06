@@ -43,7 +43,6 @@ class AuthorizationViewModel : ViewModel() {
             _signInError.postValue("Password is mismatching")
             return
         }
-
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

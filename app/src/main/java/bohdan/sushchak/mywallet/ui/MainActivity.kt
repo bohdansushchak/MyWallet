@@ -11,7 +11,10 @@ import androidx.navigation.Navigation
 
 import androidx.navigation.ui.setupWithNavController
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.ui.authorization.AuthorizationActivity
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.startActivity
 
 const val IS_START_KEY = "isStart"
 const val IS_BOTTOM_NAVIGATION_GONE = "isBottomNavigationGone"
@@ -32,6 +35,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController = Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment)
         bottom_nav.setupWithNavController(navController)
         navController.addOnDestinationChangedListener(this@MainActivity)
+        initAuthorizationObserver()
     }
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
@@ -73,5 +77,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         }
 
         if (isShouldGone == true) goneNavigation() else showNavigation()
+    }
+
+    private fun initAuthorizationObserver() {
+        FirebaseAuth.getInstance().addAuthStateListener {
+            if(it.currentUser == null){
+                startActivity<AuthorizationActivity>()
+                finish()
+            }
+        }
     }
 }
