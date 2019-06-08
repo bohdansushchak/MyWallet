@@ -104,6 +104,7 @@ class MyWalletRepositoryImpl(
 
     override suspend fun getOrders(): LiveData<List<OrderEntity>> {
         return withContext(Dispatchers.IO) {
+            Log.d("version: ", apiDatabase.getVersionOfDatabase().toString())
             return@withContext orderDao.getOrders()
         }
     }
@@ -195,6 +196,12 @@ class MyWalletRepositoryImpl(
     override suspend fun getProductCategoryList(orderId: Long): List<CategoryProduct> {
         return withContext(Dispatchers.IO) {
             return@withContext productDao.getCategoryProductNonLive(orderId) ?: listOf()
+        }
+    }
+
+    override suspend fun registerNewUser() {
+        withContext(Dispatchers.IO) {
+            apiDatabase.registerNewUser()
         }
     }
 }

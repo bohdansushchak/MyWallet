@@ -8,17 +8,24 @@ import androidx.lifecycle.ViewModelProviders
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.ui.MainActivity
 import bohdan.sushchak.mywallet.ui.base.BaseActivity
+import bohdan.sushchak.mywallet.ui.calendar.CalendarViewModelFactory
 import kotlinx.android.synthetic.main.authorization_activity.*
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.startActivity
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
 enum class AuthorizationType {
     SIGN_IN,
     SIGN_UP
 }
 
-class AuthorizationActivity : BaseActivity() {
+class AuthorizationActivity : BaseActivity(), KodeinAware {
+    override val kodein by closestKodein()
 
+    private val viewModelFactory: AuthorizationViewModelFactory by instance()
     var authorizationType = AuthorizationType.SIGN_IN
 
     private lateinit var viewModel: AuthorizationViewModel
@@ -26,7 +33,7 @@ class AuthorizationActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.authorization_activity)
-        viewModel = ViewModelProviders.of(this)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(AuthorizationViewModel::class.java)
 
         initAuthorizationTypeChange()

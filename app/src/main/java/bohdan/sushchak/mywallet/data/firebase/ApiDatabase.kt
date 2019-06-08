@@ -15,4 +15,8 @@ interface ApiDatabase {
     suspend fun removeCategory(categoryEntity: CategoryEntity): Void?
     suspend fun removeOrder(orderEntity: OrderEntity): Void?
 
+    suspend fun getVersionOfDatabase(): Long
+
+    suspend fun registerNewUser(): Void?
+
 }

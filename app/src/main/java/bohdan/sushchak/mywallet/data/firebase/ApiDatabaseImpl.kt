@@ -6,10 +6,7 @@ import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.internal.NonAuthorizedExeption
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.*
 
 class ApiDatabaseImpl : ApiDatabase {
 
@@ -22,6 +19,10 @@ class ApiDatabaseImpl : ApiDatabase {
 
     private val ordersRef: CollectionReference
         get() = if (mAuth.currentUser != null) db.collection("users/${mAuth.currentUser!!.uid}/orders")
+        else throw NonAuthorizedExeption()
+
+    private val usersRef: DocumentReference
+        get() = if (mAuth.currentUser != null) db.document("users/${mAuth.currentUser!!.uid}")
         else throw NonAuthorizedExeption()
 
     init {
@@ -57,6 +58,18 @@ class ApiDatabaseImpl : ApiDatabase {
 
         if (queryOrders.isEmpty) return null
         return removeDocumentByPath(queryOrders.documents[0].reference.path)
+    }
+
+    override suspend fun getVersionOfDatabase(): Long = Tasks.await(usersRef.get())["databaseVersion"].toString().toLong()
+
+    override suspend fun registerNewUser() = setNewVersion(1)
+
+    private fun setNewVersion(version: Long): Void? {
+        val versionMap = hashMapOf<String, Any?>(
+            "databaseVersion" to version
+        )
+
+        return Tasks.await(usersRef.set(versionMap, SetOptions.merge()))
     }
 
     private fun removeDocumentByPath(path: String) = Tasks.await(db.document(path).delete())
