@@ -8,6 +8,7 @@ import bohdan.sushchak.mywallet.data.db.dao.ProductDao
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
+import bohdan.sushchak.mywallet.data.firebase.ApiDatabase
 import bohdan.sushchak.mywallet.data.model.*
 import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import com.github.sundeepk.compactcalendarview.domain.Event
@@ -23,6 +24,7 @@ import java.util.*
  * @property productDao abstract class to make a CRUD methods on  product table
  */
 class MyWalletRepositoryImpl(
+    private val apiDatabase: ApiDatabase,
     private val categoryDao: CategoryDao,
     private val orderDao: OrderDao,
     private val productDao: ProductDao
@@ -47,7 +49,11 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun addCategory(categoryEntity: CategoryEntity) {
-        withContext(Dispatchers.IO) { categoryDao.insert(categoryEntity) }
+        withContext(Dispatchers.IO) {
+            val id = categoryDao.insert(categoryEntity)
+            val category = categoryEntity.copy(categoryId = id)
+            apiDatabase.addCategory(category)
+        }
     }
 
     override suspend fun removeCategory(categoryEntity: CategoryEntity) {
@@ -72,8 +78,19 @@ class MyWalletRepositoryImpl(
     //endregion
 
     //region OrderEntity
-    override suspend fun createOrderWithProducts(order: OrderEntity, products: List<ProductEntity>) {
-        withContext(Dispatchers.IO) { orderDao.insertOrderWithProducts(productDao, order, products) }
+    override suspend fun createOrderWithProducts(orderEntity: OrderEntity, productsEntity: List<ProductEntity>) {
+        withContext(Dispatchers.IO) {
+            val idsMap = orderDao.insertOrderWithProducts(productDao, orderEntity, productsEntity)
+
+            val order = orderEntity.copy(orderId = idsMap["orderId"].toString().toLong())
+            val products = mutableListOf<ProductEntity>()
+            productsEntity.forEachIndexed { index, productEntity ->
+                val id = (idsMap["productIds"] as List<*>)[index]
+                products.add(productEntity.copy(productId = id.toString().toLong()))
+            }
+
+            apiDatabase.addOrder(order, products)
+        }
     }
 
     override suspend fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>> {

@@ -12,6 +12,6 @@ interface ApiDatabase {
     suspend fun addCategory(categoryEntity: CategoryEntity): DocumentReference
     suspend fun addOrder(orderEntity: OrderEntity, productsEntity: List<ProductEntity>): DocumentReference
 
-    
+
 
 }

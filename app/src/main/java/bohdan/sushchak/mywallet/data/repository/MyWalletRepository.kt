@@ -32,7 +32,7 @@ interface MyWalletRepository {
 
 
     //region OrderEntity
-    suspend fun createOrderWithProducts(order : OrderEntity, products: List<ProductEntity>)
+    suspend fun createOrderWithProducts(orderEntity : OrderEntity, productsEntity: List<ProductEntity>)
 
     suspend fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>>
 

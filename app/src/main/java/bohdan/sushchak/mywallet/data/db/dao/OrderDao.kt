@@ -1,11 +1,13 @@
 package bohdan.sushchak.mywallet.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
-import bohdan.sushchak.mywallet.data.model.OrderWithProducts
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.MoneyByDate
+import bohdan.sushchak.mywallet.data.model.OrderWithProducts
 import bohdan.sushchak.mywallet.internal.setOrderId
 import com.github.sundeepk.compactcalendarview.domain.Event
 
@@ -49,9 +51,18 @@ abstract class OrderDao : BaseDao<OrderEntity> {
     abstract fun getBiggestDateInDb(): Long?
 
     @Transaction
-    open fun insertOrderWithProducts(productDao: ProductDao, order: OrderEntity, products: List<ProductEntity>){
+    open fun insertOrderWithProducts(
+        productDao: ProductDao,
+        order: OrderEntity,
+        products: List<ProductEntity>
+    ): HashMap<String, Any?> {
         val idOrder = insert(order)
         products.setOrderId(idOrder)
-        productDao.insert(products)
+        val productIds = productDao.insert(products)
+
+        return hashMapOf(
+            "orderId" to idOrder,
+            "productIds" to productIds
+        )
     }
 }

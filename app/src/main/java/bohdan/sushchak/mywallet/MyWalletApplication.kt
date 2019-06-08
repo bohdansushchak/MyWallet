@@ -2,6 +2,8 @@ package bohdan.sushchak.mywallet
 
 import android.app.Application
 import bohdan.sushchak.mywallet.data.db.MyWalletDatabase
+import bohdan.sushchak.mywallet.data.firebase.ApiDatabase
+import bohdan.sushchak.mywallet.data.firebase.ApiDatabaseImpl
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepositoryImpl
 import bohdan.sushchak.mywallet.ui.calendar.CalendarViewModelFactory
@@ -28,7 +30,8 @@ class MyWalletApplication() : Application(), KodeinAware{
         bind() from singleton { instance<MyWalletDatabase>().orderDao() }
         //endregion
 
-        bind<MyWalletRepository>() with singleton { MyWalletRepositoryImpl(instance(), instance(), instance()) }
+        bind<ApiDatabase>() with singleton { ApiDatabaseImpl()}
+        bind<MyWalletRepository>() with singleton { MyWalletRepositoryImpl(instance(), instance(), instance(), instance()) }
 
         //region viewmodels
         bind() from provider { CreateOrderViewModelFactory(instance()) }

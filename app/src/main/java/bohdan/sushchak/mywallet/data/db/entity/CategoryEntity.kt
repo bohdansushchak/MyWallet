@@ -16,7 +16,6 @@ data class CategoryEntity(
 
     @ColumnInfo(name = "color")
         var color: Int
-
 ) {
     companion object {
         val emptyCategoryEntity: CategoryEntity
