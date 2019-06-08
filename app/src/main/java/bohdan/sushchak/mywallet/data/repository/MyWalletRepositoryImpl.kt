@@ -57,7 +57,10 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun removeCategory(categoryEntity: CategoryEntity) {
-        withContext(Dispatchers.IO) { categoryDao.delete(categoryEntity) }
+        withContext(Dispatchers.IO) {
+            categoryDao.delete(categoryEntity)
+            apiDatabase.removeCategory(categoryEntity)
+        }
     }
 
     override suspend fun updateCategory(categoryEntity: CategoryEntity) {
@@ -106,7 +109,10 @@ class MyWalletRepositoryImpl(
     }
 
     override suspend fun removeOrder(order: OrderEntity) {
-        withContext(Dispatchers.IO) { orderDao.delete(order) }
+        withContext(Dispatchers.IO) {
+            orderDao.delete(order)
+            apiDatabase.removeOrder(order)
+        }
     }
 
     override suspend fun getOrdersByDate(date: Long): List<OrderEntity> {
