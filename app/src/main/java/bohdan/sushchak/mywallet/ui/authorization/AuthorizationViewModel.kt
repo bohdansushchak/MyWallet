@@ -45,7 +45,7 @@ class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository)
                 val registerResult = Tasks.await(mAuth.createUserWithEmailAndPassword(email, password))
                 _firebaseUser.postValue(registerResult.user)
 
-                myWalletRepository.registerNewUser()
+                myWalletRepository.registerNewUser(registerResult.user.uid)
             } catch (e: Exception){
                 _signInError.postValue(e.message)
             }

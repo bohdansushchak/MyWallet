@@ -6,9 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
+import bohdan.sushchak.mywallet.data.db.dao.MetaDataDao
 import bohdan.sushchak.mywallet.data.db.dao.OrderDao
 import bohdan.sushchak.mywallet.data.db.dao.ProductDao
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.data.db.entity.MetaDataEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.internal.Converters
@@ -16,11 +18,11 @@ import bohdan.sushchak.mywallet.internal.Converters
 /**
  * Main class to create a database.
  * @author Bohdan
- * @version 2
+ * @version 3
  */
 @Database(
-    entities = [ProductEntity::class, OrderEntity::class, CategoryEntity::class],
-    version = 2,
+    entities = [ProductEntity::class, OrderEntity::class, CategoryEntity::class, MetaDataEntity::class],
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -43,6 +45,15 @@ abstract class MyWalletDatabase : RoomDatabase() {
      * @return A {@code ProductDao} witch you can use to get access to table of products
      */
     abstract fun productDao(): ProductDao
+
+    /**
+     * Method to get instance of {@code MetaDataDao} object
+     *
+     * @return
+     */
+    abstract fun metaDataDao(): MetaDataDao
+
+
 
     companion object {
         @Volatile

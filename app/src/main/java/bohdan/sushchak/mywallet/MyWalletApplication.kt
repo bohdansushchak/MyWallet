@@ -26,16 +26,16 @@ class MyWalletApplication() : Application(), KodeinAware {
 
         //region db
         bind() from singleton { MyWalletDatabase(instance()) }
+        /*
         bind() from singleton { instance<MyWalletDatabase>().categoryDao() }
         bind() from singleton { instance<MyWalletDatabase>().productDao() }
         bind() from singleton { instance<MyWalletDatabase>().orderDao() }
+        bind() from singleton { instance<MyWalletDatabase>().metaDataDao() }*/
         //endregion
 
         bind<ApiDatabase>() with singleton { ApiDatabaseImpl() }
         bind<MyWalletRepository>() with singleton {
             MyWalletRepositoryImpl(
-                instance(),
-                instance(),
                 instance(),
                 instance()
             )

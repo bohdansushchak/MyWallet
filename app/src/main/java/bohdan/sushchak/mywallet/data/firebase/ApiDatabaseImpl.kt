@@ -1,6 +1,7 @@
 package bohdan.sushchak.mywallet.data.firebase
 
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.data.db.entity.MetaDataEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.internal.NonAuthorizedExeption
@@ -13,17 +14,8 @@ class ApiDatabaseImpl : ApiDatabase {
     private var db = FirebaseFirestore.getInstance()
     private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    private val categoriesRef: CollectionReference
-        get() = if (mAuth.currentUser != null) db.collection("users/${mAuth.currentUser!!.uid}/categories")
-        else throw NonAuthorizedExeption()
-
-    private val ordersRef: CollectionReference
-        get() = if (mAuth.currentUser != null) db.collection("users/${mAuth.currentUser!!.uid}/orders")
-        else throw NonAuthorizedExeption()
-
-    private val usersRef: DocumentReference
-        get() = if (mAuth.currentUser != null) db.document("users/${mAuth.currentUser!!.uid}")
-        else throw NonAuthorizedExeption()
+    private val userCollectionRef: CollectionReference
+        get() = db.collection("users")
 
     init {
         val settings = FirebaseFirestoreSettings.Builder()
@@ -34,7 +26,7 @@ class ApiDatabaseImpl : ApiDatabase {
 
     override suspend fun addCategory(categoryEntity: CategoryEntity): DocumentReference {
         val categoryDocument = categoryEntity.toDocument()
-        return Tasks.await(categoriesRef.add(categoryDocument))
+        return Tasks.await(getCategoriesCollectionRef().add(categoryDocument))
     }
 
     override suspend fun addOrder(orderEntity: OrderEntity, productsEntity: List<ProductEntity>): DocumentReference {
@@ -43,36 +35,69 @@ class ApiDatabaseImpl : ApiDatabase {
 
         orderDocument["products"] = products
 
-        return Tasks.await(ordersRef.add(orderDocument))
+        return Tasks.await(getOrdersCollectionRef().add(orderDocument))
     }
 
     override suspend fun removeCategory(categoryEntity: CategoryEntity): Void? {
-        val queryCategories = Tasks.await(categoriesRef.whereEqualTo("id", categoryEntity.categoryId).get())
+        val queryCategories = Tasks.await(getCategoriesCollectionRef().whereEqualTo("id", categoryEntity.categoryId).get())
 
         if (queryCategories.isEmpty) return null
         return removeDocumentByPath(queryCategories.documents[0].reference.path)
     }
 
     override suspend fun removeOrder(orderEntity: OrderEntity): Void? {
-        val queryOrders = Tasks.await(ordersRef.whereEqualTo("id", orderEntity.orderId).get())
+        val queryOrders = Tasks.await(getOrdersCollectionRef().whereEqualTo("id", orderEntity.orderId).get())
 
         if (queryOrders.isEmpty) return null
         return removeDocumentByPath(queryOrders.documents[0].reference.path)
     }
 
-    override suspend fun getVersionOfDatabase(): Long = Tasks.await(usersRef.get())["databaseVersion"].toString().toLong()
+    override suspend fun getVersionOfDatabase(): Long {
+        var userDoc = Tasks.await(getUserDocumentRef().get())
 
-    override suspend fun registerNewUser() = setNewVersion(1)
+        if (!userDoc.contains("databaseVersion")) {
+            userDoc = Tasks.await(addNewUser().get())
+        }
 
-    private fun setNewVersion(version: Long): Void? {
-        val versionMap = hashMapOf<String, Any?>(
-            "databaseVersion" to version
-        )
+        return userDoc["databaseVersion"].toString().toLong()
+    }
 
-        return Tasks.await(usersRef.set(versionMap, SetOptions.merge()))
+    override suspend fun setMetaData(metaDataEntity: MetaDataEntity): Void? {
+        val metadataDoc = metaDataEntity.toDocument()
+        return Tasks.await(getUserDocumentRef().set(metadataDoc, SetOptions.merge()))
     }
 
     private fun removeDocumentByPath(path: String) = Tasks.await(db.document(path).delete())
+
+    private suspend fun getOrdersCollectionRef(): CollectionReference {
+        return db.collection("${getUserDocumentRef().path}/orders")
+    }
+
+    private suspend fun getCategoriesCollectionRef(): CollectionReference {
+        return db.collection("${getUserDocumentRef().path}/categories")
+    }
+
+    private fun addNewUser(): DocumentReference {
+        if (mAuth.currentUser == null) throw NonAuthorizedExeption()
+
+        val doc = hashMapOf<String, Any?>(
+            "databaseVersion" to 1,
+            "userId" to mAuth.currentUser!!.uid
+        )
+        return Tasks.await(userCollectionRef.add(doc))
+    }
+
+    private suspend fun getUserDocumentRef(): DocumentReference {
+        if (mAuth.currentUser == null) throw NonAuthorizedExeption()
+
+        val queryResult = Tasks.await(userCollectionRef.whereEqualTo("userId", mAuth.currentUser!!.uid).get())
+
+        if (queryResult.isEmpty) {
+            return addNewUser()
+        }
+
+        return queryResult.documents[0].reference
+    }
 }
 
 fun OrderEntity.toDocument(): HashMap<String, Any?> {
@@ -99,5 +124,12 @@ fun CategoryEntity.toDocument(): HashMap<String, Any?> {
         "id" to this.categoryId,
         "title" to this.categoryTitle,
         "color" to this.color
+    )
+}
+
+fun MetaDataEntity.toDocument(): HashMap<String, Any?> {
+    return hashMapOf(
+        "databaseVersion" to this.databaseVersion,
+        "userId" to this.userFirebaseId
     )
 }

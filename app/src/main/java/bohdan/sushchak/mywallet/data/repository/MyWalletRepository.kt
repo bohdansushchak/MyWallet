@@ -51,5 +51,5 @@ interface MyWalletRepository {
 
     suspend fun getProductCategoryList(orderId: Long): List<CategoryProduct>
 
-    suspend fun registerNewUser()
+    suspend fun registerNewUser(uid: String)
 }

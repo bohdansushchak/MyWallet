@@ -1,9 +1,9 @@
 package bohdan.sushchak.mywallet.data.firebase
 
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.data.db.entity.MetaDataEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 
 
@@ -17,6 +17,6 @@ interface ApiDatabase {
 
     suspend fun getVersionOfDatabase(): Long
 
-    suspend fun registerNewUser(): Void?
+    suspend fun setMetaData(metaDataEntity: MetaDataEntity): Void?
 
 }

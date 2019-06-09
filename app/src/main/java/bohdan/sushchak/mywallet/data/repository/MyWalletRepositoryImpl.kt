@@ -2,16 +2,20 @@ package bohdan.sushchak.mywallet.data.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import bohdan.sushchak.mywallet.data.db.MyWalletDatabase
 import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
+import bohdan.sushchak.mywallet.data.db.dao.MetaDataDao
 import bohdan.sushchak.mywallet.data.db.dao.OrderDao
 import bohdan.sushchak.mywallet.data.db.dao.ProductDao
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
+import bohdan.sushchak.mywallet.data.db.entity.MetaDataEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.firebase.ApiDatabase
 import bohdan.sushchak.mywallet.data.model.*
 import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import com.github.sundeepk.compactcalendarview.domain.Event
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -25,10 +29,20 @@ import java.util.*
  */
 class MyWalletRepositoryImpl(
     private val apiDatabase: ApiDatabase,
-    private val categoryDao: CategoryDao,
-    private val orderDao: OrderDao,
-    private val productDao: ProductDao
+    private val myWalletDatabase: MyWalletDatabase
 ) : MyWalletRepository {
+
+    private val categoryDao: CategoryDao
+    get() = myWalletDatabase.categoryDao()
+
+    private val orderDao: OrderDao
+    get() = myWalletDatabase.orderDao()
+
+    private val productDao: ProductDao
+    get() = myWalletDatabase.productDao()
+
+    private val metaDataDao: MetaDataDao
+    get() = myWalletDatabase.metaDataDao()
 
     /**
      * TODO
@@ -104,7 +118,7 @@ class MyWalletRepositoryImpl(
 
     override suspend fun getOrders(): LiveData<List<OrderEntity>> {
         return withContext(Dispatchers.IO) {
-            Log.d("version: ", apiDatabase.getVersionOfDatabase().toString())
+            //Log.d("version: ", apiDatabase.getVersionOfDatabase().toString())
             return@withContext orderDao.getOrders()
         }
     }
@@ -199,9 +213,16 @@ class MyWalletRepositoryImpl(
         }
     }
 
-    override suspend fun registerNewUser() {
+    override suspend fun registerNewUser(uid: String) {
         withContext(Dispatchers.IO) {
-            apiDatabase.registerNewUser()
+            val currentMetaData = metaDataDao.getMetaData()
+
+            if(!currentMetaData?.userFirebaseId.isNullOrEmpty())
+                myWalletDatabase.clearAllTables()
+
+            val metaDataEntity = MetaDataEntity(databaseVersion = 1, userFirebaseId = uid)
+            apiDatabase.setMetaData(metaDataEntity)
+            metaDataDao.upsert(metaDataEntity)
         }
     }
 }

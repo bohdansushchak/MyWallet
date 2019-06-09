@@ -2,19 +2,18 @@ package bohdan.sushchak.mywallet.ui.authorization
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.ui.MainActivity
 import bohdan.sushchak.mywallet.ui.base.BaseActivity
-import bohdan.sushchak.mywallet.ui.calendar.CalendarViewModelFactory
 import kotlinx.android.synthetic.main.authorization_activity.*
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.startActivity
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
-import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
 enum class AuthorizationType {
@@ -55,6 +54,7 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
     }
 
     private fun showAlert(message: String) {
+        Log.d("showAlert", message)
         val builder = AlertDialog.Builder(this@AuthorizationActivity)
         builder.setMessage(message)
         builder.setCancelable(true)
