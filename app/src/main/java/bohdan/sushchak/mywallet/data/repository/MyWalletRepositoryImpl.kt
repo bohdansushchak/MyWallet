@@ -13,9 +13,9 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.firebase.ApiDatabase
 import bohdan.sushchak.mywallet.data.model.*
+import bohdan.sushchak.mywallet.internal.SyncEnum
 import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import com.github.sundeepk.compactcalendarview.domain.Event
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -33,16 +33,16 @@ class MyWalletRepositoryImpl(
 ) : MyWalletRepository {
 
     private val categoryDao: CategoryDao
-    get() = myWalletDatabase.categoryDao()
+        get() = myWalletDatabase.categoryDao()
 
     private val orderDao: OrderDao
-    get() = myWalletDatabase.orderDao()
+        get() = myWalletDatabase.orderDao()
 
     private val productDao: ProductDao
-    get() = myWalletDatabase.productDao()
+        get() = myWalletDatabase.productDao()
 
     private val metaDataDao: MetaDataDao
-    get() = myWalletDatabase.metaDataDao()
+        get() = myWalletDatabase.metaDataDao()
 
     /**
      * TODO
@@ -217,12 +217,31 @@ class MyWalletRepositoryImpl(
         withContext(Dispatchers.IO) {
             val currentMetaData = metaDataDao.getMetaData()
 
-            if(!currentMetaData?.userFirebaseId.isNullOrEmpty())
+            if (!currentMetaData?.userFirebaseId.isNullOrEmpty())
                 myWalletDatabase.clearAllTables()
 
             val metaDataEntity = MetaDataEntity(databaseVersion = 1, userFirebaseId = uid)
             apiDatabase.setMetaData(metaDataEntity)
             metaDataDao.upsert(metaDataEntity)
+        }
+    }
+
+    override suspend fun synchronizeDatabases(syncEnum: SyncEnum) {
+        withContext(Dispatchers.IO) {
+
+        }
+    }
+
+    override suspend fun databasesCompare(): SyncEnum {
+        return withContext(Dispatchers.IO) {
+            val myWalletRepositoryVersion = metaDataDao.getMetaData()?.databaseVersion ?: 1L
+            val firestoreVersion = apiDatabase.getVersionOfDatabase()
+
+            var syncEnum = SyncEnum.EQUALS
+            if (myWalletRepositoryVersion > firestoreVersion) syncEnum = SyncEnum.FIRESTORE_LESS
+            if (myWalletRepositoryVersion < firestoreVersion) syncEnum = SyncEnum.LOCAL_LESS
+
+            return@withContext syncEnum
         }
     }
 }

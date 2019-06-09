@@ -19,3 +19,9 @@ object Constants {
     const val CURRENCY_KEY_PREF = "currency"
 
 }
+
+enum class SyncEnum {
+    LOCAL_LESS,
+    FIRESTORE_LESS,
+    EQUALS
+}

@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
+import bohdan.sushchak.mywallet.internal.SyncEnum
+import com.google.android.gms.common.internal.GmsLogger
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -16,12 +18,16 @@ class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository)
     private val _firebaseUser by lazy { MutableLiveData<FirebaseUser>() }
     private val mAuth by lazy { FirebaseAuth.getInstance() }
     private val _signInError by lazy { MutableLiveData<String>() }
+    private val _syncEnum by lazy {MutableLiveData<SyncEnum>()}
 
     val firebaseUser: LiveData<FirebaseUser>
         get() = _firebaseUser
 
     val signInError: LiveData<String>
         get() = _signInError
+
+    val syncEnum: LiveData<SyncEnum>
+    get() = _syncEnum
 
     fun signIn(email: String, password: String) {
         GlobalScope.launch {
@@ -49,6 +55,14 @@ class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository)
             } catch (e: Exception){
                 _signInError.postValue(e.message)
             }
+        }
+    }
+
+    fun databasesCheck() {
+        GlobalScope.launch {
+            val sync = myWalletRepository.databasesCompare()
+
+            _syncEnum.postValue(sync)
         }
     }
 }

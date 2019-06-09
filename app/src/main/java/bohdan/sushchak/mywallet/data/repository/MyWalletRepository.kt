@@ -5,6 +5,7 @@ import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.*
+import bohdan.sushchak.mywallet.internal.SyncEnum
 import com.github.sundeepk.compactcalendarview.domain.Event
 
 
@@ -52,4 +53,8 @@ interface MyWalletRepository {
     suspend fun getProductCategoryList(orderId: Long): List<CategoryProduct>
 
     suspend fun registerNewUser(uid: String)
+
+    suspend fun synchronizeDatabases(syncEnum: SyncEnum)
+
+    suspend fun databasesCompare(): SyncEnum
 }

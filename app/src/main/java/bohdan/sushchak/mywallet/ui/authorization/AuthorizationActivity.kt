@@ -7,8 +7,10 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.internal.SyncEnum
 import bohdan.sushchak.mywallet.ui.MainActivity
 import bohdan.sushchak.mywallet.ui.base.BaseActivity
+import bohdan.sushchak.mywallet.ui.sync.SyncActivity
 import kotlinx.android.synthetic.main.authorization_activity.*
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.startActivity
@@ -42,14 +44,23 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
 
     private fun bindUI() = launch {
         viewModel.firebaseUser.observe(this@AuthorizationActivity, Observer {
-            startActivity<MainActivity>()
-            finish()
             progressBar_loading.visibility = View.GONE
+            viewModel.databasesCheck()
         })
 
         viewModel.signInError.observe(this@AuthorizationActivity, Observer { error ->
             showAlert(error)
             progressBar_loading.visibility = View.GONE
+        })
+
+        viewModel.syncEnum.observe(this@AuthorizationActivity, Observer {
+            if(it == SyncEnum.EQUALS){
+                startActivity<MainActivity>()
+            }
+            else {
+                startActivity<SyncActivity>()
+            }
+            finish()
         })
     }
 
