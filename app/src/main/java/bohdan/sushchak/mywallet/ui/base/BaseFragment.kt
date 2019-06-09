@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import java.util.*
 import kotlin.coroutines.CoroutineContext
-import kotlin.math.max
 
 abstract class BaseFragment : Fragment(), CoroutineScope {
 

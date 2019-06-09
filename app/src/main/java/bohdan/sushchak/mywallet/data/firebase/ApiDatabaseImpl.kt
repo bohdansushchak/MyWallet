@@ -39,7 +39,8 @@ class ApiDatabaseImpl : ApiDatabase {
     }
 
     override suspend fun removeCategory(categoryEntity: CategoryEntity): Void? {
-        val queryCategories = Tasks.await(getCategoriesCollectionRef().whereEqualTo("id", categoryEntity.categoryId).get())
+        val queryCategories =
+            Tasks.await(getCategoriesCollectionRef().whereEqualTo("id", categoryEntity.categoryId).get())
 
         if (queryCategories.isEmpty) return null
         return removeDocumentByPath(queryCategories.documents[0].reference.path)
@@ -97,6 +98,15 @@ class ApiDatabaseImpl : ApiDatabase {
         }
 
         return queryResult.documents[0].reference
+    }
+
+    override suspend fun increaseVersion(version: Long?): Void? {
+        val currentVersion = version ?: getVersionOfDatabase() + 1
+
+        val versionDoc = hashMapOf<String, Any>(
+            "databaseVersion" to currentVersion
+        )
+        return Tasks.await(getUserDocumentRef().set(versionDoc, SetOptions.merge()))
     }
 }
 

@@ -1,6 +1,5 @@
 package bohdan.sushchak.mywallet.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import bohdan.sushchak.mywallet.data.db.MyWalletDatabase
 import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
@@ -13,9 +12,11 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.firebase.ApiDatabase
 import bohdan.sushchak.mywallet.data.model.*
+import bohdan.sushchak.mywallet.internal.NonAuthorizedExeption
 import bohdan.sushchak.mywallet.internal.SyncType
 import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import com.github.sundeepk.compactcalendarview.domain.Event
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -67,6 +68,7 @@ class MyWalletRepositoryImpl(
             val id = categoryDao.insert(categoryEntity)
             val category = categoryEntity.copy(categoryId = id)
             apiDatabase.addCategory(category)
+            increaseVersion()
         }
     }
 
@@ -74,11 +76,15 @@ class MyWalletRepositoryImpl(
         withContext(Dispatchers.IO) {
             categoryDao.delete(categoryEntity)
             apiDatabase.removeCategory(categoryEntity)
+            increaseVersion()
         }
     }
 
     override suspend fun updateCategory(categoryEntity: CategoryEntity) {
-        withContext(Dispatchers.IO) { categoryDao.update(categoryEntity) }
+        withContext(Dispatchers.IO) {
+            categoryDao.update(categoryEntity)
+            //TODO: add updating category
+        }
     }
 
     override suspend fun getCategoryCountByProductTitle(categoryTitle: String): List<CategoryCount> {
@@ -107,6 +113,7 @@ class MyWalletRepositoryImpl(
             }
 
             apiDatabase.addOrder(order, products)
+            increaseVersion()
         }
     }
 
@@ -127,6 +134,7 @@ class MyWalletRepositoryImpl(
         withContext(Dispatchers.IO) {
             orderDao.delete(order)
             apiDatabase.removeOrder(order)
+            increaseVersion()
         }
     }
 
@@ -154,32 +162,7 @@ class MyWalletRepositoryImpl(
 
     override suspend fun getTotalPriceByDate(startDate: Long, endDate: Long): List<MoneyByDate> {
         return withContext(Dispatchers.IO) {
-            viewDataBase()
             return@withContext orderDao.getSpendMoneyByDateNonLive(startDate, endDate)
-        }
-    }
-
-    override suspend fun viewDataBase() {
-        withContext(Dispatchers.Default) {
-            Log.d("TAG", "==============================================")
-            Log.d("TAG", "Products")
-            productDao.getProductsNonLive()?.forEach {
-                Log.d("TAG", it.toString())
-            }
-            Log.d("TAG", "################################################")
-
-            Log.d("TAG", "Orders")
-            orderDao.getOrdersNonLive()?.forEach {
-                Log.d("TAG", it.toString())
-            }
-
-            Log.d("TAG", "################################################")
-
-            Log.d("TAG", "Categories")
-            categoryDao.getAllCategoriesNonLive()?.forEach {
-                Log.d("TAG", it.toString())
-            }
-            Log.d("TAG", "==============================================")
         }
     }
 
@@ -242,6 +225,23 @@ class MyWalletRepositoryImpl(
             if (myWalletRepositoryVersion < firestoreVersion) syncEnum = SyncType.LOCAL_LESS
 
             return@withContext syncEnum
+        }
+    }
+
+    private suspend fun increaseVersion(): Void? {
+        return withContext(Dispatchers.IO) {
+            val currentMetaData = metaDataDao.getMetaData()
+
+            if (FirebaseAuth.getInstance().currentUser == null) {
+                throw NonAuthorizedExeption()
+            }
+
+            val newMetaDataEntity = currentMetaData?.let {
+               it.copy(databaseVersion = it.databaseVersion!! + 1)
+            } ?: MetaDataEntity(databaseVersion = 1, userFirebaseId = FirebaseAuth.getInstance().currentUser!!.uid)
+
+            metaDataDao.upsert(newMetaDataEntity)
+            return@withContext apiDatabase.increaseVersion(newMetaDataEntity.databaseVersion)
         }
     }
 }

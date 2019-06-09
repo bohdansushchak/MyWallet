@@ -19,4 +19,6 @@ interface ApiDatabase {
 
     suspend fun setMetaData(metaDataEntity: MetaDataEntity): Void?
 
+    suspend fun increaseVersion(version: Long? = null): Void?
+
 }

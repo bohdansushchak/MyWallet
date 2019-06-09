@@ -46,8 +46,6 @@ interface MyWalletRepository {
     suspend fun getTotalPriceByDate(startDate: Long, endDate: Long): List<MoneyByDate>
     //endregion
 
-    suspend fun viewDataBase()
-
     suspend fun getDateLimit(): DateLimit
 
     suspend fun getProductCategoryList(orderId: Long): List<CategoryProduct>

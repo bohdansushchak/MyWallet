@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-const val META_DATA_ID = 0
+const val META_DATA_ID = 1
 
 @Entity(tableName = "meta_data")
 data class MetaDataEntity(
