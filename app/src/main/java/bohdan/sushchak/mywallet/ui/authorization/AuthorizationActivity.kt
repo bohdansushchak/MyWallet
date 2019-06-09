@@ -7,7 +7,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bohdan.sushchak.mywallet.R
-import bohdan.sushchak.mywallet.internal.SyncEnum
+import bohdan.sushchak.mywallet.internal.SyncType
 import bohdan.sushchak.mywallet.ui.MainActivity
 import bohdan.sushchak.mywallet.ui.base.BaseActivity
 import bohdan.sushchak.mywallet.ui.sync.SyncActivity
@@ -53,8 +53,8 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
             progressBar_loading.visibility = View.GONE
         })
 
-        viewModel.syncEnum.observe(this@AuthorizationActivity, Observer {
-            if(it == SyncEnum.EQUALS){
+        viewModel.syncType.observe(this@AuthorizationActivity, Observer {
+            if(it == SyncType.EQUALS){
                 startActivity<MainActivity>()
             }
             else {

@@ -20,7 +20,7 @@ object Constants {
 
 }
 
-enum class SyncEnum {
+enum class SyncType {
     LOCAL_LESS,
     FIRESTORE_LESS,
     EQUALS

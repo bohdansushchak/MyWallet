@@ -16,6 +16,9 @@
     <string name="tv_list_is_empty">List is empty</string>
     <string name="tv_click_to_register">Click to sign up</string>
     <string name="tv_click_to_log_in">Click to sign in</string>
+    <string name="tv_sync">SYNCHRONIZATION</string>
+    <string name="tv_getting">Getting: </string>
+    <string name="tv_sending">Sending: </string>
 
     <!--buttons text-->
     <string name="btn_text_save_order">Save order</string>

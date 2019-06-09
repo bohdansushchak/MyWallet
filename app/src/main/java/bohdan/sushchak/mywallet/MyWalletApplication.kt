@@ -12,6 +12,7 @@ import bohdan.sushchak.mywallet.ui.create_order.CreateOrderViewModelFactory
 import bohdan.sushchak.mywallet.ui.graph.GraphViewModelFactory
 import bohdan.sushchak.mywallet.ui.list_orders.OrderListViewModelFactory
 import bohdan.sushchak.mywallet.ui.settings.SettingsViewModelFactory
+import bohdan.sushchak.mywallet.ui.sync.SyncViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -48,6 +49,7 @@ class MyWalletApplication() : Application(), KodeinAware {
         bind() from provider { CalendarViewModelFactory(instance()) }
         bind() from provider { GraphViewModelFactory(instance(), instance()) }
         bind() from provider { AuthorizationViewModelFactory(instance()) }
+        bind() from provider { SyncViewModelFactory(instance()) }
         //endregion
     }
 

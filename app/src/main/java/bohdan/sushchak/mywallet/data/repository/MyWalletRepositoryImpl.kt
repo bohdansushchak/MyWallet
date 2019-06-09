@@ -13,7 +13,7 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.firebase.ApiDatabase
 import bohdan.sushchak.mywallet.data.model.*
-import bohdan.sushchak.mywallet.internal.SyncEnum
+import bohdan.sushchak.mywallet.internal.SyncType
 import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.coroutines.Dispatchers
@@ -226,20 +226,20 @@ class MyWalletRepositoryImpl(
         }
     }
 
-    override suspend fun synchronizeDatabases(syncEnum: SyncEnum) {
+    override suspend fun synchronizeDatabases(syncType: SyncType) {
         withContext(Dispatchers.IO) {
 
         }
     }
 
-    override suspend fun databasesCompare(): SyncEnum {
+    override suspend fun databasesCompare(): SyncType {
         return withContext(Dispatchers.IO) {
             val myWalletRepositoryVersion = metaDataDao.getMetaData()?.databaseVersion ?: 1L
             val firestoreVersion = apiDatabase.getVersionOfDatabase()
 
-            var syncEnum = SyncEnum.EQUALS
-            if (myWalletRepositoryVersion > firestoreVersion) syncEnum = SyncEnum.FIRESTORE_LESS
-            if (myWalletRepositoryVersion < firestoreVersion) syncEnum = SyncEnum.LOCAL_LESS
+            var syncEnum = SyncType.EQUALS
+            if (myWalletRepositoryVersion > firestoreVersion) syncEnum = SyncType.FIRESTORE_LESS
+            if (myWalletRepositoryVersion < firestoreVersion) syncEnum = SyncType.LOCAL_LESS
 
             return@withContext syncEnum
         }
