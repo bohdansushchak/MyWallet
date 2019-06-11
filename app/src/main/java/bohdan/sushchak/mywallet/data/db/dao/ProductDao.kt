@@ -21,4 +21,6 @@ abstract class ProductDao : BaseDao<ProductEntity> {
     @Query("select * from categories inner join products on products.category_id = categories.categoryId where [products].[order_id] = :orderId") // where [products].[order_id] = :orderId group by category_id
     abstract fun getCategoryProductNonLive(orderId: Long): List<CategoryProduct>?
 
+    @Query("DELETE FROM orders")
+    abstract fun clearTable()
 }

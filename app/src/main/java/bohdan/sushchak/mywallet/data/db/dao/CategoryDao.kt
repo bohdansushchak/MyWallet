@@ -29,4 +29,14 @@ abstract class CategoryDao : BaseDao<CategoryEntity> {
     @Transaction
     @Query("select sum([products].[price]) as 'total_price' from  products, orders where [products].[category_id] is null and [products].[order_id] = [orders].[orderId] and [orders].[date] between :startDate and :endDate group by category_id")
     abstract fun getTotalPriceCategoryNotSet(startDate: Long, endDate: Long): List<CategoryPrice>?
+
+    @Transaction
+    open fun replaceAll(categories: List<CategoryEntity>) {
+        clearTable()
+        insert(categories)
+    }
+
+    @Query("DELETE FROM categories")
+    abstract fun clearTable()
+
 }

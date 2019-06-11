@@ -2,6 +2,7 @@ package bohdan.sushchak.mywallet.ui.sync
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.SyncType
@@ -24,6 +25,9 @@ class SyncViewModel(private val repository: MyWalletRepository) : ViewModel() {
         GlobalScope.launch(Dispatchers.IO) {
             val sync = syncType?:repository.databasesCompare()
             _syncType.postValue(sync)
+            repository.synchronizeDatabases(sync) { _syncText.postValue(it)}
+
+            _syncType.postValue(SyncType.EQUALS)
         }
     }
 

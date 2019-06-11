@@ -6,6 +6,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.google.firebase.firestore.DocumentSnapshot
 
 @Entity(tableName = "orders")
 data class OrderEntity(
@@ -58,6 +59,16 @@ data class OrderEntity(
         @Ignore
         override fun newArray(size: Int): Array<OrderEntity?> {
             return arrayOfNulls(size)
+        }
+
+        @Ignore
+        fun fromDocument(doc: DocumentSnapshot): OrderEntity{
+            val orderId = doc["id"].toString().toLong()
+            val title = doc["title"].toString()
+            val date = doc["date"].toString().toLong()
+            val price = doc["price"].toString().toDouble()
+
+            return OrderEntity(orderId = orderId, title = title, date = date, price = price)
         }
     }
 }

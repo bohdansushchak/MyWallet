@@ -22,7 +22,7 @@ import bohdan.sushchak.mywallet.internal.Converters
  */
 @Database(
     entities = [ProductEntity::class, OrderEntity::class, CategoryEntity::class, MetaDataEntity::class],
-    version = 4,
+    version = 7,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

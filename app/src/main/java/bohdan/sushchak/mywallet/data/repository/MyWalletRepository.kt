@@ -7,6 +7,7 @@ import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.*
 import bohdan.sushchak.mywallet.internal.SyncType
 import com.github.sundeepk.compactcalendarview.domain.Event
+import java.util.*
 
 
 interface MyWalletRepository {
@@ -52,7 +53,7 @@ interface MyWalletRepository {
 
     suspend fun registerNewUser(uid: String)
 
-    suspend fun synchronizeDatabases(syncType: SyncType)
+    suspend fun synchronizeDatabases(syncType: SyncType, observer: (text: String) -> Unit)
 
     suspend fun databasesCompare(): SyncType
 }

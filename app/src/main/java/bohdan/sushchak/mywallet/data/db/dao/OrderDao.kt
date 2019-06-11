@@ -10,6 +10,7 @@ import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.model.OrderWithProducts
 import bohdan.sushchak.mywallet.internal.setOrderId
 import com.github.sundeepk.compactcalendarview.domain.Event
+import java.lang.Exception
 
 @Dao
 abstract class OrderDao : BaseDao<OrderEntity> {
@@ -64,5 +65,30 @@ abstract class OrderDao : BaseDao<OrderEntity> {
             "orderId" to idOrder,
             "productIds" to productIds
         )
+    }
+
+    @Query("DELETE FROM products")
+    abstract fun clearTable()
+
+    @Transaction
+    open fun replaceAll(
+        productDao: ProductDao,
+        orderWithProducts: List<OrderWithProducts>
+    ) {
+        clearTable()
+        productDao.clearTable()
+
+        orderWithProducts.forEach{
+            insert(it.order)
+            it.products.forEach {product ->
+                try{
+                    productDao.insert(product)
+                }
+                catch(e: Exception) {
+                    val withoutCategoryId = product.copy(categoryId = null)
+                    productDao.insert(withoutCategoryId)
+                }
+            }
+        }
     }
 }

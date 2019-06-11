@@ -18,6 +18,7 @@ import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import com.github.sundeepk.compactcalendarview.domain.Event
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.util.*
 
@@ -209,10 +210,45 @@ class MyWalletRepositoryImpl(
         }
     }
 
-    override suspend fun synchronizeDatabases(syncType: SyncType) {
-        withContext(Dispatchers.IO) {
+    override suspend fun synchronizeDatabases(syncType: SyncType, observer: (text: String) -> Unit) {
+        return withContext(Dispatchers.IO) {
+            if (syncType == SyncType.LOCAL_LESS) {
+                pullDatabase(observer)
+                return@withContext
+            }
 
+            if (syncType == SyncType.FIRESTORE_LESS) {
+                pushDatabase(observer)
+                return@withContext
+            }
         }
+    }
+
+    private suspend fun pullDatabase(observer: (text: String) -> Unit) {
+        withContext(Dispatchers.IO) {
+            val categories = apiDatabase.getCategories()
+            categories.forEach {
+                observer.invoke("Category: ${it.categoryTitle}")
+                delay(30L)
+            }
+            categoryDao.replaceAll(categories)
+
+            val orders = apiDatabase.getOrders()
+            orders.forEach{
+                observer.invoke("Order: ${it.order.title} products: ${it.products.
+                    joinToString(separator = ", ", prefix = "[", postfix = "]"){product -> product.title}}")
+                delay(30L)
+            }
+
+            orderDao.replaceAll(productDao = productDao, orderWithProducts = orders)
+
+            val newVersionForApi = apiDatabase.getVersionOfDatabase()
+            increaseVersion(newVersionForApi)
+        }
+    }
+
+    private fun pushDatabase(observer: (text: String) -> Unit) {
+
     }
 
     override suspend fun databasesCompare(): SyncType {
@@ -228,7 +264,7 @@ class MyWalletRepositoryImpl(
         }
     }
 
-    private suspend fun increaseVersion(): Void? {
+    private suspend fun increaseVersion(version: Long = 1L): Void? {
         return withContext(Dispatchers.IO) {
             val currentMetaData = metaDataDao.getMetaData()
 
@@ -237,8 +273,12 @@ class MyWalletRepositoryImpl(
             }
 
             val newMetaDataEntity = currentMetaData?.let {
-               it.copy(databaseVersion = it.databaseVersion!! + 1)
+                it.copy(databaseVersion = it.databaseVersion!! + 1)
             } ?: MetaDataEntity(databaseVersion = 1, userFirebaseId = FirebaseAuth.getInstance().currentUser!!.uid)
+
+            if(version > 1){
+                newMetaDataEntity.databaseVersion = version
+            }
 
             metaDataDao.upsert(newMetaDataEntity)
             return@withContext apiDatabase.increaseVersion(newMetaDataEntity.databaseVersion)

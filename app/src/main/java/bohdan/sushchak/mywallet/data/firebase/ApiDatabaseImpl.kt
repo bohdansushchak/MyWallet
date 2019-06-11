@@ -4,6 +4,7 @@ import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.MetaDataEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
+import bohdan.sushchak.mywallet.data.model.OrderWithProducts
 import bohdan.sushchak.mywallet.internal.NonAuthorizedExeption
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
@@ -108,13 +109,33 @@ class ApiDatabaseImpl : ApiDatabase {
         )
         return Tasks.await(getUserDocumentRef().set(versionDoc, SetOptions.merge()))
     }
+
+    override suspend fun getCategories(): List<CategoryEntity> {
+        val result = Tasks.await(getCategoriesCollectionRef().get())
+        return result.documents.map { doc -> CategoryEntity.fromDocument(doc) }
+    }
+
+    override suspend fun getOrders(): List<OrderWithProducts> {
+        val result = Tasks.await(getOrdersCollectionRef().get())
+        val orderWithProducts = mutableListOf<OrderWithProducts>()
+
+        result.documents.forEach{
+            val orderEntity = OrderEntity.fromDocument(it)
+            val products = it["products"] as List<HashMap<String, Any?>>
+            val productEntities = products.map { ProductEntity.fromDocument(it) }
+
+            orderWithProducts.add(OrderWithProducts(order = orderEntity, products = productEntities))
+        }
+
+        return orderWithProducts
+    }
 }
 
 fun OrderEntity.toDocument(): HashMap<String, Any?> {
     return hashMapOf(
         "id" to this.orderId,
         "title" to this.title,
-        "data" to this.date,
+        "date" to this.date,
         "price" to this.price
     )
 }
@@ -123,7 +144,7 @@ fun ProductEntity.toDocument(): HashMap<String, Any?> {
     return hashMapOf(
         "id" to this.productId,
         "categoryId" to this.categoryId,
-        "productId" to this.productId,
+        "orderId" to this.orderId,
         "title" to this.title,
         "price" to this.price
     )

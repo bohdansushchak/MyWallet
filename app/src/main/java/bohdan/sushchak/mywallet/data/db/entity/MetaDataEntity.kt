@@ -9,7 +9,7 @@ const val META_DATA_ID = 1
 @Entity(tableName = "meta_data")
 data class MetaDataEntity(
     @ColumnInfo(name = "databaseVersion")
-    val databaseVersion: Long?,
+    var databaseVersion: Long?,
 
     @ColumnInfo(name = "userFirebaseId")
     val userFirebaseId: String?

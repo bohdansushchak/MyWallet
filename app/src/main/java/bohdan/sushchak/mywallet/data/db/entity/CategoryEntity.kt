@@ -3,6 +3,7 @@ package bohdan.sushchak.mywallet.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.firebase.firestore.DocumentSnapshot
 
 @Entity(tableName = "categories")
 data class CategoryEntity(
@@ -22,6 +23,14 @@ data class CategoryEntity(
             get() {
                 return CategoryEntity(null, "", 0)
             }
+
+        fun fromDocument(doc: DocumentSnapshot): CategoryEntity {
+            val categoryId = doc["id"].toString().toLong()
+            val color = doc["color"].toString().toInt()
+            val title = doc["title"].toString()
+
+            return CategoryEntity(categoryId = categoryId, color = color, categoryTitle = title)
+        }
     }
 
     override fun toString(): String {
