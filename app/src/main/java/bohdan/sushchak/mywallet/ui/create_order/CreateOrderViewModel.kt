@@ -35,6 +35,9 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
         get() = _categoryProductList
 
     var orderDate: Long = 0
+
+    var orderSavingType = OrderSavingType.CREATE
+    var initOrder: OrderEntity? = null
     //endregion
 
     private val _totalPrice by lazy { MutableLiveData<Double>() }
@@ -50,7 +53,11 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
 
     fun initOrder(order: OrderEntity) {
         if (order.orderId == null)
-            throw IllegalStateException("Order categoryId can't be null")
+            throw IllegalStateException("Order orderId can't be null")
+
+        orderSavingType = OrderSavingType.UPDATE
+        initOrder = order
+
         GlobalScope.launch(Dispatchers.IO) {
             val categoryProduct = myWalletRepository.getProductCategoryList(order.orderId!!)
             val groupedProducts = groupProductsByCategory(categoryProduct)
@@ -121,20 +128,28 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
         _totalPrice.postValue(ZERO)
     }
 
-    fun addOrder(title: String) {
+    fun saveOrder(title: String) {
         if (orderDate == 0L) throw IllegalArgumentException("Order date can't be 0")
         GlobalScope.launch(Dispatchers.IO) {
             val order = OrderEntity(
-                orderId = null,
+                orderId = initOrder?.orderId,
                 title = title,
                 date = orderDate,
                 price = totalPrice.value ?: ZERO
             )
 
-            myWalletRepository.createOrderWithProducts(
-                order, productList.value?.toList()
-                    ?: listOf()
-            )
+            if (productList.value == null) throw IllegalStateException("Product list can't be empty")
+
+            when (orderSavingType) {
+                OrderSavingType.CREATE -> {
+                    myWalletRepository.createOrderWithProducts(order, productList.value!!)
+                }
+
+                OrderSavingType.UPDATE -> {
+                    myWalletRepository.updateOrderWithProducts(order, productList.value!!)
+                }
+            }
+            orderSavingType = OrderSavingType.CREATE
         }
     }
 
@@ -159,4 +174,9 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
             CategoryWithListProducts(categoryEntity = categoryEntity, products = products)
         }
     }
+}
+
+enum class OrderSavingType {
+    CREATE,
+    UPDATE
 }

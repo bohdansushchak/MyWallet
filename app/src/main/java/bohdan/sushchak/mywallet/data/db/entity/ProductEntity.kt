@@ -1,7 +1,6 @@
 package bohdan.sushchak.mywallet.data.db.entity
 
 import androidx.room.*
-import com.google.firebase.firestore.DocumentSnapshot
 
 @Entity(
     tableName = "products",

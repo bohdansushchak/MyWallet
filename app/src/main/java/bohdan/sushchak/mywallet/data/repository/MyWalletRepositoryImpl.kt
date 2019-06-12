@@ -118,6 +118,25 @@ class MyWalletRepositoryImpl(
         }
     }
 
+    override suspend fun updateOrderWithProducts(orderEntity: OrderEntity, productsEntity: List<ProductEntity>) {
+        withContext(Dispatchers.IO) {
+            apiDatabase.removeOrder(orderEntity)
+            orderDao.removeById(orderEntity.orderId!!)
+
+            val idsMap = orderDao.editOrderWithProducts(productDao, orderEntity, productsEntity)
+
+            val order = orderEntity.copy(orderId = idsMap["orderId"].toString().toLong())
+            val products = mutableListOf<ProductEntity>()
+            productsEntity.forEachIndexed { index, productEntity ->
+                val id = (idsMap["productIds"] as List<*>)[index]
+                products.add(productEntity.copy(productId = id.toString().toLong()))
+            }
+
+            apiDatabase.addOrder(order, products)
+            increaseVersion()
+        }
+    }
+
     override suspend fun getOrdersWithProducts(): LiveData<List<OrderWithProducts>> {
         return withContext(Dispatchers.IO) {
             return@withContext orderDao.getOrdersWithProducts()

@@ -10,7 +10,6 @@ import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.model.OrderWithProducts
 import bohdan.sushchak.mywallet.internal.setOrderId
 import com.github.sundeepk.compactcalendarview.domain.Event
-import java.lang.Exception
 
 @Dao
 abstract class OrderDao : BaseDao<OrderEntity> {
@@ -51,6 +50,9 @@ abstract class OrderDao : BaseDao<OrderEntity> {
     @Query("select max(date) from orders")
     abstract fun getBiggestDateInDb(): Long?
 
+    @Query("DELETE FROM orders WHERE orderId = :id")
+    abstract fun removeById(id: Long)
+
     @Transaction
     open fun insertOrderWithProducts(
         productDao: ProductDao,
@@ -59,7 +61,7 @@ abstract class OrderDao : BaseDao<OrderEntity> {
     ): HashMap<String, Any?> {
         val idOrder = insert(order)
         products.setOrderId(idOrder)
-        val productIds = productDao.insert(products)
+        val productIds = productDao.insertList(products)
 
         return hashMapOf(
             "orderId" to idOrder,
@@ -78,17 +80,26 @@ abstract class OrderDao : BaseDao<OrderEntity> {
         clearTable()
         productDao.clearTable()
 
-        orderWithProducts.forEach{
+        orderWithProducts.forEach {
             insert(it.order)
-            it.products.forEach {product ->
-                try{
+            it.products.forEach { product ->
+                try {
                     productDao.insert(product)
-                }
-                catch(e: Exception) {
+                } catch (e: Exception) {
                     val withoutCategoryId = product.copy(categoryId = null)
                     productDao.insert(withoutCategoryId)
                 }
             }
         }
+    }
+
+    @Transaction
+    open fun editOrderWithProducts(
+        productDao: ProductDao,
+        order: OrderEntity,
+        products: List<ProductEntity>
+    ): HashMap<String, Any?> {
+        delete(order)
+        return insertOrderWithProducts(productDao, order, products)
     }
 }

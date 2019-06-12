@@ -184,7 +184,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             makeToast(R.string.t_product_list_cant_be_empty)
         else {
             showEntryDialog(R.string.d_order_title, R.string.d_order_title_please_enter, yes = { strMsg ->
-                viewModel.addOrder(strMsg)
+                viewModel.saveOrder(strMsg)
                 fragmentManager?.popBackStack()
             })
         }
