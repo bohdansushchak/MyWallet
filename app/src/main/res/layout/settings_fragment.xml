@@ -23,8 +23,11 @@
                     android:id="@+id/tvUser"
             />
 
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content">
+            <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                 <TextView
                         style="@style/TextTitle"
@@ -39,10 +42,28 @@
                         android:id="@+id/tvUserEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <Button
+                            android:id="@+id/btnChangeEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_change_email"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_marginEnd="15dp"
+                            android:layout_gravity="end|center_vertical"/>
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content">
+            <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                 <TextView
                         style="@style/TextTitle"
@@ -58,24 +79,65 @@
                         android:id="@+id/tvUserPassword"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <Button
+                            android:id="@+id/btnChangePassword"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_reset_password"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_marginEnd="15dp"
+                            android:layout_gravity="end|center_vertical"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        style="@style/TextTitle"
+                        android:text="@string/tv_email_verification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:textColor="@color/textColorGray"
+                        android:textStyle="normal"
+                        style="@style/TextTitle"
+                        android:id="@+id/tvEmailVerification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <Button
+                            android:id="@+id/btnVerifyEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_verify_email"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_marginEnd="15dp"
+                            android:layout_gravity="end|center_vertical"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:layout_gravity="end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
-                <Button
-                        android:id="@+id/btnChangePassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/btn_change_password"
-                        style="@style/Widget.AppCompat.Button.Colored"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_gravity="end"
-                        />
 
                 <Button
                         android:id="@+id/btnSignOut"
@@ -83,10 +145,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/btn_sign_out"
                         style="@style/Widget.AppCompat.Button.Colored"
-                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="15dp"
                         android:layout_gravity="end"
-                        />
+                />
             </LinearLayout>
 
 
@@ -105,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tv_currency"
                     android:id="@+id/tv_currency"
-                    />
+            />
             <EditText
                     android:id="@+id/edCurrency"
                     android:layout_width="match_parent"
@@ -150,7 +211,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    >
+            >
                 <TextView
                         android:id="@+id/tvNoCategories"
                         android:layout_width="wrap_content"

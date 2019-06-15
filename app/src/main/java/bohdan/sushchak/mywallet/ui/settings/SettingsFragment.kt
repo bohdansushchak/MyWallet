@@ -8,16 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.adapters.CategoryAdapter
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.Constants.CURRENCY_KEY_PREF
 import bohdan.sushchak.mywallet.internal.getSavedCurrency
-import bohdan.sushchak.mywallet.ui.authorization.AuthorizationActivity
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import bohdan.sushchak.mywallet.ui.dialogs.CreateCategoryDialogFragment
 import kotlinx.android.synthetic.main.settings_fragment.*
@@ -69,6 +66,14 @@ class SettingsFragment : BaseFragment(), KodeinAware {
             tvUserEmail.text = user.email
         })
 
+        viewModel.isEmailVerified.observe(this@SettingsFragment, Observer {
+            if (it) {
+                tvEmailVerification.setText(R.string.tv_email_is_verified)
+            } else {
+                tvEmailVerification.setText(R.string.tv_email_is_not_verified)
+            }
+        })
+
         initViews()
     }
 
@@ -84,6 +89,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         }
 
         btnSignOut.setOnClickListener { viewModel.signOut() }
+        btnVerifyEmail.setOnClickListener { viewModel.sendEmailVerification() }
     }
 
     private fun addNewCategory(list: List<CategoryEntity>) {

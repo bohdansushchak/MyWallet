@@ -54,6 +54,7 @@ class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository)
         GlobalScope.launch {
             try {
                 val registerResult = Tasks.await(mAuth.createUserWithEmailAndPassword(email, password))
+                registerResult.user.sendEmailVerification()
                 _firebaseUser.postValue(registerResult.user)
 
                 myWalletRepository.registerNewUser(registerResult.user.uid)
