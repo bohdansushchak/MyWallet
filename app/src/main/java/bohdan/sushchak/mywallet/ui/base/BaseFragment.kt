@@ -1,13 +1,14 @@
 package bohdan.sushchak.mywallet.ui.base
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -18,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import java.util.*
 import kotlin.coroutines.CoroutineContext
+
 
 abstract class BaseFragment : Fragment(), CoroutineScope {
 
@@ -39,31 +41,11 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     protected fun showAlertDialog(title: String, msg: String, yes: (() -> Unit)? = null) {
-        val alertDialog = AlertDialog.Builder(context)
-        alertDialog.setTitle(title)
-        alertDialog.setMessage(msg)
-        alertDialog.setPositiveButton(R.string.btn_text_yes) { _, _ ->
-            yes?.invoke()
-        }
-
-        val dialog = alertDialog.create()
-        dialog.show()
+        bohdan.sushchak.mywallet.internal.showAlertDialog(context, title, msg, yes)
     }
 
     protected fun showDialog(title: String, msg: String, yes: (() -> Unit)? = null, cancel: (() -> Unit)? = null) {
-        val alertDialog = AlertDialog.Builder(context)
-        alertDialog.setTitle(title)
-        alertDialog.setMessage(msg)
-        alertDialog.setPositiveButton(R.string.btn_text_yes) { _, _ ->
-            yes?.invoke()
-        }
-
-        alertDialog.setNegativeButton(R.string.btn_text_cancel) { _, _ ->
-            cancel?.invoke()
-        }
-
-        val dialog = alertDialog.create()
-        dialog.show()
+        bohdan.sushchak.mywallet.internal.showDialog(context, title, msg, yes, cancel)
     }
 
     protected fun showDialog(title: Int, msg: Int, yes: (() -> Unit)? = null, cancel: (() -> Unit)? = null) {
@@ -80,32 +62,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         yes: ((str: String) -> Unit)? = null,
         cancel: (() -> Unit)? = null
     ) {
-        val entryDialogBuilder = AlertDialog.Builder(context)
-        entryDialogBuilder.setTitle(title)
-        entryDialogBuilder.setMessage(msg)
-
-        val input = EditText(context)
-        val lp = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.MATCH_PARENT
-        )
-        input.layoutParams = lp
-        lp.marginStart = 15
-        lp.marginEnd = 15
-
-        entryDialogBuilder.setView(input)
-
-        entryDialogBuilder.setPositiveButton(R.string.btn_text_yes) { _, _ ->
-            val inputStr = input.text.toString().trim()
-            if (inputStr.isNotEmpty() && inputStr.isNotBlank())
-                yes?.invoke(inputStr)
-        }
-        entryDialogBuilder.setNegativeButton(R.string.btn_text_cancel) { _, _ ->
-            cancel?.invoke()
-        }
-
-        val entryDialog = entryDialogBuilder.create()
-        entryDialog.show()
+        bohdan.sushchak.mywallet.internal.showEntryDialog(context, title, msg, yes, cancel)
     }
 
     protected fun showEntryDialog(
@@ -176,10 +133,12 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         }
     }
 
-    protected fun pickDate(actualTime: Long,
-                           minDate: Long? = null,
-                           maxDate: Long? = null,
-                           callBack: ((date: Date) -> Unit)) {
+    protected fun pickDate(
+        actualTime: Long,
+        minDate: Long? = null,
+        maxDate: Long? = null,
+        callBack: ((date: Date) -> Unit)
+    ) {
         val calendar = Calendar.getInstance()
 
         if (0L != actualTime) {
@@ -192,16 +151,17 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         activity?.let { activity ->
-            val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
-                calendar.apply {
-                    clear()
-                    set(Calendar.YEAR, year_)
-                    set(Calendar.MONTH, monthOfYear)
-                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                }
-                callBack.invoke(calendar.getOnlyDate())
-            }, year, month, day)
-            minDate?.let{dpd.datePicker.minDate = it }
+            val dpd =
+                DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
+                    calendar.apply {
+                        clear()
+                        set(Calendar.YEAR, year_)
+                        set(Calendar.MONTH, monthOfYear)
+                        set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    }
+                    callBack.invoke(calendar.getOnlyDate())
+                }, year, month, day)
+            minDate?.let { dpd.datePicker.minDate = it }
             maxDate?.let { dpd.datePicker.maxDate = it }
             dpd.show()
         }

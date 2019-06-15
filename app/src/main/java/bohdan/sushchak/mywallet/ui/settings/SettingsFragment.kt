@@ -54,15 +54,19 @@ class SettingsFragment : BaseFragment(), KodeinAware {
     }
 
     private fun bindUI() = launch {
-        val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
+        //val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
 
-        dividerItemDecoration.setDrawable(context!!.getDrawable(R.drawable.divider_black)!!)
-        recyclerViewCategory.addItemDecoration(dividerItemDecoration)
+        //dividerItemDecoration.setDrawable(context!!.getDrawable(R.drawable.divider_black)!!)
+        //recyclerViewCategory.addItemDecoration(dividerItemDecoration)
 
         val categoryList = viewModel.categories.await()
         categoryList.observe(this@SettingsFragment, Observer { categories ->
             tvNoCategories.visibility = if (categories.isEmpty()) View.VISIBLE else View.GONE
             updateCategory(categories)
+        })
+
+        viewModel.currentUser.observe(this@SettingsFragment, Observer { user ->
+            tvUserEmail.text = user.email
         })
 
         initViews()
@@ -94,7 +98,6 @@ class SettingsFragment : BaseFragment(), KodeinAware {
             showDialog(R.string.d_title_max_categories, R.string.d_msg_max_categories)
         }
     }
-
 
     private fun updateCategory(categoryEntities: List<CategoryEntity>) {
         if (::categoryAdapter.isInitialized) {

@@ -1,6 +1,7 @@
 package bohdan.sushchak.mywallet.ui.authorization
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -31,6 +32,7 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
 
     private lateinit var viewModel: AuthorizationViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.authorization_activity)
@@ -39,6 +41,13 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
 
         initAuthorizationTypeChange()
         initSignInButton()
+
+        tvClickForgotPassword.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            val email = etEmail.text.toString().trim()
+            intent.putExtra("email", email)
+            startActivity(intent)
+        }
         bindUI()
     }
 
@@ -54,10 +63,9 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
         })
 
         viewModel.syncType.observe(this@AuthorizationActivity, Observer {
-            if(it == SyncType.EQUALS){
+            if (it == SyncType.EQUALS) {
                 startActivity<MainActivity>()
-            }
-            else {
+            } else {
                 startActivity<SyncActivity>()
             }
             finish()
@@ -79,7 +87,7 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
     }
 
     private fun initSignInButton() {
-        btnAuthorization.setOnClickListener {
+        btnSendEmail.setOnClickListener {
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
             etEmail.setText(email)
@@ -102,16 +110,16 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
     }
 
     private fun initAuthorizationTypeChange() {
-        tvClickRegister.setOnClickListener {
+        tvClickBackLogin.setOnClickListener {
             if (authorizationType == AuthorizationType.SIGN_IN) {
                 authorizationType = AuthorizationType.SIGN_UP
-                btnAuthorization.setText(R.string.btn_sign_up)
-                tvClickRegister.setText(R.string.tv_click_to_log_in)
+                btnSendEmail.setText(R.string.btn_sign_up)
+                tvClickBackLogin.setText(R.string.tv_click_to_log_in)
                 etRepeatPasswordLayout.visibility = View.VISIBLE
             } else {
                 authorizationType = AuthorizationType.SIGN_IN
-                btnAuthorization.setText(R.string.btn_log_in)
-                tvClickRegister.setText(R.string.tv_click_to_register)
+                btnSendEmail.setText(R.string.btn_log_in)
+                tvClickBackLogin.setText(R.string.tv_click_to_register)
                 etRepeatPasswordLayout.visibility = View.GONE
             }
         }

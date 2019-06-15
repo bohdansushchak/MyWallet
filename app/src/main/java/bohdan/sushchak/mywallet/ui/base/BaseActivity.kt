@@ -23,4 +23,12 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope {
         super.onDestroy()
         job.cancel()
     }
+
+    protected fun showAlertDialog(title: String, msg: String, yes: (() -> Unit)? = null) {
+        bohdan.sushchak.mywallet.internal.showAlertDialog(this, title, msg, yes)
+    }
+
+    protected fun showAlertDialog(title: Int, msg: Int, yes: (() -> Unit)? = null) {
+        showAlertDialog(getString(title), getString(msg), yes)
+    }
 }

@@ -15,13 +15,16 @@
     <string name="tv_currency">Currency</string>
     <string name="tv_list_is_empty">List is empty</string>
     <string name="tv_click_to_register">Click to sign up</string>
+    <string name="tv_click_forgot_password">Forgot password</string>
     <string name="tv_click_to_log_in">Click to sign in</string>
     <string name="tv_sync">SYNCHRONIZATION</string>
-    <string name="tv_getting">Getting: </string>
-    <string name="tv_sending">Sending: </string>
+    <string name="tv_getting">Getting:</string>
+    <string name="tv_sending">Sending:</string>
     <string name="tv_user_title">User</string>
     <string name="tv_email_settings">E-mail:</string>
     <string name="tv_password_settings">Password:</string>
+    <string name="tv_forgot_password">Reset password</string>
+    <string name="tv_back_to_login_screen">Back to log in screen</string>
 
     <!--buttons text-->
     <string name="btn_text_save_order">Save order</string>
@@ -36,6 +39,7 @@
     <string name="btn_sign_out">Sign out</string>
     <string name="btn_save_currency">Save</string>
     <string name="btn_change_password">Change password</string>
+    <string name="btn_send_email">Send email</string>
 
     <!-- editText hints-->
     <string name="ed_hint_write_product_name">Write product name</string>
@@ -71,6 +75,11 @@
     <string name="d_msg_no_categories">Please add a one category</string>
     <string name="d_title_max_categories">Max categories</string>
     <string name="d_msg_max_categories">You can have only 10 categories</string>
+    <string name="d_msg_check_your_email">Check your email to reset password to your account</string>
+    <string name="d_title_check_your_email">Check your email</string>
+    <string name="d_title_error_reset">Error</string>
+    <string name="d_msg_error_reset">Some error happened, try again later</string>
+
 
 
     <string name="total">Total:</string>
