@@ -253,9 +253,13 @@ class MyWalletRepositoryImpl(
             categoryDao.replaceAll(categories)
 
             val orders = apiDatabase.getOrders()
-            orders.forEach{
-                observer.invoke("Order: ${it.order.title} products: ${it.products.
-                    joinToString(separator = ", ", prefix = "[", postfix = "]"){product -> product.title}}")
+            orders.forEach {
+                observer.invoke("Order: ${it.order.title} products: ${it.products.joinToString(
+                    separator = ", ",
+                    prefix = "[",
+                    postfix = "]"
+                ) { product -> product.title }}"
+                )
                 delay(30L)
             }
 
@@ -266,8 +270,13 @@ class MyWalletRepositoryImpl(
         }
     }
 
-    private fun pushDatabase(observer: (text: String) -> Unit) {
-
+    private suspend fun pushDatabase(observer: (text: String) -> Unit) {
+        withContext(Dispatchers.IO) {
+            val categories = categoryDao.getAllCategoriesNonLive()
+            categories?.forEach {
+                observer.invoke("Category: ${it.categoryTitle}")
+            }
+        }
     }
 
     override suspend fun databasesCompare(): SyncType {
@@ -295,7 +304,7 @@ class MyWalletRepositoryImpl(
                 it.copy(databaseVersion = it.databaseVersion!! + 1)
             } ?: MetaDataEntity(databaseVersion = 1, userFirebaseId = FirebaseAuth.getInstance().currentUser!!.uid)
 
-            if(version > 1){
+            if (version > 1) {
                 newMetaDataEntity.databaseVersion = version
             }
 

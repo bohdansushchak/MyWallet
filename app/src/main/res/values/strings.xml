@@ -19,6 +19,9 @@
     <string name="tv_sync">SYNCHRONIZATION</string>
     <string name="tv_getting">Getting: </string>
     <string name="tv_sending">Sending: </string>
+    <string name="tv_user_title">User</string>
+    <string name="tv_email_settings">E-mail:</string>
+    <string name="tv_password_settings">Password:</string>
 
     <!--buttons text-->
     <string name="btn_text_save_order">Save order</string>
@@ -31,6 +34,8 @@
     <string name="btn_log_in">Log in</string>
     <string name="btn_sign_up">Sign up</string>
     <string name="btn_sign_out">Sign out</string>
+    <string name="btn_save_currency">Save</string>
+    <string name="btn_change_password">Change password</string>
 
     <!-- editText hints-->
     <string name="ed_hint_write_product_name">Write product name</string>

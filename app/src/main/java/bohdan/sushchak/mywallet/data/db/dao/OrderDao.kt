@@ -69,8 +69,9 @@ abstract class OrderDao : BaseDao<OrderEntity> {
         )
     }
 
-    @Query("DELETE FROM products")
+    @Query("DELETE FROM orders")
     abstract fun clearTable()
+
 
     @Transaction
     open fun replaceAll(
