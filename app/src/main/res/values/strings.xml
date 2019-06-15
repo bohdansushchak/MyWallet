@@ -41,7 +41,7 @@
     <string name="btn_sign_up">Sign up</string>
     <string name="btn_sign_out">Sign out</string>
     <string name="btn_save_currency">Save</string>
-    <string name="btn_reset_password">Reset</string>
+    <string name="btn_reset_password">Change</string>
     <string name="btn_send_email">Send email</string>
     <string name="btn_verify_email">Verify</string>
     <string name="btn_change_email">Change</string>

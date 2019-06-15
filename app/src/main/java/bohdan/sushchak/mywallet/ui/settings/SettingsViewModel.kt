@@ -17,11 +17,14 @@ class SettingsViewModel(private val myWalletRepository: MyWalletRepository) : Vi
 
     private val mAuth by lazy { FirebaseAuth.getInstance() }
     private val _emailVerificationResult by lazy { MutableLiveData<HashMap<String, Int>>() }
-    private val _isEmailVerified by lazy { MutableLiveData<Boolean>().apply { postValue(mAuth.currentUser?.isEmailVerified) } }
+    private val _isEmailVerified by lazy {
+        MutableLiveData<Boolean>()
+            .apply { postValue(mAuth.currentUser?.isEmailVerified) }
+    }
 
     private val _currentUser by lazy {
         MutableLiveData<FirebaseUser>()
-            .apply { value = mAuth.currentUser }
+            .apply { postValue(mAuth.currentUser) }
     }
 
     val currentUser: LiveData<FirebaseUser>
@@ -31,7 +34,7 @@ class SettingsViewModel(private val myWalletRepository: MyWalletRepository) : Vi
         get() = _emailVerificationResult
 
     val isEmailVerified: LiveData<Boolean>
-    get() = _isEmailVerified
+        get() = _isEmailVerified
 
     val categories by lazyDeferred { myWalletRepository.getCategories() }
 
@@ -70,6 +73,14 @@ class SettingsViewModel(private val myWalletRepository: MyWalletRepository) : Vi
                 "msg" to R.string.d_msg_error_email_verification
             )
             _emailVerificationResult.postValue(result)
+        }
+    }
+
+    fun changePassword(password: String, repeatPassword: String) {
+        GlobalScope.launch(Dispatchers.IO) {
+            if (password == repeatPassword)
+                mAuth.currentUser?.updatePassword(password)
+
         }
     }
 }

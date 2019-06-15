@@ -74,6 +74,11 @@ class SettingsFragment : BaseFragment(), KodeinAware {
             }
         })
 
+        viewModel.emailVerificationResult.observe(this@SettingsFragment, Observer { result ->
+            if (result["title"] != null && result["msg"] != null)
+                showAlertDialog(result["title"]!!, result["msg"]!!)
+        })
+
         initViews()
     }
 
