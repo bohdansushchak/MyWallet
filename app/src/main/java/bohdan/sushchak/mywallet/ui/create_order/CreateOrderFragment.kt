@@ -1,6 +1,7 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,6 +22,7 @@ import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import bohdan.sushchak.mywallet.internal.*
 import bohdan.sushchak.mywallet.internal.view.startFadeInAnimation
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
+import bohdan.sushchak.productsdetector.ui.CameraActivity
 import kotlinx.android.synthetic.main.create_order_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -90,6 +92,12 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             if (category != null)
                 updateSpinner(category)
         })
+
+        ibtnMlKit.setOnClickListener {
+            val intent = Intent(context, CameraActivity::class.java)
+
+            startActivity(intent)
+        }
     }
 
     private fun updateTotalPrice(totalPrice: Double) {

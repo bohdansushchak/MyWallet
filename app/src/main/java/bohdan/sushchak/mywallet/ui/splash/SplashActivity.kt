@@ -36,7 +36,7 @@ class SplashActivity : BaseActivity(), KodeinAware {
     }
 
     private fun fetchSync() = launch {
-        val syncType = repository.databasesCompare()
+       val syncType = repository.databasesCompare()
 
         if (syncType == SyncType.EQUALS) {
             this@SplashActivity.runOnUiThread(Runnable {

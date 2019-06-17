@@ -102,7 +102,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
             val ft = fragmentManager?.beginTransaction()
             val category = CategoryEntity.emptyCategoryEntity
             val fragment = CreateCategoryDialogFragment(category)
-            fragment.show(ft, "")
+            fragment.show(ft!!, "")
 
             fragment.onResult = { newCategory -> viewModel.addCategory(newCategory) }
         } else {
@@ -135,7 +135,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
     private fun editCategory(categoryEntity: CategoryEntity) {
         val ft = fragmentManager?.beginTransaction()
         val fragment = CreateCategoryDialogFragment(categoryEntity)
-        fragment.show(ft, "")
+        fragment.show(ft!!, "")
 
         fragment.onResult = { newCategory -> viewModel.updateCategory(newCategory) }
     }
