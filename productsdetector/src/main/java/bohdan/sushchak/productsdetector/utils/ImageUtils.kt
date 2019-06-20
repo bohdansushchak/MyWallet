@@ -10,7 +10,7 @@ class ImageUtils {
     // This value is 2 ^ 18 - 1, and is used to clamp the RGB values before their ranges
     // are normalized to eight bits.
     companion object {
-        internal val kMaxChannelValue = 262143
+        private val kMaxChannelValue = 262143
 
         /**
          * Utility method to compute the allocated size in bytes of a YUV420SP image of the given

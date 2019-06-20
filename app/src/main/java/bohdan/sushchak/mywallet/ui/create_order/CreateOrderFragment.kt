@@ -59,7 +59,12 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         ibtnAddProduct.setOnClickListener { addProduct() }
         btnClearAll.setOnClickListener { clearProductList() }
         btnSaveOrder.setOnClickListener { saveOrder() }
-        tvOrderDate.setOnClickListener { pickDate(viewModel.orderDate, maxDate = Calendar.getInstance().time.time) { setDate(it) } }
+        tvOrderDate.setOnClickListener {
+            pickDate(
+                viewModel.orderDate,
+                maxDate = Calendar.getInstance().time.time
+            ) { setDate(it) }
+        }
 
         context?.let { hideKeyboardIfFocusLost(it, edProductPrice, edProductTitle) }
 
