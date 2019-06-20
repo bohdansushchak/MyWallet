@@ -19,6 +19,7 @@ package bohdan.sushchak.productsdetector.ui;
 import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
@@ -39,7 +40,6 @@ import bohdan.sushchak.productsdetector.utils.ImageUtils;
 
 import java.nio.ByteBuffer;
 
-
 public class CameraActivity extends AppCompatActivity
         implements OnImageAvailableListener,
         Camera.PreviewCallback {
@@ -59,6 +59,8 @@ public class CameraActivity extends AppCompatActivity
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
 
+    protected String locality = "en";
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(null);
@@ -69,6 +71,11 @@ public class CameraActivity extends AppCompatActivity
             setFragment();
         } else {
             requestPermission();
+        }
+
+        Intent intent = getIntent();
+        if(intent.hasExtra("locality")){
+            locality = intent.getStringExtra("locality");
         }
     }
 
