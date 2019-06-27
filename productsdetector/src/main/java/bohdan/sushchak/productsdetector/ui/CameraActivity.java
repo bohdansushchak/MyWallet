@@ -32,6 +32,7 @@ import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.*;
 import android.util.Size;
+import android.view.Surface;
 import android.view.WindowManager;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,12 +41,12 @@ import bohdan.sushchak.productsdetector.utils.ImageUtils;
 
 import java.nio.ByteBuffer;
 
-public class CameraActivity extends AppCompatActivity
+public abstract class CameraActivity extends AppCompatActivity
         implements OnImageAvailableListener,
         Camera.PreviewCallback {
 
     private static final int PERMISSIONS_REQUEST = 1;
-
+    private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
     private static final String PERMISSION_CAMERA = Manifest.permission.CAMERA;
     protected int previewWidth = 0;
     protected int previewHeight = 0;
@@ -59,7 +60,6 @@ public class CameraActivity extends AppCompatActivity
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
 
-    protected String locality = "en";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -72,24 +72,11 @@ public class CameraActivity extends AppCompatActivity
         } else {
             requestPermission();
         }
-
-        Intent intent = getIntent();
-        if(intent.hasExtra("locality")){
-            locality = intent.getStringExtra("locality");
-        }
     }
 
     protected int[] getRgbBytes() {
         imageConverter.run();
         return rgbBytes;
-    }
-
-    protected int getLuminanceStride() {
-        return yRowStride;
-    }
-
-    protected byte[] getLuminance() {
-        return yuvBytes[0];
     }
 
     @Override
@@ -105,6 +92,7 @@ public class CameraActivity extends AppCompatActivity
                 previewHeight = previewSize.height;
                 previewWidth = previewSize.width;
                 rgbBytes = new int[previewWidth * previewHeight];
+                onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), 90);
             }
         } catch (final Exception e) {
             return;
@@ -115,26 +103,16 @@ public class CameraActivity extends AppCompatActivity
         yRowStride = previewWidth;
 
         imageConverter =
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        ImageUtils.Companion.convertYUV420SPToARGB8888(bytes, previewWidth, previewHeight, rgbBytes);
-                    }
-                };
+                () -> ImageUtils.Companion.convertYUV420SPToARGB8888(bytes, previewWidth, previewHeight, rgbBytes);
 
         postInferenceCallback =
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        camera.addCallbackBuffer(bytes);
-                        isProcessingFrame = false;
-                    }
+                () -> {
+                    camera.addCallbackBuffer(bytes);
+                    isProcessingFrame = false;
                 };
+        processImage();
     }
 
-    /**
-     * Callback for Camera2 API
-     */
     @Override
     public void onImageAvailable(final ImageReader reader) {
         // We need wait until we have some size from onPreviewSizeChosen
@@ -164,30 +142,23 @@ public class CameraActivity extends AppCompatActivity
             final int uvPixelStride = planes[1].getPixelStride();
 
             imageConverter =
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            ImageUtils.Companion.convertYUV420ToARGB8888(
-                                    yuvBytes[0],
-                                    yuvBytes[1],
-                                    yuvBytes[2],
-                                    previewWidth,
-                                    previewHeight,
-                                    yRowStride,
-                                    uvRowStride,
-                                    uvPixelStride,
-                                    rgbBytes);
-                        }
-                    };
+                    () -> ImageUtils.Companion.convertYUV420ToARGB8888(
+                            yuvBytes[0],
+                            yuvBytes[1],
+                            yuvBytes[2],
+                            previewWidth,
+                            previewHeight,
+                            yRowStride,
+                            uvRowStride,
+                            uvPixelStride,
+                            rgbBytes);
 
             postInferenceCallback =
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            image.close();
-                            isProcessingFrame = false;
-                        }
+                    () -> {
+                        image.close();
+                        isProcessingFrame = false;
                     };
+            processImage();
         } catch (final Exception e) {
             Trace.endSection();
             return;
@@ -212,9 +183,9 @@ public class CameraActivity extends AppCompatActivity
             handlerThread.join();
             handlerThread = null;
             handler = null;
-        } catch (final InterruptedException e) {
         }
-
+        catch (final InterruptedException e) {
+        }
         super.onPause();
     }
 
@@ -321,16 +292,17 @@ public class CameraActivity extends AppCompatActivity
                                 public void onPreviewSizeChosen(final Size size, final int rotation) {
                                     previewHeight = size.getHeight();
                                     previewWidth = size.getWidth();
+                                    CameraActivity.this.onPreviewSizeChosen(size, rotation);
                                 }
                             },
                             this,
-                            new Size(640, 480));
+                            DESIRED_PREVIEW_SIZE);
 
             camera2Fragment.setCamera(cameraId);
             fragment = camera2Fragment;
         } else {
             fragment =
-                    new LegacyCameraConnectionFragment(this, new Size(640, 480));
+                    new LegacyCameraConnectionFragment(this, DESIRED_PREVIEW_SIZE);
         }
 
         getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
@@ -353,5 +325,23 @@ public class CameraActivity extends AppCompatActivity
             postInferenceCallback.run();
         }
     }
+
+    protected int getScreenOrientation() {
+        switch (getWindowManager().getDefaultDisplay().getRotation()) {
+            case Surface.ROTATION_270:
+                return 270;
+            case Surface.ROTATION_180:
+                return 180;
+            case Surface.ROTATION_90:
+                return 90;
+            case Surface.ROTATION_0:
+                break;
+        }
+        return 0;
+    }
+
+    protected abstract void processImage();
+
+    protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
 
 }

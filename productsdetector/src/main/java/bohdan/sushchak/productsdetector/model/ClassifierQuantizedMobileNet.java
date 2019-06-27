@@ -19,15 +19,13 @@ import android.app.Activity;
 
 import java.io.IOException;
 
-/** This TensorFlow Lite classifier works with the quantized MobileNet model. */
 public class ClassifierQuantizedMobileNet extends Classifier {
 
   private byte[][] labelProbArray = null;
 
-  public ClassifierQuantizedMobileNet(Activity activity)
-      throws IOException {
+  public ClassifierQuantizedMobileNet(Activity activity) throws IOException {
     super(activity);
-    labelProbArray = new byte[1][getNumLabels()];
+    this.labelProbArray = new byte[1][getNumLabels()];
   }
 
   @Override
@@ -47,12 +45,7 @@ public class ClassifierQuantizedMobileNet extends Classifier {
 
   @Override
   protected String getLabelPath() {
-    return "labels.txt";
-  }
-
-  @Override
-  protected int getNumBytesPerChannel() {
-    return 1;
+    return "labels_en.txt";
   }
 
   @Override
@@ -60,16 +53,6 @@ public class ClassifierQuantizedMobileNet extends Classifier {
     imgData.put((byte) ((pixelValue >> 16) & 0xFF));
     imgData.put((byte) ((pixelValue >> 8) & 0xFF));
     imgData.put((byte) (pixelValue & 0xFF));
-  }
-
-  @Override
-  protected float getProbability(int labelIndex) {
-    return labelProbArray[0][labelIndex];
-  }
-
-  @Override
-  protected void setProbability(int labelIndex, Number value) {
-    labelProbArray[0][labelIndex] = value.byteValue();
   }
 
   @Override

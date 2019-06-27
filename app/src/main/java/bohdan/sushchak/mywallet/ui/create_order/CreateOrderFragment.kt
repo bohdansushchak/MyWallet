@@ -23,6 +23,7 @@ import bohdan.sushchak.mywallet.internal.*
 import bohdan.sushchak.mywallet.internal.view.startFadeInAnimation
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import bohdan.sushchak.productsdetector.ui.CameraActivity
+import bohdan.sushchak.productsdetector.ui.DetectionActivity
 import kotlinx.android.synthetic.main.create_order_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -99,7 +100,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         })
 
         ibtnMlKit.setOnClickListener {
-            val intent = Intent(context, CameraActivity::class.java)
+            val intent = Intent(context, DetectionActivity::class.java)
 
             startActivity(intent)
         }

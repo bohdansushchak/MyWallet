@@ -8,7 +8,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application>
-        <activity android:name=".ui.CameraActivity"
+        <activity android:name=".ui.DetectionActivity"
                   android:screenOrientation="portrait">
         </activity>
     </application>

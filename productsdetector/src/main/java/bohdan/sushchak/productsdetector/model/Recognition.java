@@ -29,14 +29,6 @@ public class Recognition {
         return confidence;
     }
 
-    public RectF getLocation() {
-        return new RectF(location);
-    }
-
-    public void setLocation(RectF location) {
-        this.location = location;
-    }
-
     @Override
     public String toString() {
         String resultString = "";
