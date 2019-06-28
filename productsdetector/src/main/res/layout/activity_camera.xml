@@ -21,4 +21,9 @@
         />
 
     </RelativeLayout>
+
+    <include
+            android:id="@+id/bottom_sheet_layout"
+            layout="@layout/bottom_sheet_result" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
