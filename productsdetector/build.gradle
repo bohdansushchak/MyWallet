@@ -32,13 +32,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.core:core-ktx:1.0.2'
 
     // Kotlin Android Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0-RC1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0-RC1"
-
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
 
     //TensorFlow
     implementation 'org.tensorflow:tensorflow-lite:1.13.1'

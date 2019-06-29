@@ -45,7 +45,7 @@
         <View
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:background="@color/design_default_color_error"
+                android:background="#000"
                 android:layout_width="2dp"
                 android:layout_height="match_parent"/>
 
@@ -61,10 +61,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rlDetectedItems"
+            <bohdan.sushchak.productsdetector.views.DetectedItem
+                    android:id="@+id/detectedItemFirst"
+                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    app:backgroundColor="@color/colorFirst"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+            />
+
+            <bohdan.sushchak.productsdetector.views.DetectedItem
+                    android:id="@+id/detectedItemSecond"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:backgroundColor="@color/colorSecond"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+            />
+
+            <bohdan.sushchak.productsdetector.views.DetectedItem
+                    android:id="@+id/detectedItemThird"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:backgroundColor="@color/colorThird"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

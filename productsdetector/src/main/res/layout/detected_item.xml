@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:background="@drawable/detected_item_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/tvDetectedItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="laptop"
+            android:layout_gravity="center_vertical|start"
+    />
+
+    <TextView
+            android:id="@+id/tvDetectedItemAccuracy"
+            tools:text="76%"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+    />
+
+    <ImageButton
+            android:id="@+id/iBtnAddItem"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/fab_add_bg"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="end"
+    />
+</FrameLayout>
