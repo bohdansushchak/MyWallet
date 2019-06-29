@@ -52,12 +52,15 @@ class DetectedItem(
         iBtnAddItem.setOnClickListener(onClickListener)
     }
 
-    fun setLabel(label: String) {
-        tvDetectedItemName.text = label
-    }
+    var label: String
+        get() = tvDetectedItemName.text.toString()
+        set(value) {
+            tvDetectedItemName.text = value
+        }
 
-    @SuppressLint("SetTextI18n")
-    fun setAccuracy(accuracy: Int) {
-        tvDetectedItemAccuracy.text = "$accuracy%"
-    }
+    var accuracy: String
+        get() = tvDetectedItemAccuracy.text.toString()
+        set(value) {
+            tvDetectedItemAccuracy.text = value
+        }
 }

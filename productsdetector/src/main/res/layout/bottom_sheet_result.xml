@@ -8,16 +8,19 @@
               android:gravity="center_horizontal"
               android:orientation="vertical"
               android:padding="8dp"
-              app:behavior_peekHeight="240dp"
+              app:behavior_peekHeight="250dp"
               app:behavior_hideable="false"
               app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <ImageView
-            android:id="@+id/bottom_sheet_arrow"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:src="@drawable/btn_move"/>
+    <SeekBar
+            android:max="500"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:id="@+id/seekBarWait"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     <LinearLayout
             android:orientation="horizontal"

@@ -1,17 +1,21 @@
 package bohdan.sushchak.productsdetector.ui
 
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.os.Bundle
-import android.util.Log
+import android.preference.PreferenceManager
 import android.util.Size
+import android.widget.SeekBar
 import bohdan.sushchak.productsdetector.R
 import bohdan.sushchak.productsdetector.model.Classifier
 import bohdan.sushchak.productsdetector.model.ClassifierQuantizedMobileNet
 import bohdan.sushchak.productsdetector.model.Recognition
 import bohdan.sushchak.productsdetector.utils.ImageUtils
-import kotlinx.coroutines.runBlocking
+import kotlinx.android.synthetic.main.bottom_sheet_result.*
+
+const val PREF_WAIT_KEY = "waitkey"
 
 class DetectionActivity : CameraActivity() {
 
@@ -22,10 +26,35 @@ class DetectionActivity : CameraActivity() {
     private lateinit var frameToCropTransform: Matrix
     private lateinit var cropToFrameTransform: Matrix
 
+    private lateinit var preferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
         classifier = ClassifierQuantizedMobileNet(this)
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this@DetectionActivity)
+
+        initSeekBar()
+    }
+
+    private fun initSeekBar() {
+        val progress = preferences.getLong(PREF_WAIT_KEY, 0)
+        seekBarWait.progress = progress.toInt()
+
+        seekBarWait.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                seekBar?.let {
+                    preferences.edit().apply {
+                        putLong(PREF_WAIT_KEY, it.progress.toLong())
+                    }.apply()
+                }
+            }
+        })
     }
 
     override fun onPreviewSizeChosen(size: Size, rotation: Int) {
@@ -49,7 +78,7 @@ class DetectionActivity : CameraActivity() {
         )
 
         cropToFrameTransform = Matrix()
-        frameToCropTransform!!.invert(cropToFrameTransform)
+        frameToCropTransform.invert(cropToFrameTransform)
     }
 
     override fun processImage() {
@@ -60,19 +89,34 @@ class DetectionActivity : CameraActivity() {
 
             runInBackground {
                 val results = classifier.recognizeImage(croppedBitmap)
-                updateUI(results)
+
+                val sleepMs = (seekBarWait.progress).toLong()
+                if (sleepMs != 0L) {
+                    Thread.sleep(sleepMs)
+                }
+
+                runOnUiThread {
+                    updateUI(results)
+                }
             }
+            readyForNextImage()
         }
-        readyForNextImage()
     }
 
-    private fun updateUI(results: List<Recognition>) = runBlocking {
+    private fun updateUI(results: List<Recognition>) {
+        if (results.isEmpty() || results.size < 3) return
 
-        Log.d("TAG", results.toString());
+        val first = results[0]
+        detectedItemFirst.label = first.title
+
+        val second = results[1]
+        detectedItemSecond.label = second.title
+
+        val third = results[2]
+        detectedItemThird.label = third.title
     }
 
     override fun getFragmentContainer(): Int {
         return R.id.container
     }
-
 }
