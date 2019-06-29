@@ -1,18 +1,3 @@
-/* Copyright 2019 The TensorFlow Authors. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================*/
-
 package bohdan.sushchak.productsdetector.model;
 
 import android.app.Activity;
@@ -45,7 +30,7 @@ public abstract class Classifier {
     protected Interpreter tflite;
     protected ByteBuffer imgData = null;
 
-    protected Classifier(Activity activity) throws IOException{
+    protected Classifier(Activity activity) throws IOException {
         tfliteModel = loadModelFile(activity);
         tfliteOptions.setNumThreads(1);
         tflite = new Interpreter(tfliteModel, tfliteOptions);
@@ -112,8 +97,7 @@ public abstract class Classifier {
                     new Recognition(
                             "" + i,
                             labels.size() > i ? labels.get(i) : "unknown",
-                            getNormalizedProbability(i),
-                            null));
+                            getNormalizedProbability(i)));
         }
         final ArrayList<Recognition> recognitions = new ArrayList<Recognition>();
         int recognitionsSize = Math.min(pq.size(), MAX_RESULTS);

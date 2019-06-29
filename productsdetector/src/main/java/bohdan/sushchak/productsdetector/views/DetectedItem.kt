@@ -36,7 +36,7 @@ class DetectedItem(
         val backgroundColor = attrs.getColor(R.styleable.DetectedItem_backgroundColor, Color.TRANSPARENT)
         var backgroundDrawable = attrs.getDrawable(R.styleable.DetectedItem_background)
         val label = attrs.getString(R.styleable.DetectedItem_label)
-        val accracy = attrs.getString(R.styleable.DetectedItem_accuracy)
+        val accuracy = attrs.getString(R.styleable.DetectedItem_accuracy)
 
         if (backgroundDrawable == null)
             backgroundDrawable = context.getDrawable(R.drawable.detected_item_bg)
@@ -45,7 +45,7 @@ class DetectedItem(
         rootView.background = backgroundDrawable
 
         tvDetectedItemName.text = label
-        tvDetectedItemAccuracy.text = "$accracy%"
+        tvDetectedItemAccuracy.text = if (accuracy != null) "$accuracy%" else ""
     }
 
     fun setOnButtonClickListener(onClickListener: OnClickListener) {

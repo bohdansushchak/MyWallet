@@ -1,25 +1,8 @@
-/*
- * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package bohdan.sushchak.productsdetector.ui;
 
 import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
@@ -35,8 +18,8 @@ import android.util.Size;
 import android.view.Surface;
 import android.view.WindowManager;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import bohdan.sushchak.productsdetector.R;
 import bohdan.sushchak.productsdetector.utils.ImageUtils;
 
 import java.nio.ByteBuffer;
@@ -60,12 +43,10 @@ public abstract class CameraActivity extends AppCompatActivity
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
 
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_camera);
 
         if (hasPermission()) {
             setFragment();
@@ -86,7 +67,6 @@ public abstract class CameraActivity extends AppCompatActivity
         }
 
         try {
-            // Initialize the storage bitmaps once when the resolution is known.
             if (rgbBytes == null) {
                 Camera.Size previewSize = camera.getParameters().getPreviewSize();
                 previewHeight = previewSize.height;
@@ -115,7 +95,6 @@ public abstract class CameraActivity extends AppCompatActivity
 
     @Override
     public void onImageAvailable(final ImageReader reader) {
-        // We need wait until we have some size from onPreviewSizeChosen
         if (previewWidth == 0 || previewHeight == 0) {
             return;
         }
@@ -169,7 +148,6 @@ public abstract class CameraActivity extends AppCompatActivity
     @Override
     public synchronized void onResume() {
         super.onResume();
-
         handlerThread = new HandlerThread("inference");
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
@@ -202,7 +180,7 @@ public abstract class CameraActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(
-            final int requestCode, final String[] permissions, final int[] grantResults) {
+            final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
@@ -235,24 +213,21 @@ public abstract class CameraActivity extends AppCompatActivity
         }
     }
 
-    // Returns true if the device supports the required hardware level, or better.
     private boolean isHardwareLevelSupported(
             CameraCharacteristics characteristics, int requiredLevel) {
         int deviceLevel = characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL);
         if (deviceLevel == CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY) {
             return requiredLevel == deviceLevel;
         }
-        // deviceLevel is not LEGACY, can use numerical sort
         return requiredLevel <= deviceLevel;
     }
 
-    private String chooseCamera() {
+    private String chooseCamera() throws NullPointerException {
         final CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
             for (final String cameraId : manager.getCameraIdList()) {
                 final CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
 
-                // We don't use a front facing camera in this sample.
                 final Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
                 if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
                     continue;
@@ -265,9 +240,6 @@ public abstract class CameraActivity extends AppCompatActivity
                     continue;
                 }
 
-                // Fallback to camera1 API for internal cameras that don't have full support.
-                // This should help with legacy situations where using the camera2 API causes
-                // distorted or otherwise broken previews.
                 useCamera2API =
                         (facing == CameraCharacteristics.LENS_FACING_EXTERNAL)
                                 || isHardwareLevelSupported(
@@ -275,6 +247,7 @@ public abstract class CameraActivity extends AppCompatActivity
                 return cameraId;
             }
         } catch (CameraAccessException e) {
+
         }
 
         return null;
@@ -302,12 +275,10 @@ public abstract class CameraActivity extends AppCompatActivity
                     new LegacyCameraConnectionFragment(this, DESIRED_PREVIEW_SIZE);
         }
 
-        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+        getFragmentManager().beginTransaction().replace(getFragmentContainer(), fragment).commit();
     }
 
     protected void fillBytes(final Plane[] planes, final byte[][] yuvBytes) {
-        // Because of the variable row stride it's not possible to know in
-        // advance the actual necessary dimensions of the yuv planes.
         for (int i = 0; i < planes.length; ++i) {
             final ByteBuffer buffer = planes[i].getBuffer();
             if (yuvBytes[i] == null) {
@@ -340,5 +311,7 @@ public abstract class CameraActivity extends AppCompatActivity
     protected abstract void processImage();
 
     protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
+
+    protected abstract int getFragmentContainer();
 
 }

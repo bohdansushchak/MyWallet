@@ -6,6 +6,7 @@ import android.graphics.Matrix
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
+import bohdan.sushchak.productsdetector.R
 import bohdan.sushchak.productsdetector.model.Classifier
 import bohdan.sushchak.productsdetector.model.ClassifierQuantizedMobileNet
 import bohdan.sushchak.productsdetector.model.Recognition
@@ -23,7 +24,7 @@ class DetectionActivity : CameraActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setContentView(R.layout.activity_camera)
         classifier = ClassifierQuantizedMobileNet(this)
     }
 
@@ -57,7 +58,7 @@ class DetectionActivity : CameraActivity() {
             val canvas = Canvas(croppedBitmap)
             canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null)
 
-            runInBackground{
+            runInBackground {
                 val results = classifier.recognizeImage(croppedBitmap)
                 updateUI(results)
             }
@@ -68,6 +69,10 @@ class DetectionActivity : CameraActivity() {
     private fun updateUI(results: List<Recognition>) = runBlocking {
 
         Log.d("TAG", results.toString());
+    }
+
+    override fun getFragmentContainer(): Int {
+        return R.id.container
     }
 
 }
