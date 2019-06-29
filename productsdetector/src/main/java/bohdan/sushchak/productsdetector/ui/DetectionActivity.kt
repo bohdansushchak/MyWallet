@@ -1,10 +1,12 @@
 package bohdan.sushchak.productsdetector.ui
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.os.Bundle
+import android.os.SystemClock
 import android.preference.PreferenceManager
 import android.util.Size
 import android.widget.SeekBar
@@ -43,7 +45,10 @@ class DetectionActivity : CameraActivity() {
         seekBarWait.progress = progress.toInt()
 
         seekBarWait.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
+            @SuppressLint("SetTextI18n")
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                tvWaitTime.text = "${progress}ms"
+            }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
@@ -88,7 +93,9 @@ class DetectionActivity : CameraActivity() {
             canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null)
 
             runInBackground {
+                val startTime = SystemClock.uptimeMillis()
                 val results = classifier.recognizeImage(croppedBitmap)
+                val processingTime = SystemClock.uptimeMillis() - startTime
 
                 val sleepMs = (seekBarWait.progress).toLong()
                 if (sleepMs != 0L) {
@@ -96,15 +103,16 @@ class DetectionActivity : CameraActivity() {
                 }
 
                 runOnUiThread {
-                    updateUI(results)
+                    updateResults(results)
+                    updateProcessingTime(processingTime)
                 }
             }
             readyForNextImage()
         }
     }
 
-    private fun updateUI(results: List<Recognition>) {
-        if (results.isEmpty() || results.size < 3) return
+    private fun updateResults(results: List<Recognition>) {
+        if (results.isEmpty() || results.size < Classifier.MAX_RESULTS) return
 
         val first = results[0]
         detectedItemFirst.label = first.title
@@ -114,6 +122,16 @@ class DetectionActivity : CameraActivity() {
 
         val third = results[2]
         detectedItemThird.label = third.title
+
+        val fourth = results[3]
+        detectedItemFourth.label = fourth.title
+
+        val fifth = results[4]
+        detectedItemFifth.label = fifth.title
+    }
+
+    private fun updateProcessingTime(processingTime: Long) {
+        tvInferenceTime.text = "${processingTime}ms"
     }
 
     override fun getFragmentContainer(): Int {

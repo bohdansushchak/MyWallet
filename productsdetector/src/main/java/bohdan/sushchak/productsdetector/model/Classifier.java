@@ -19,7 +19,7 @@ import java.util.PriorityQueue;
 
 public abstract class Classifier {
 
-    private static final int MAX_RESULTS = 3;
+    public static final int MAX_RESULTS = 5;
     private static final int DIM_BATCH_SIZE = 1;
     private static final int DIM_PIXEL_SIZE = 3;
 

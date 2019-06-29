@@ -10,4 +10,8 @@
     <string name="added_items">Added items</string>
     <string name="detected_items">Detected items</string>
 
+    <string name="tv_inference_time">Inference time:</string>
+    <string name="tv_wait_time">Wait time:</string>
+    <string name="tv_delay">Delay</string>
+
 </resources>
