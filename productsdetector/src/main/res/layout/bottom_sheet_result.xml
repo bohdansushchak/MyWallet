@@ -187,11 +187,19 @@
                     android:layout_height="wrap_content">
 
                 <TextView
-                        android:layout_gravity="start"
+                        android:layout_gravity="start|center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tv_wait_time"
+                        android:text="@string/tv_show_accuracy"
+                        android:gravity="center_vertical"
                         style="@style/TextNormalBlack"/>
+
+                <Switch
+                        android:id="@+id/switchShowAccuracy"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
 
             </FrameLayout>

@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_result.*
 import kotlin.math.roundToInt
 
 const val PREF_WAIT_KEY = "waitkey"
+const val PREF_SHOW_ACCURACY = "showAccuracy"
 
 class DetectionActivity : CameraActivity() {
 
@@ -39,6 +40,20 @@ class DetectionActivity : CameraActivity() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this@DetectionActivity)
 
         initSeekBar()
+        initShowAccuracySwitch()
+    }
+
+    private fun initShowAccuracySwitch() {
+        val isShowAccuracy = preferences.getBoolean(PREF_SHOW_ACCURACY, false)
+        switchShowAccuracy.isChecked = isShowAccuracy
+        changeAccuracyVisibility(isShowAccuracy)
+
+        switchShowAccuracy.setOnCheckedChangeListener { buttonView, isChecked ->
+            preferences.edit().apply{
+                putBoolean(PREF_SHOW_ACCURACY, isChecked)
+            }.apply()
+            changeAccuracyVisibility(isChecked)
+        }
     }
 
     private fun initSeekBar() {
@@ -143,5 +158,13 @@ class DetectionActivity : CameraActivity() {
 
     override fun getFragmentContainer(): Int {
         return R.id.container
+    }
+
+    private fun changeAccuracyVisibility(isVisible: Boolean) {
+        detectedItemFirst.showAccuracy = isVisible
+        detectedItemSecond.showAccuracy = isVisible
+        detectedItemThird.showAccuracy = isVisible
+        detectedItemFourth.showAccuracy = isVisible
+        detectedItemFifth.showAccuracy = isVisible
     }
 }
