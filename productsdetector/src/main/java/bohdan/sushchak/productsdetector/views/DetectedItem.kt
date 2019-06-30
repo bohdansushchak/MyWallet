@@ -35,32 +35,37 @@ class DetectedItem(
     private fun initAttrs(attrs: TypedArray) {
         val backgroundColor = attrs.getColor(R.styleable.DetectedItem_backgroundColor, Color.TRANSPARENT)
         var backgroundDrawable = attrs.getDrawable(R.styleable.DetectedItem_background)
-        val label = attrs.getString(R.styleable.DetectedItem_label)
-        val accuracy = attrs.getString(R.styleable.DetectedItem_accuracy)
+
+        this.label = attrs.getString(R.styleable.DetectedItem_label)
+        this.accuracy = attrs.getString(R.styleable.DetectedItem_accuracy)
+        this.showAccuracy = attrs.getBoolean(R.styleable.DetectedItem_showAccuracy, false)
 
         if (backgroundDrawable == null)
             backgroundDrawable = context.getDrawable(R.drawable.detected_item_bg)
 
         backgroundDrawable?.setColorFilter(backgroundColor, PorterDuff.Mode.OVERLAY)
-        rootView.background = backgroundDrawable
-
-        tvDetectedItemName.text = label
-        tvDetectedItemAccuracy.text = if (accuracy != null) "$accuracy%" else ""
+        flRootBackground.background = backgroundDrawable
     }
 
     fun setOnButtonClickListener(onClickListener: OnClickListener) {
         iBtnAddItem.setOnClickListener(onClickListener)
     }
 
-    var label: String
+    var label: String?
         get() = tvDetectedItemName.text.toString()
         set(value) {
             tvDetectedItemName.text = value
         }
 
-    var accuracy: String
+    var accuracy: String?
         get() = tvDetectedItemAccuracy.text.toString()
         set(value) {
             tvDetectedItemAccuracy.text = value
+        }
+
+    var showAccuracy: Boolean
+        get() = flAccuracyContainer.visibility == View.VISIBLE
+        set(value) {
+            flAccuracyContainer.visibility = if (value) View.VISIBLE else View.GONE
         }
 }

@@ -16,6 +16,7 @@ import bohdan.sushchak.productsdetector.model.ClassifierQuantizedMobileNet
 import bohdan.sushchak.productsdetector.model.Recognition
 import bohdan.sushchak.productsdetector.utils.ImageUtils
 import kotlinx.android.synthetic.main.bottom_sheet_result.*
+import kotlin.math.roundToInt
 
 const val PREF_WAIT_KEY = "waitkey"
 
@@ -43,6 +44,7 @@ class DetectionActivity : CameraActivity() {
     private fun initSeekBar() {
         val progress = preferences.getLong(PREF_WAIT_KEY, 0)
         seekBarWait.progress = progress.toInt()
+        tvWaitTime.text = "${progress}ms"
 
         seekBarWait.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("SetTextI18n")
@@ -116,18 +118,23 @@ class DetectionActivity : CameraActivity() {
 
         val first = results[0]
         detectedItemFirst.label = first.title
+        detectedItemFirst.accuracy = (first.confidence * 100).roundToInt().toString()
 
         val second = results[1]
         detectedItemSecond.label = second.title
+        detectedItemSecond.accuracy = (second.confidence * 100).roundToInt().toString()
 
         val third = results[2]
         detectedItemThird.label = third.title
+        detectedItemThird.accuracy = (third.confidence * 100).roundToInt().toString()
 
         val fourth = results[3]
         detectedItemFourth.label = fourth.title
+        detectedItemFourth.accuracy = (fourth.confidence * 100).roundToInt().toString()
 
         val fifth = results[4]
         detectedItemFifth.label = fifth.title
+        detectedItemFifth.accuracy = (fifth.confidence * 100).roundToInt().toString()
     }
 
     private fun updateProcessingTime(processingTime: Long) {

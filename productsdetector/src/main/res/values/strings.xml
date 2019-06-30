@@ -13,5 +13,8 @@
     <string name="tv_inference_time">Inference time:</string>
     <string name="tv_wait_time">Wait time:</string>
     <string name="tv_delay">Delay</string>
+    <string name="tv_showAccuracy">Show </string>
+    <string name="btn_save">Save</string>
+    <string name="btn_clearAll">Clear all</string>
 
 </resources>

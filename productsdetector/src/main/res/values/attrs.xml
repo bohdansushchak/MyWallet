@@ -5,6 +5,7 @@
         <attr name="background" format="reference"/>
         <attr name="label" format="string"/>
         <attr name="accuracy" format="integer"/>
+        <attr name="showAccuracy" format="boolean"/>
 
     </declare-styleable>
 </resources>
