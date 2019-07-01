@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@+id/flAccuracyContainer"
-            android:layout_marginTop="18dp">
+            android:layout_marginTop="14dp">
 
         <TextView
                 android:textSize="12sp"
@@ -45,18 +45,17 @@
             android:background="@drawable/circle_bg_white"
             android:layout_gravity="end|top"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="-5dp"
             android:id="@+id/flAccuracyContainer"
             app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-                android:textSize="10sp"
+                android:textSize="8sp"
                 android:id="@+id/tvDetectedItemAccuracy"
                 android:textColor="#fff"
                 android:textStyle="bold"
                 tools:text="100"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
                 android:gravity="center"
                 android:lines="1"
                 android:scrollHorizontally="true"
