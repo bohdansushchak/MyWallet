@@ -46,11 +46,11 @@ public abstract class Classifier {
 
     private List<String> loadLabelList(Activity activity) throws IOException {
         List<String> labels = new ArrayList<String>();
-        BufferedReader reader =
-                new BufferedReader(new InputStreamReader(activity.getAssets().open(getLabelPath())));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(activity.getAssets().open(getLabelPath())));
         String line;
         while ((line = reader.readLine()) != null) {
             labels.add(line);
+
         }
         reader.close();
         return labels;

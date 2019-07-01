@@ -9,12 +9,16 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.preference.PreferenceManager
 import android.util.Size
+import android.view.View
 import android.widget.SeekBar
+import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.productsdetector.R
 import bohdan.sushchak.productsdetector.model.Classifier
 import bohdan.sushchak.productsdetector.model.ClassifierQuantizedMobileNet
+import bohdan.sushchak.productsdetector.model.AddedProduct
 import bohdan.sushchak.productsdetector.model.Recognition
 import bohdan.sushchak.productsdetector.utils.ImageUtils
+import bohdan.sushchak.productsdetector.utils.ProductAdapter
 import kotlinx.android.synthetic.main.bottom_sheet_result.*
 import kotlin.math.roundToInt
 
@@ -32,6 +36,9 @@ class DetectionActivity : CameraActivity() {
 
     private lateinit var preferences: SharedPreferences
 
+    private val addedProducts = mutableListOf<AddedProduct>()
+    private lateinit var productAdapter: ProductAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
@@ -41,6 +48,16 @@ class DetectionActivity : CameraActivity() {
 
         initSeekBar()
         initShowAccuracySwitch()
+        initAddedProductView()
+    }
+
+    private fun initAddedProductView() {
+        productAdapter = ProductAdapter(this, addedProducts)
+
+        rlAddedItems.apply {
+            adapter = productAdapter
+            layoutManager = LinearLayoutManager(this@DetectionActivity)
+        }
     }
 
     private fun initShowAccuracySwitch() {
@@ -134,22 +151,37 @@ class DetectionActivity : CameraActivity() {
         val first = results[0]
         detectedItemFirst.label = first.title
         detectedItemFirst.accuracy = (first.confidence * 100).roundToInt().toString()
+        detectedItemFirst.setOnButtonClickListener(View.OnClickListener {
+            addProduct(first.title)
+        })
 
         val second = results[1]
         detectedItemSecond.label = second.title
         detectedItemSecond.accuracy = (second.confidence * 100).roundToInt().toString()
+        detectedItemSecond.setOnButtonClickListener(View.OnClickListener {
+            addProduct(second.title)
+        })
 
         val third = results[2]
         detectedItemThird.label = third.title
         detectedItemThird.accuracy = (third.confidence * 100).roundToInt().toString()
+        detectedItemThird.setOnButtonClickListener(View.OnClickListener {
+            addProduct(third.title)
+        })
 
         val fourth = results[3]
         detectedItemFourth.label = fourth.title
         detectedItemFourth.accuracy = (fourth.confidence * 100).roundToInt().toString()
+        detectedItemFourth.setOnButtonClickListener(View.OnClickListener {
+            addProduct(fourth.title)
+        })
 
         val fifth = results[4]
         detectedItemFifth.label = fifth.title
         detectedItemFifth.accuracy = (fifth.confidence * 100).roundToInt().toString()
+        detectedItemFifth.setOnButtonClickListener(View.OnClickListener {
+            addProduct(fifth.title)
+        })
     }
 
     private fun updateProcessingTime(processingTime: Long) {
@@ -158,6 +190,25 @@ class DetectionActivity : CameraActivity() {
 
     override fun getFragmentContainer(): Int {
         return R.id.container
+    }
+
+    private fun addProduct (productName: String) {
+        val foundProduct = addedProducts.find { it.product == productName}
+
+        if(foundProduct == null) {
+            val product = AddedProduct(product = productName, count = 1)
+            addedProducts.add(product)
+        }
+        else{
+            val idx = addedProducts.indexOf(foundProduct)
+            addedProducts[idx] = foundProduct.apply { count = foundProduct.count + 1 }
+        }
+
+        productAdapter.notifyDataSetChanged()
+    }
+
+    private fun removeProduct(product: AddedProduct) {
+
     }
 
     private fun changeAccuracyVisibility(isVisible: Boolean) {
