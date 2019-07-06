@@ -18,4 +18,10 @@
     <string name="btn_clearAll">Clear all</string>
     <string name="tv_show_accuracy">Show accuracy:</string>
 
+    <string name="d_title_remove_items">Remove items</string>
+    <string name="d_content_remove_items">Are you sure to remove all items</string>
+
+    <string name="d_btn_yes">Yes</string>
+    <string name="d_btn_cancel">Cancel</string>
+
 </resources>

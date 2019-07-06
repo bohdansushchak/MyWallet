@@ -1,6 +1,7 @@
 package bohdan.sushchak.productsdetector.ui
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -13,9 +14,9 @@ import android.view.View
 import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.productsdetector.R
+import bohdan.sushchak.productsdetector.model.AddedProduct
 import bohdan.sushchak.productsdetector.model.Classifier
 import bohdan.sushchak.productsdetector.model.ClassifierQuantizedMobileNet
-import bohdan.sushchak.productsdetector.model.AddedProduct
 import bohdan.sushchak.productsdetector.model.Recognition
 import bohdan.sushchak.productsdetector.utils.ImageUtils
 import bohdan.sushchak.productsdetector.utils.ProductAdapter
@@ -58,6 +59,18 @@ class DetectionActivity : CameraActivity() {
             adapter = productAdapter
             layoutManager = LinearLayoutManager(this@DetectionActivity)
         }
+
+        btnClearAll.setOnClickListener {
+            dialogShow(
+                R.string.d_title_remove_items,
+                R.string.d_content_remove_items,
+                yes = { removeAllItems() })
+        }
+    }
+
+    private fun removeAllItems() {
+        addedProducts.clear()
+        productAdapter.notifyDataSetChanged()
     }
 
     private fun initShowAccuracySwitch() {
@@ -66,7 +79,7 @@ class DetectionActivity : CameraActivity() {
         changeAccuracyVisibility(isShowAccuracy)
 
         switchShowAccuracy.setOnCheckedChangeListener { buttonView, isChecked ->
-            preferences.edit().apply{
+            preferences.edit().apply {
                 putBoolean(PREF_SHOW_ACCURACY, isChecked)
             }.apply()
             changeAccuracyVisibility(isChecked)
@@ -192,14 +205,13 @@ class DetectionActivity : CameraActivity() {
         return R.id.container
     }
 
-    private fun addProduct (productName: String) {
-        val foundProduct = addedProducts.find { it.product == productName}
+    private fun addProduct(productName: String) {
+        val foundProduct = addedProducts.find { it.product == productName }
 
-        if(foundProduct == null) {
+        if (foundProduct == null) {
             val product = AddedProduct(product = productName, count = 1)
             addedProducts.add(product)
-        }
-        else{
+        } else {
             val idx = addedProducts.indexOf(foundProduct)
             addedProducts[idx] = foundProduct.apply { count = foundProduct.count + 1 }
         }
@@ -217,5 +229,21 @@ class DetectionActivity : CameraActivity() {
         detectedItemThird.showAccuracy = isVisible
         detectedItemFourth.showAccuracy = isVisible
         detectedItemFifth.showAccuracy = isVisible
+    }
+
+    private fun dialogShow(title: Int, content: Int, yes: (() -> Unit), cancel: (() -> Unit)? = null) {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle(title)
+        alertDialog.setMessage(content)
+        alertDialog.setPositiveButton(R.string.d_btn_yes) { _, _ ->
+            yes.invoke()
+        }
+
+        alertDialog.setNegativeButton(R.string.d_btn_cancel) { _, _ ->
+            cancel?.invoke()
+        }
+
+        val dialog = alertDialog.create()
+        dialog.show()
     }
 }
