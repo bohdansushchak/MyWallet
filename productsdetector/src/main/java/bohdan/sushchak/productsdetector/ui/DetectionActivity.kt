@@ -60,6 +60,10 @@ class DetectionActivity : CameraActivity() {
             layoutManager = LinearLayoutManager(this@DetectionActivity)
         }
 
+        productAdapter.onRemoveListener = {
+            removeProduct(it)
+        }
+
         btnClearAll.setOnClickListener {
             dialogShow(
                 R.string.d_title_remove_items,
@@ -220,7 +224,16 @@ class DetectionActivity : CameraActivity() {
     }
 
     private fun removeProduct(product: AddedProduct) {
+        val foundProduct = addedProducts.find { it.product == product.product }!!
 
+        if(foundProduct.count > 1){
+            val idx = addedProducts.indexOf(foundProduct)
+            addedProducts[idx] = foundProduct.apply { count = foundProduct.count - 1 }
+        } else{
+            addedProducts.remove(foundProduct)
+        }
+
+        productAdapter.notifyDataSetChanged()
     }
 
     private fun changeAccuracyVisibility(isVisible: Boolean) {
