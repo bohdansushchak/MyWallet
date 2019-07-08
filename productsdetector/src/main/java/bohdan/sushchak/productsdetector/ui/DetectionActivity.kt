@@ -1,6 +1,8 @@
 package bohdan.sushchak.productsdetector.ui
 
+
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -12,6 +14,7 @@ import android.preference.PreferenceManager
 import android.util.Size
 import android.view.View
 import android.widget.SeekBar
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.productsdetector.R
 import bohdan.sushchak.productsdetector.model.AddedProduct
@@ -20,6 +23,7 @@ import bohdan.sushchak.productsdetector.model.ClassifierQuantizedMobileNet
 import bohdan.sushchak.productsdetector.model.Recognition
 import bohdan.sushchak.productsdetector.utils.ImageUtils
 import bohdan.sushchak.productsdetector.utils.ProductAdapter
+import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.bottom_sheet_result.*
 import kotlin.math.roundToInt
 
@@ -43,6 +47,12 @@ class DetectionActivity : CameraActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+
+        setSupportActionBar(myToolbar as Toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         classifier = ClassifierQuantizedMobileNet(this)
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this@DetectionActivity)
@@ -68,13 +78,28 @@ class DetectionActivity : CameraActivity() {
             dialogShow(
                 R.string.d_title_remove_items,
                 R.string.d_content_remove_items,
-                yes = { removeAllItems() })
+                yes = {
+                    dialogShow(R.string.d_title_save_result, R.string.d_content_save_result, yes = {
+                        removeAllItems()
+                    })
+                })
+        }
+
+        btnSave.setOnClickListener {
+            dialogShow(R.string.d_title_save_result, R.string.d_content_save_result, yes = { saveResult() })
         }
     }
 
     private fun removeAllItems() {
         addedProducts.clear()
         productAdapter.notifyDataSetChanged()
+    }
+
+    private fun saveResult() {
+        intent.putExtra("products", arrayListOf(addedProducts))
+
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
     private fun initShowAccuracySwitch() {
@@ -226,10 +251,10 @@ class DetectionActivity : CameraActivity() {
     private fun removeProduct(product: AddedProduct) {
         val foundProduct = addedProducts.find { it.product == product.product }!!
 
-        if(foundProduct.count > 1){
+        if (foundProduct.count > 1) {
             val idx = addedProducts.indexOf(foundProduct)
             addedProducts[idx] = foundProduct.apply { count = foundProduct.count - 1 }
-        } else{
+        } else {
             addedProducts.remove(foundProduct)
         }
 

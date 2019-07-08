@@ -1,6 +1,7 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -49,6 +50,10 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     init {
         _categoryProductList.value = mutableListOf()
         _totalPrice.value = ZERO
+
+        myWalletRepository.onActivityResultConsumer{ requestCode, data ->
+            Log.d("TAG", data.toString())
+        }
     }
 
     fun initOrder(order: OrderEntity) {

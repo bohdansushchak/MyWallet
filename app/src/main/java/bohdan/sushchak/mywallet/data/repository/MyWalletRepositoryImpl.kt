@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.data.repository
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import bohdan.sushchak.mywallet.data.db.MyWalletDatabase
 import bohdan.sushchak.mywallet.data.db.dao.CategoryDao
@@ -45,6 +46,8 @@ class MyWalletRepositoryImpl(
 
     private val metaDataDao: MetaDataDao
         get() = myWalletDatabase.metaDataDao()
+
+    private var onActivityResult: ((Int, Intent?) -> Unit)? = null
 
     /**
      * TODO
@@ -311,5 +314,13 @@ class MyWalletRepositoryImpl(
             metaDataDao.upsert(newMetaDataEntity)
             return@withContext apiDatabase.increaseVersion(newMetaDataEntity.databaseVersion)
         }
+    }
+
+    override fun onActivityResultProvider(requestCode: Int, data: Intent?) {
+        this.onActivityResult?.invoke(requestCode, data)
+    }
+
+    override fun onActivityResultConsumer(onActivityResult: (requestCode: Int, data: Intent?) -> Unit) {
+        this.onActivityResult = onActivityResult
     }
 }

@@ -20,6 +20,8 @@
 
     <string name="d_title_remove_items">Remove items</string>
     <string name="d_content_remove_items">Are you sure to remove all items</string>
+    <string name="d_title_save_result">Save result</string>
+    <string name="d_content_save_result">Are you finish detecting products?</string>
 
     <string name="d_btn_yes">Yes</string>
     <string name="d_btn_cancel">Cancel</string>

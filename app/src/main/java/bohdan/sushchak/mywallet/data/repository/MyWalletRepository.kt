@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.data.repository
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
@@ -7,7 +8,6 @@ import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.*
 import bohdan.sushchak.mywallet.internal.SyncType
 import com.github.sundeepk.compactcalendarview.domain.Event
-import java.util.*
 
 
 interface MyWalletRepository {
@@ -58,4 +58,8 @@ interface MyWalletRepository {
     suspend fun synchronizeDatabases(syncType: SyncType, observer: (text: String) -> Unit)
 
     suspend fun databasesCompare(): SyncType
+
+    fun onActivityResultProvider(requestCode: Int, data: Intent?)
+
+    fun onActivityResultConsumer(onActivityResult: (requestCode: Int, data: Intent?) -> Unit)
 }

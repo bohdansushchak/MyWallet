@@ -1,27 +1,40 @@
 package bohdan.sushchak.mywallet.ui
 
+
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
-
 import androidx.navigation.ui.setupWithNavController
 import bohdan.sushchak.mywallet.R
+import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
+import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.ui.authorization.AuthorizationActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.generic.instance
+
 
 const val IS_START_KEY = "isStart"
 const val IS_BOTTOM_NAVIGATION_GONE = "isBottomNavigationGone"
 
-class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener, KodeinAware {
 
     private lateinit var navController: NavController
+
+    override val kodein by closestKodein()
+
+    val myWalletRepository: MyWalletRepository by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,9 +94,19 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     private fun initAuthorizationObserver() {
         FirebaseAuth.getInstance().addAuthStateListener {
-            if(it.currentUser == null){
+            if (it.currentUser == null) {
                 startActivity<AuthorizationActivity>()
                 finish()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == Constants.DETECTION_PRODUCTS_CODE) {
+            if(resultCode == Activity.RESULT_OK){
+                myWalletRepository.onActivityResultProvider(requestCode, data)
+            } else {
+                Toast.makeText(this, R.string.toast_detection_was_canceled, Toast.LENGTH_SHORT).show()
             }
         }
     }

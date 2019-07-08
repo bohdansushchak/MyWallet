@@ -20,9 +20,9 @@ import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import bohdan.sushchak.mywallet.internal.*
+import bohdan.sushchak.mywallet.internal.Constants.DETECTION_PRODUCTS_CODE
 import bohdan.sushchak.mywallet.internal.view.startFadeInAnimation
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
-import bohdan.sushchak.productsdetector.ui.CameraActivity
 import bohdan.sushchak.productsdetector.ui.DetectionActivity
 import kotlinx.android.synthetic.main.create_order_fragment.*
 import kotlinx.coroutines.launch
@@ -101,8 +101,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         ibtnMlKit.setOnClickListener {
             val intent = Intent(context, DetectionActivity::class.java)
-
-            startActivity(intent)
+            activity?.startActivityForResult(intent, DETECTION_PRODUCTS_CODE)
         }
     }
 
@@ -140,7 +139,6 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                     showDialog(R.string.d_remove_product, R.string.d_remove_product_are_you_sure, yes = {
                         viewModel.removeProduct(product)
                     })
-
                 })
         }
 
