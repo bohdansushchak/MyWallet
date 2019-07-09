@@ -38,26 +38,66 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-    <EditText
-            android:id="@+id/edProductTitle"
-            android:layout_width="0dp"
+    <LinearLayout
+            android:id="@+id/llProduct"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:maxLength="30"
-            android:ems="10"
-            android:focusableInTouchMode="true"
-            android:inputType="textPersonName|textCapSentences"
-            android:hint="@string/ed_hint_write_product_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="Autofill"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+                android:id="@+id/edProductTitle"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:maxLength="30"
+                android:ems="10"
+                android:focusableInTouchMode="true"
+                android:inputType="textPersonName|textCapSentences"
+                android:hint="@string/ed_hint_write_product_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="Autofill"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/iBtnAddedProducts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:fabSize="mini"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@android:drawable/presence_online"
+                android:visibility="gone"
+        />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/iBtnMlKit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:fabSize="mini"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@android:drawable/ic_menu_camera"
+        />
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/ibtnAddProduct"
+            android:id="@+id/iBtnAddProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -68,7 +108,7 @@
             android:focusable="true"
             android:src="@drawable/ic_add"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edProductTitle"
+            app:layout_constraintTop_toBottomOf="@+id/llProduct"
             android:contentDescription="Add a product"/>
 
     <Spinner
@@ -79,7 +119,7 @@
             android:layout_marginEnd="16dp"
             android:layoutMode="clipBounds"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ibtnAddProduct"
+            app:layout_constraintTop_toBottomOf="@+id/iBtnAddProduct"
             tools:listitem="@layout/category_item_spinner"/>
 
     <EditText
@@ -93,9 +133,9 @@
             android:hint="@string/ed_hint_enter_price"
             android:ems="10"
             android:inputType="numberDecimal"
-            app:layout_constraintEnd_toStartOf="@+id/ibtnAddProduct"
+            app:layout_constraintEnd_toStartOf="@+id/iBtnAddProduct"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edProductTitle"
+            app:layout_constraintTop_toBottomOf="@+id/llProduct"
             tools:ignore="Autofill"/>
 
     <LinearLayout

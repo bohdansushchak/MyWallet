@@ -1,7 +1,6 @@
 package bohdan.sushchak.mywallet.ui.create_order
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +11,8 @@ import bohdan.sushchak.mywallet.data.model.CategoryProduct
 import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.*
+import bohdan.sushchak.mywallet.internal.Constants.DETECTION_PRODUCTS_CODE
+import bohdan.sushchak.productsdetector.model.AddedProduct
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,6 +36,9 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     val categoryProductList: LiveData<MutableList<CategoryWithListProducts>>
         get() = _categoryProductList
 
+    val detectedProducts: LiveData<List<AddedProduct>>
+        get() = _detectedProducts
+
     var orderDate: Long = 0
 
     var orderSavingType = OrderSavingType.CREATE
@@ -45,14 +49,22 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     private val _productList by lazy { MutableLiveData<MutableList<ProductEntity>>() }
     private val _recommendCategory by lazy { MutableLiveData<CategoryEntity>() }
     private val _categoryProductList by lazy { MutableLiveData<MutableList<CategoryWithListProducts>>() }
+    private val _detectedProducts by lazy { MutableLiveData<List<AddedProduct>>() }
     var selectedCategory = CategoryEntity.emptyCategoryEntity
 
     init {
         _categoryProductList.value = mutableListOf()
         _totalPrice.value = ZERO
 
-        myWalletRepository.onActivityResultConsumer{ requestCode, data ->
-            Log.d("TAG", data.toString())
+        myWalletRepository.onActivityResultConsumer { requestCode, intent ->
+            if (requestCode != DETECTION_PRODUCTS_CODE) {
+                return@onActivityResultConsumer
+            }
+            intent?.let {
+                val detectedProducts = it.extras
+                    ?.getParcelableArrayList<AddedProduct>("detectedProducts")?.toList()
+                _detectedProducts.postValue(detectedProducts)
+            }
         }
     }
 

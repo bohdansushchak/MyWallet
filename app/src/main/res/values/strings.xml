@@ -8,7 +8,7 @@
     <string name="settings_fragment_title">Settings</string>
     <string name="diagram_fragment_title">Statistic</string>
 
-    <string name="toast_detection_was_canceled">Detection was cancel</string>
+    <string name="toast_detection_was_canceled">Action was cancel</string>
 
     <!-- textview-->
     <string name="tv_no_categories">No categories</string>

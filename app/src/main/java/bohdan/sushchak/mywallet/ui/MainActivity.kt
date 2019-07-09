@@ -15,7 +15,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
-import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.ui.authorization.AuthorizationActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
@@ -102,12 +101,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == Constants.DETECTION_PRODUCTS_CODE) {
-            if(resultCode == Activity.RESULT_OK){
-                myWalletRepository.onActivityResultProvider(requestCode, data)
-            } else {
-                Toast.makeText(this, R.string.toast_detection_was_canceled, Toast.LENGTH_SHORT).show()
-            }
+        if (resultCode == Activity.RESULT_OK) {
+            myWalletRepository.onActivityResultProvider(requestCode, data)
+        } else {
+            Toast.makeText(this, R.string.toast_detection_was_canceled, Toast.LENGTH_SHORT).show()
         }
     }
 }

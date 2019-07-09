@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +58,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
         args.order?.let { viewModel.initOrder(it) }
 
-        ibtnAddProduct.setOnClickListener { addProduct() }
+        iBtnAddProduct.setOnClickListener { addProduct() }
         btnClearAll.setOnClickListener { clearProductList() }
         btnSaveOrder.setOnClickListener { saveOrder() }
         tvOrderDate.setOnClickListener {
@@ -72,7 +73,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         bindUI()
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "RestrictedApi")
     private fun bindUI() = launch {
         val calendar = Calendar.getInstance()
         setDate(calendar.getOnlyDate())
@@ -99,7 +100,13 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                 updateSpinner(category)
         })
 
-        ibtnMlKit.setOnClickListener {
+        viewModel.detectedProducts.observe(this@CreateOrderFragment, Observer { detectedProducts ->
+            if(!detectedProducts.isNullOrEmpty()) {
+               iBtnAddedProducts.visibility = View.VISIBLE
+            }
+        })
+
+        iBtnMlKit.setOnClickListener {
             val intent = Intent(context, DetectionActivity::class.java)
             activity?.startActivityForResult(intent, DETECTION_PRODUCTS_CODE)
         }

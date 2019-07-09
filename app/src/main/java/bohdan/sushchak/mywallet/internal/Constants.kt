@@ -19,7 +19,6 @@ object Constants {
     const val CURRENCY_KEY_PREF = "currency"
 
     const val DETECTION_PRODUCTS_CODE = 101
-
 }
 
 enum class SyncType {

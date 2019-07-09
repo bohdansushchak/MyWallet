@@ -96,7 +96,7 @@ class DetectionActivity : CameraActivity() {
     }
 
     private fun saveResult() {
-        intent.putExtra("products", arrayListOf(addedProducts))
+        intent.putExtra("detectedProducts", arrayListOf(addedProducts))
 
         setResult(Activity.RESULT_OK, intent)
         finish()
