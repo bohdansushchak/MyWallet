@@ -14,6 +14,7 @@ import android.preference.PreferenceManager
 import android.util.Size
 import android.view.View
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.productsdetector.R
@@ -75,16 +76,24 @@ class DetectionActivity : CameraActivity() {
         }
 
         btnClearAll.setOnClickListener {
-            dialogShow(
-                R.string.d_title_remove_items,
-                R.string.d_content_remove_items,
-                yes = {
-                    removeAllItems()
-                })
+            if(addedProducts.size > 0){
+                dialogShow(
+                    R.string.d_title_remove_items,
+                    R.string.d_content_remove_items,
+                    yes = {
+                        removeAllItems()
+                    })
+            } else {
+                Toast.makeText(this, R.string.t_list_is_empty, Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnSave.setOnClickListener {
-            dialogShow(R.string.d_title_save_result, R.string.d_content_save_result, yes = { saveResult() })
+            if(addedProducts.size > 0){
+                dialogShow(R.string.d_title_save_result, R.string.d_content_save_result, yes = { saveResult() })
+            } else {
+                Toast.makeText(this, R.string.t_nothing_to_save, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -105,7 +114,7 @@ class DetectionActivity : CameraActivity() {
         switchShowAccuracy.isChecked = isShowAccuracy
         changeAccuracyVisibility(isShowAccuracy)
 
-        switchShowAccuracy.setOnCheckedChangeListener { buttonView, isChecked ->
+        switchShowAccuracy.setOnCheckedChangeListener { _, isChecked ->
             preferences.edit().apply {
                 putBoolean(PREF_SHOW_ACCURACY, isChecked)
             }.apply()

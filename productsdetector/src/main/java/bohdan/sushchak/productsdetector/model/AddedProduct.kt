@@ -8,8 +8,8 @@ class AddedProduct(
     var count: Int
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readInt()
+        product = parcel.readString()?: "",
+        count = parcel.readInt()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

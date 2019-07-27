@@ -26,4 +26,7 @@
     <string name="d_btn_yes">Yes</string>
     <string name="d_btn_cancel">Cancel</string>
 
+    <string name="t_list_is_empty">List is empty</string>
+    <string name="t_nothing_to_save">Nothing to save</string>
+
 </resources>
