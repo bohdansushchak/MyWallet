@@ -157,21 +157,10 @@ public abstract class CameraActivity extends AppCompatActivity
 
     @Override
     public synchronized void onPause() {
-
         handlerThread.quitSafely();
-        try {
-            handlerThread.join();
-            handlerThread = null;
-            handler = null;
-        }
-        catch (final InterruptedException e) {
-        }
+        handlerThread = null;
+        handler = null;
         super.onPause();
-    }
-
-    @Override
-    public synchronized void onDestroy() {
-        super.onDestroy();
     }
 
     protected synchronized void runInBackground(final Runnable r) {

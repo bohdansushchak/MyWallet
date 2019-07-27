@@ -9,8 +9,6 @@ import bohdan.sushchak.mywallet.data.model.CategoryProduct
 import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
 import androidx.room.OnConflictStrategy
 
-
-
 @Dao
 abstract class ProductDao : BaseDao<ProductEntity> {
     @Query("select category_id, count(category_id) as count from products where title like '%' || :productTitle || '%' group by category_id")

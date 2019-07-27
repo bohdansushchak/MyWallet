@@ -38,12 +38,9 @@ import java.util.*
 class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     override val kodein by closestKodein()
-
     private lateinit var adapter: ExpandableListProductAdapter
-
     private val viewModelFactory: CreateOrderViewModelFactory by instance()
     private lateinit var viewModel: CreateOrderViewModel
-
     private val args by navArgs<CreateOrderFragmentArgs>()
 
     override fun onCreateView(

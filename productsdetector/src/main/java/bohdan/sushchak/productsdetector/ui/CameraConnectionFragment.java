@@ -182,12 +182,7 @@ public class CameraConnectionFragment extends Fragment {
         final Activity activity = getActivity();
         if (activity != null) {
             activity.runOnUiThread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    () -> Toast.makeText(activity, text, Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -212,10 +207,6 @@ public class CameraConnectionFragment extends Fragment {
         super.onResume();
         startBackgroundThread();
 
-        // When the screen is turned off and turned back on, the SurfaceTexture is already
-        // available, and "onSurfaceTextureAvailable" will not be called. In that case, we can open
-        // a camera and start preview from here (otherwise, we wait until the surface is ready in
-        // the SurfaceTextureListener).
         if (textureView.isAvailable()) {
             openCamera(textureView.getWidth(), textureView.getHeight());
         } else {
@@ -226,8 +217,13 @@ public class CameraConnectionFragment extends Fragment {
     @Override
     public void onPause() {
         closeCamera();
-        stopBackgroundThread();
         super.onPause();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        stopBackgroundThread();
     }
 
     public void setCamera(String cameraId) {
@@ -333,12 +329,8 @@ public class CameraConnectionFragment extends Fragment {
      */
     private void stopBackgroundThread() {
         backgroundThread.quitSafely();
-        try {
-            backgroundThread.join();
-            backgroundThread = null;
-            backgroundHandler = null;
-        } catch (final InterruptedException e) {
-        }
+        backgroundThread = null;
+        backgroundHandler = null;
     }
 
     /**

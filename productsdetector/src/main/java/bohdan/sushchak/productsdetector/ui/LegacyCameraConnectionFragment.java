@@ -103,12 +103,7 @@ public class LegacyCameraConnectionFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
-        textureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
-    }
-
-    @Override
-    public void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        textureView = view.findViewById(R.id.textureView);
     }
 
     @Override
@@ -125,35 +120,39 @@ public class LegacyCameraConnectionFragment extends Fragment {
 
     @Override
     public void onPause() {
-        stopCamera();
-        stopBackgroundThread();
         super.onPause();
+        stopBackgroundThread();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        stopCamera();
     }
 
     /**
      * Starts a background thread and its {@link Handler}.
      */
     private void startBackgroundThread() {
-        backgroundThread = new HandlerThread("CameraBackground");
-        backgroundThread.start();
+        if (backgroundThread == null) {
+            backgroundThread = new HandlerThread("CameraBackground");
+            backgroundThread.start();
+        }
     }
 
     /**
      * Stops the background thread and its {@link Handler}.
      */
     private void stopBackgroundThread() {
-        backgroundThread.quitSafely();
-        try {
-            backgroundThread.join();
+        if (backgroundThread != null) {
+            backgroundThread.quitSafely();
             backgroundThread = null;
-        } catch (final InterruptedException e) {
         }
     }
 
     protected void stopCamera() {
         if (camera != null) {
             camera.stopPreview();
-            camera.setPreviewCallback(null);
             camera.release();
             camera = null;
         }
