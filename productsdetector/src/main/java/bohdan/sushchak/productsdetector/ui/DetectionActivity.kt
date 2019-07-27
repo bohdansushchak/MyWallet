@@ -79,9 +79,7 @@ class DetectionActivity : CameraActivity() {
                 R.string.d_title_remove_items,
                 R.string.d_content_remove_items,
                 yes = {
-                    dialogShow(R.string.d_title_save_result, R.string.d_content_save_result, yes = {
-                        removeAllItems()
-                    })
+                    removeAllItems()
                 })
         }
 

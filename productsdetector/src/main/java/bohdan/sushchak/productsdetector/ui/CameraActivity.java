@@ -20,6 +20,8 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import bohdan.sushchak.productsdetector.utils.ImageUtils;
 
 import java.nio.ByteBuffer;
@@ -182,9 +184,7 @@ public abstract class CameraActivity extends AppCompatActivity
     public void onRequestPermissionsResult(
             final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 setFragment();
             } else {
                 requestPermission();
@@ -194,7 +194,7 @@ public abstract class CameraActivity extends AppCompatActivity
 
     private boolean hasPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return checkSelfPermission(PERMISSION_CAMERA) == PackageManager.PERMISSION_GRANTED;
+            return ContextCompat.checkSelfPermission(this, PERMISSION_CAMERA) == PackageManager.PERMISSION_GRANTED;
         } else {
             return true;
         }
@@ -202,14 +202,14 @@ public abstract class CameraActivity extends AppCompatActivity
 
     private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (shouldShowRequestPermissionRationale(PERMISSION_CAMERA)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSION_CAMERA)) {
                 Toast.makeText(
                         CameraActivity.this,
                         "Camera permission is required for this demo",
                         Toast.LENGTH_LONG)
                         .show();
             }
-            requestPermissions(new String[]{PERMISSION_CAMERA}, PERMISSIONS_REQUEST);
+            ActivityCompat.requestPermissions(this, new String[]{PERMISSION_CAMERA}, PERMISSIONS_REQUEST);
         }
     }
 

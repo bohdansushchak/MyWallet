@@ -25,14 +25,7 @@ class MyWalletApplication() : Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidXModule(this@MyWalletApplication))
 
-        //region db
         bind() from singleton { MyWalletDatabase(instance()) }
-        /*
-        bind() from singleton { instance<MyWalletDatabase>().categoryDao() }
-        bind() from singleton { instance<MyWalletDatabase>().productDao() }
-        bind() from singleton { instance<MyWalletDatabase>().orderDao() }
-        bind() from singleton { instance<MyWalletDatabase>().metaDataDao() }*/
-        //endregion
 
         bind<ApiDatabase>() with singleton { ApiDatabaseImpl() }
         bind<MyWalletRepository>() with singleton {
@@ -51,9 +44,5 @@ class MyWalletApplication() : Application(), KodeinAware {
         bind() from provider { AuthorizationViewModelFactory(instance()) }
         bind() from provider { SyncViewModelFactory(instance()) }
         //endregion
-    }
-
-    override fun onCreate() {
-        super.onCreate()
     }
 }
