@@ -35,6 +35,7 @@ data class ProductEntity(
 
     @ColumnInfo(name = "order_id")
     var orderId: Long?
+
 ) {
     override fun toString(): String {
         return "($productId, $title, $price, categoryId:$categoryId, orderId:$orderId)"

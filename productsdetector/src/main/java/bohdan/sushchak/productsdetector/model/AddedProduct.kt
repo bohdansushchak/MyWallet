@@ -30,5 +30,4 @@ class AddedProduct(
             return arrayOfNulls(size)
         }
     }
-
 }

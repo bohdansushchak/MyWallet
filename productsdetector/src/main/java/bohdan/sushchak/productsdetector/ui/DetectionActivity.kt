@@ -103,7 +103,13 @@ class DetectionActivity : CameraActivity() {
     }
 
     private fun saveResult() {
-        intent.putExtra("detectedProducts", arrayListOf(addedProducts))
+        val array = ArrayList<AddedProduct>()
+
+        addedProducts.forEach { item ->
+            array.add(item)
+        }
+
+        intent.putExtra("detectedProducts", array)
 
         setResult(Activity.RESULT_OK, intent)
         finish()

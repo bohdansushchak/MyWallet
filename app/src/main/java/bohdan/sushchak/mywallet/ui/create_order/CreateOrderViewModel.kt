@@ -63,6 +63,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
             intent?.let {
                 val detectedProducts = it.extras
                     ?.getParcelableArrayList<AddedProduct>("detectedProducts")?.toList()
+
                 _detectedProducts.postValue(detectedProducts)
             }
         }
@@ -189,6 +190,19 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
         return categorySet.map { categoryEntity ->
             val products = productsSet.filter { it.categoryId == categoryEntity.categoryId }.toMutableList()
             CategoryWithListProducts(categoryEntity = categoryEntity, products = products)
+        }
+    }
+
+    fun removeAddedItemByName(name: String) {
+        val products = _detectedProducts.value
+
+        products?.let {
+           val productToDelete = products.find { it.product == name }
+            if(productToDelete != null){
+                val newProducts = products.toMutableList()
+                newProducts.remove(productToDelete)
+                _detectedProducts.postValue(newProducts)
+            }
         }
     }
 }

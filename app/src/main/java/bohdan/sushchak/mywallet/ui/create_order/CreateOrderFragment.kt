@@ -5,12 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.widget.PopupMenuCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
@@ -24,7 +25,9 @@ import bohdan.sushchak.mywallet.internal.*
 import bohdan.sushchak.mywallet.internal.Constants.DETECTION_PRODUCTS_CODE
 import bohdan.sushchak.mywallet.internal.view.startFadeInAnimation
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
+import bohdan.sushchak.productsdetector.model.AddedProduct
 import bohdan.sushchak.productsdetector.ui.DetectionActivity
+import bohdan.sushchak.productsdetector.views.DetectedItem
 import kotlinx.android.synthetic.main.create_order_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -101,8 +104,14 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         })
 
         viewModel.detectedProducts.observe(this@CreateOrderFragment, Observer { detectedProducts ->
-            if(!detectedProducts.isNullOrEmpty()) {
-               iBtnAddedProducts.visibility = View.VISIBLE
+            if (!detectedProducts.isNullOrEmpty()) {
+                iBtnAddedProducts.visibility = View.VISIBLE
+            } else{
+                iBtnAddedProducts.visibility = View.GONE
+            }
+
+            iBtnAddedProducts.setOnClickListener {
+                showDetectedItems(detectedProducts)
             }
         })
 
@@ -133,6 +142,25 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                     viewModel.searchCategoryCount(s.toString())
             }
         })
+    }
+
+    private fun showDetectedItems(productsDetected: List<AddedProduct>) {
+        if(context == null) return
+        val popup = PopupMenu(context!!, edProductTitle)
+
+        for(item in productsDetected){
+            popup.menu.add(item.product)
+        }
+        popup.show()
+
+        popup.setOnMenuItemClickListener {
+            val title = it.title
+            edProductTitle.setText(title)
+            edProductTitle.setSelection(title.length)
+
+            viewModel.removeAddedItemByName(title.toString())
+            return@setOnMenuItemClickListener true
+        }
     }
 
     private fun updateCategoryList(categoryWithProduct: MutableList<CategoryWithListProducts>) {
