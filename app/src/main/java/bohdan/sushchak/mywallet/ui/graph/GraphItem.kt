@@ -22,10 +22,8 @@ class GraphItem(
     private val titleResId: Int,
     private val minX: Double = 0.0,
     private val minY: Double = 0.0,
-    private val maxX: Double = 0.0,
-    private val maxY: Double = 0.0,
-    private val isXAxisBoundsManual: Boolean = false,
-    private val isYAxisBoundsManual: Boolean = false,
+    private val maxX: Double,
+    private val maxY: Double,
     private val labelFormatter: LabelFormatter? = null
 ) : Item() {
 
@@ -37,8 +35,8 @@ class GraphItem(
             if (seriesList.isEmpty())
                 removeAllSeries()
 
-            viewport.isXAxisBoundsManual = isXAxisBoundsManual
-            viewport.isYAxisBoundsManual = isYAxisBoundsManual
+            viewport.isXAxisBoundsManual = true
+            viewport.isYAxisBoundsManual = true
 
             viewport.setMinX(minX)
             viewport.setMaxX(maxX)

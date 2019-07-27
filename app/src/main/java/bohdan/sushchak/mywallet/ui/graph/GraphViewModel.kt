@@ -9,9 +9,12 @@ import bohdan.sushchak.mywallet.data.model.DateLimit
 import bohdan.sushchak.mywallet.data.model.DateRange
 import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
-import bohdan.sushchak.mywallet.internal.*
+import bohdan.sushchak.mywallet.internal.Constants
+import bohdan.sushchak.mywallet.internal.getDayOfYear
 import bohdan.sushchak.mywallet.internal.label_formatter.BarLabelFormatter
 import bohdan.sushchak.mywallet.internal.label_formatter.LineLabelFormatter
+import bohdan.sushchak.mywallet.internal.myPlus
+import bohdan.sushchak.mywallet.internal.myToString
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
@@ -91,7 +94,6 @@ class GraphViewModel(
         return GlobalScope.async {
             val legendItemsList = getLegendItemsBarGraph(listCategoryPrice)
             val listSeries = convertToSeries(listCategoryPrice)
-
             val moreInfoItemList = getBarGraphSubItems(listSeries)
 
             val graphItem = GraphItem(
@@ -99,7 +101,7 @@ class GraphViewModel(
                 legendItems = legendItemsList,
                 titleResId = R.string.graph_title_category_by_month,
                 maxX = (listCategoryPrice.size + 2).toDouble(),
-                isXAxisBoundsManual = true,
+                maxY = listCategoryPrice.maxBy { it.totalPrice }?.totalPrice?.times(1.1) ?: 0.0,
                 labelFormatter = BarLabelFormatter(),
                 moreInfoItems = moreInfoItemList
             )
@@ -191,7 +193,7 @@ class GraphViewModel(
                 titleResId = R.string.graph_title_growing_line,
                 seriesList = listOf(lineGraphSeries),
                 maxX = if (countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
-                isXAxisBoundsManual = true,
+                maxY = listMoneyByDate.maxBy { it.totalPrice }?.totalPrice?.times(1.1) ?: 0.0,
                 labelFormatter = LineLabelFormatter()
             )
             return@async graphItem
@@ -216,14 +218,14 @@ class GraphViewModel(
                 titleResId = R.string.graph_title_spend_money_for_each_day_in_month,
                 seriesList = listOf(lineGraphSeries),
                 maxX = if (countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
-                isXAxisBoundsManual = true,
+                maxY = listMoneyByDate.maxBy { it.totalPrice }?.totalPrice?.times(1.1)  ?: 0.0 ,
                 labelFormatter = LineLabelFormatter()
             )
             return@async graphItem
         }
     }
 
-    private fun getLineGraphSeries(listDataPoint: List<DataPoint>): LineGraphSeries<DataPoint>{
+    private fun getLineGraphSeries(listDataPoint: List<DataPoint>): LineGraphSeries<DataPoint> {
         val lineGraphSeries = LineGraphSeries<DataPoint>(listDataPoint.toTypedArray())
         lineGraphSeries.setAnimated(true)
         lineGraphSeries.isDrawDataPoints = true
