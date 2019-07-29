@@ -69,8 +69,10 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         viewModel.isEmailVerified.observe(this@SettingsFragment, Observer {
             if (it) {
                 tvEmailVerification.setText(R.string.tv_email_is_verified)
+                btnVerifyEmail.isEnabled = false
             } else {
                 tvEmailVerification.setText(R.string.tv_email_is_not_verified)
+                btnVerifyEmail.isEnabled = true
             }
         })
 
