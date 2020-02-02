@@ -4,8 +4,6 @@ import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import java.util.*
 
 class SimpleTestMyCalendarHelper {
@@ -13,7 +11,7 @@ class SimpleTestMyCalendarHelper {
     private lateinit var calendar: Calendar
 
     @Before
-    fun clearCalendar(){
+    fun clearCalendar() {
         calendar = Calendar.getInstance()
     }
 

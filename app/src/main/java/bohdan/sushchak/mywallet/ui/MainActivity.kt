@@ -50,7 +50,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         initAuthorizationObserver()
     }
 
-    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
         val actionBar = supportActionBar
         val title = destination.label
         if (!TextUtils.isEmpty(title)) {
@@ -73,11 +77,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     private fun navigationBottomUpdate(isShouldGone: Boolean?) {
 
         fun goneNavigation() {
-            if (bottom_nav.visibility == View.GONE)
+            if (bottom_nav.visibility == View.INVISIBLE)
                 return
             val anim = AnimationUtils.loadAnimation(this, R.anim.bottom_navigation_gone)
             bottom_nav.startAnimation(anim)
-            bottom_nav.visibility = View.GONE
+            bottom_nav.visibility = View.INVISIBLE
         }
 
         fun showNavigation() {

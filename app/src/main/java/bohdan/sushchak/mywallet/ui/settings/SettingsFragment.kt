@@ -148,7 +148,8 @@ class SettingsFragment : BaseFragment(), KodeinAware {
                 showPopupEditRemove(view,
                     edit = { editCategory(categoryEntities[position]) },
                     remove = {
-                        showDialog(R.string.d_remove_category, R.string.d_remove_category_are_you_sure,
+                        showDialog(R.string.d_remove_category,
+                            R.string.d_remove_category_are_you_sure,
                             yes = { viewModel.removeCategory(categoryEntities[position]) })
                     })
             }

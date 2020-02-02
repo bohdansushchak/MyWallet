@@ -52,7 +52,7 @@ abstract class MyWalletDatabase : RoomDatabase() {
      * @return
      */
     abstract fun metaDataDao(): MetaDataDao
-    
+
     companion object {
         @Volatile
         private var instance: MyWalletDatabase? = null

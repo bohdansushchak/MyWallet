@@ -12,14 +12,15 @@ import bohdan.sushchak.mywallet.adapters.callbacks.ItemDiffCallback
  * @param T items type
  * @property items items list
  */
-abstract class BaseRecyclerAdapter<VH : RecyclerView.ViewHolder, T>(private var items: List<T>) : RecyclerView.Adapter<VH>() {
+abstract class BaseRecyclerAdapter<VH : RecyclerView.ViewHolder, T>(private var items: List<T>) :
+    RecyclerView.Adapter<VH>() {
 
     /**
      * Function to update adapter when new item enter
      *
      * @param newItems list of new items what need to update
      */
-    fun update(newItems: List<T>){
+    fun update(newItems: List<T>) {
 
         Log.d("TAG", items.toString())
         Log.d("TAG", newItems.toString())
@@ -36,8 +37,8 @@ abstract class BaseRecyclerAdapter<VH : RecyclerView.ViewHolder, T>(private var 
      * @param position position in list
      * @return return item from list
      */
-    fun getItem(position: Int): T{
-        if(position < items.size)
+    fun getItem(position: Int): T {
+        if (position < items.size)
             return items[position]
         else throw ArrayIndexOutOfBoundsException()
     }

@@ -30,7 +30,10 @@ class ApiDatabaseImpl : ApiDatabase {
         return Tasks.await(getCategoriesCollectionRef().add(categoryDocument))
     }
 
-    override suspend fun addOrder(orderEntity: OrderEntity, productsEntity: List<ProductEntity>): DocumentReference {
+    override suspend fun addOrder(
+        orderEntity: OrderEntity,
+        productsEntity: List<ProductEntity>
+    ): DocumentReference {
         val orderDocument = orderEntity.toDocument()
         val products = productsEntity.map { it.toDocument() }
 
@@ -41,14 +44,20 @@ class ApiDatabaseImpl : ApiDatabase {
 
     override suspend fun removeCategory(categoryEntity: CategoryEntity): Void? {
         val queryCategories =
-            Tasks.await(getCategoriesCollectionRef().whereEqualTo("id", categoryEntity.categoryId).get())
+            Tasks.await(
+                getCategoriesCollectionRef().whereEqualTo(
+                    "id",
+                    categoryEntity.categoryId
+                ).get()
+            )
 
         if (queryCategories.isEmpty) return null
         return removeDocumentByPath(queryCategories.documents[0].reference.path)
     }
 
     override suspend fun removeOrder(orderEntity: OrderEntity): Void? {
-        val queryOrders = Tasks.await(getOrdersCollectionRef().whereEqualTo("id", orderEntity.orderId).get())
+        val queryOrders =
+            Tasks.await(getOrdersCollectionRef().whereEqualTo("id", orderEntity.orderId).get())
 
         if (queryOrders.isEmpty) return null
         return removeDocumentByPath(queryOrders.documents[0].reference.path)
@@ -92,7 +101,8 @@ class ApiDatabaseImpl : ApiDatabase {
     private suspend fun getUserDocumentRef(): DocumentReference {
         if (mAuth.currentUser == null) throw NonAuthorizedExeption()
 
-        val queryResult = Tasks.await(userCollectionRef.whereEqualTo("userId", mAuth.currentUser!!.uid).get())
+        val queryResult =
+            Tasks.await(userCollectionRef.whereEqualTo("userId", mAuth.currentUser!!.uid).get())
 
         if (queryResult.isEmpty) {
             return addNewUser()
@@ -119,12 +129,17 @@ class ApiDatabaseImpl : ApiDatabase {
         val result = Tasks.await(getOrdersCollectionRef().get())
         val orderWithProducts = mutableListOf<OrderWithProducts>()
 
-        result.documents.forEach{
+        result.documents.forEach {
             val orderEntity = OrderEntity.fromDocument(it)
             val products = it["products"] as List<HashMap<String, Any?>>
             val productEntities = products.map { ProductEntity.fromDocument(it) }
 
-            orderWithProducts.add(OrderWithProducts(order = orderEntity, products = productEntities))
+            orderWithProducts.add(
+                OrderWithProducts(
+                    order = orderEntity,
+                    products = productEntities
+                )
+            )
         }
 
         return orderWithProducts

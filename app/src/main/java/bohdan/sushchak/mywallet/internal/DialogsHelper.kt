@@ -18,7 +18,13 @@ fun showAlertDialog(context: Context?, title: String, msg: String, yes: (() -> U
     dialog.show()
 }
 
-fun showDialog(context: Context?, title: String, msg: String, yes: (() -> Unit)? = null, cancel: (() -> Unit)? = null) {
+fun showDialog(
+    context: Context?,
+    title: String,
+    msg: String,
+    yes: (() -> Unit)? = null,
+    cancel: (() -> Unit)? = null
+) {
     val alertDialog = AlertDialog.Builder(context)
     alertDialog.setTitle(title)
     alertDialog.setMessage(msg)

@@ -2,12 +2,11 @@ package bohdan.sushchak.mywallet.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 import bohdan.sushchak.mywallet.data.model.CategoryCount
 import bohdan.sushchak.mywallet.data.model.CategoryProduct
-import bohdan.sushchak.mywallet.data.model.CategoryWithListProducts
-import androidx.room.OnConflictStrategy
 
 @Dao
 abstract class ProductDao : BaseDao<ProductEntity> {
@@ -27,5 +26,5 @@ abstract class ProductDao : BaseDao<ProductEntity> {
     abstract fun clearTable()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertList(products: List<ProductEntity>) : List<Long>
+    abstract fun insertList(products: List<ProductEntity>): List<Long>
 }

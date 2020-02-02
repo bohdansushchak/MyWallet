@@ -9,14 +9,14 @@ import com.google.firebase.firestore.DocumentSnapshot
 data class CategoryEntity(
 
     @PrimaryKey(autoGenerate = true)
-        @ColumnInfo(name = "categoryId")
-        val categoryId: Long? = null,
+    @ColumnInfo(name = "categoryId")
+    val categoryId: Long? = null,
 
     @ColumnInfo(name = "category_title")
-        var categoryTitle: String,
+    var categoryTitle: String,
 
     @ColumnInfo(name = "color")
-        var color: Int
+    var color: Int
 ) {
     companion object {
         val emptyCategoryEntity: CategoryEntity

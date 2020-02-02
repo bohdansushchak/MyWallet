@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.widget.PopupMenuCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
@@ -27,7 +26,6 @@ import bohdan.sushchak.mywallet.internal.view.startFadeInAnimation
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
 import bohdan.sushchak.productsdetector.model.AddedProduct
 import bohdan.sushchak.productsdetector.ui.DetectionActivity
-import bohdan.sushchak.productsdetector.views.DetectedItem
 import kotlinx.android.synthetic.main.create_order_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -81,9 +79,11 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         edProductPrice.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
         initTextWatcher(edProductTitle)
 
-        viewModel.categoryProductList.observe(this@CreateOrderFragment, Observer { categoryProductList ->
-            updateCategoryList(categoryProductList)
-        })
+        viewModel.categoryProductList.observe(
+            this@CreateOrderFragment,
+            Observer { categoryProductList ->
+                updateCategoryList(categoryProductList)
+            })
 
         val categoryList = viewModel.categories.await()
 
@@ -103,7 +103,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         viewModel.detectedProducts.observe(this@CreateOrderFragment, Observer { detectedProducts ->
             if (!detectedProducts.isNullOrEmpty()) {
                 iBtnAddedProducts.visibility = View.VISIBLE
-            } else{
+            } else {
                 iBtnAddedProducts.visibility = View.GONE
             }
 
@@ -142,10 +142,10 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
     }
 
     private fun showDetectedItems(productsDetected: List<AddedProduct>) {
-        if(context == null) return
+        if (context == null) return
         val popup = PopupMenu(context!!, edProductTitle)
 
-        for(item in productsDetected){
+        for (item in productsDetected) {
             popup.menu.add(item.product)
         }
         popup.show()
@@ -168,9 +168,12 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
                     //TODO add removing product
                 },
                 remove = {
-                    showDialog(R.string.d_remove_product, R.string.d_remove_product_are_you_sure, yes = {
-                        viewModel.removeProduct(product)
-                    })
+                    showDialog(
+                        R.string.d_remove_product,
+                        R.string.d_remove_product_are_you_sure,
+                        yes = {
+                            viewModel.removeProduct(product)
+                        })
                 })
         }
 
@@ -227,10 +230,13 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         if (viewModel.isProductListEmpty())
             makeToast(R.string.t_product_list_cant_be_empty)
         else {
-            showEntryDialog(R.string.d_order_title, R.string.d_order_title_please_enter, yes = { strMsg ->
-                viewModel.saveOrder(strMsg)
-                fragmentManager?.popBackStack()
-            })
+            showEntryDialog(
+                R.string.d_order_title,
+                R.string.d_order_title_please_enter,
+                yes = { strMsg ->
+                    viewModel.saveOrder(strMsg)
+                    fragmentManager?.popBackStack()
+                })
         }
     }
 
@@ -238,7 +244,12 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         val adapter = MySpinnerAdapter(context!!, categoryEntities)
 
         spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
                 viewModel.selectedCategory = categoryEntities[position]
             }
 

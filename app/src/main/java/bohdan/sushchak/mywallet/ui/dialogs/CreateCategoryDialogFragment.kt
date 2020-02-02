@@ -21,7 +21,11 @@ class CreateCategoryDialogFragment(var categoryEntity: CategoryEntity?) : Dialog
     var onResult: ((categoryEntity: CategoryEntity) -> Unit)? = null
 
     @SuppressLint("InflateParams")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.create_category_dialog_fragment, null)
     }
 
@@ -31,7 +35,8 @@ class CreateCategoryDialogFragment(var categoryEntity: CategoryEntity?) : Dialog
     }
 
     private fun bindUI() {
-        val colorList = convertStringToIntList(activity!!.resources.getStringArray(R.array.colorCategoriesArray))
+        val colorList =
+            convertStringToIntList(activity!!.resources.getStringArray(R.array.colorCategoriesArray))
         adapter = PickColorAdapter(context!!, colorList)
 
         if (categoryEntity != null) {

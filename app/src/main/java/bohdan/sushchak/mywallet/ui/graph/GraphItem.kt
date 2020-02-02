@@ -104,7 +104,8 @@ class GraphItem(
         val recyclerAnimation = AnimationUtils
             .loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 
-        startAnimation(viewHolder = viewHolder,
+        startAnimation(
+            viewHolder = viewHolder,
             buttonAnimation = buttonAnim,
             recyclerAnimation = recyclerAnimation,
             recyclerVisibility = View.VISIBLE,
@@ -117,18 +118,21 @@ class GraphItem(
         val context = viewHolder.itemView.context
         val buttonAnim = AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom)
 
-        startAnimation(viewHolder = viewHolder,
+        startAnimation(
+            viewHolder = viewHolder,
             buttonAnimation = buttonAnim,
             recyclerVisibility = View.GONE,
             buttonBackgroundResource = R.drawable.ic_arrow_expand
         )
     }
 
-    private fun startAnimation(viewHolder: ViewHolder,
-                               buttonAnimation: Animation,
-                               recyclerAnimation: LayoutAnimationController? = null,
-                               recyclerVisibility: Int,
-                               buttonBackgroundResource: Int) {
+    private fun startAnimation(
+        viewHolder: ViewHolder,
+        buttonAnimation: Animation,
+        recyclerAnimation: LayoutAnimationController? = null,
+        recyclerVisibility: Int,
+        buttonBackgroundResource: Int
+    ) {
         viewHolder.ibtnShowMoreInfo.apply {
             startAnimation(buttonAnimation)
             setBackgroundResource(buttonBackgroundResource)

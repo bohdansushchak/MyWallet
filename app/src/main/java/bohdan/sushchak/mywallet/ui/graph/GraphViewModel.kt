@@ -218,7 +218,7 @@ class GraphViewModel(
                 titleResId = R.string.graph_title_spend_money_for_each_day_in_month,
                 seriesList = listOf(lineGraphSeries),
                 maxX = if (countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
-                maxY = listMoneyByDate.maxBy { it.totalPrice }?.totalPrice?.times(1.1)  ?: 0.0 ,
+                maxY = listMoneyByDate.maxBy { it.totalPrice }?.totalPrice?.times(1.1) ?: 0.0,
                 labelFormatter = LineLabelFormatter()
             )
             return@async graphItem

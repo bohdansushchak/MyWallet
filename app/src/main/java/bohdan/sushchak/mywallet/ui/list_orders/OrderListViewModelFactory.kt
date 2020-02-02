@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 
 class OrderListViewModelFactory(
-        private val myWalletRepository: MyWalletRepository)
-    : ViewModelProvider.NewInstanceFactory() {
+    private val myWalletRepository: MyWalletRepository
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

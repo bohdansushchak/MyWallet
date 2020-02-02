@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   tools:context=".ui.create_order.CreateOrderFragment">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.create_order.CreateOrderFragment">
 
     <Button
             android:id="@+id/btnClearAll"
@@ -15,7 +15,7 @@
             android:text="@string/btn_text_clear_all"
             style="@style/Widget.AppCompat.Button.Colored"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
     <ExpandableListView
             android:id="@+id/expListViewProducts"
@@ -25,7 +25,7 @@
             android:groupIndicator="@null"
             app:layout_constraintBottom_toTopOf="@+id/dividerBottom"
             app:layout_constraintTop_toBottomOf="@+id/dividerTop"
-            tools:layout_editor_absoluteX="0dp"/>
+            tools:layout_editor_absoluteX="0dp" />
 
     <Button
             style="@style/Widget.AppCompat.Button.Colored"
@@ -36,7 +36,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/btn_text_save_order"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
             android:id="@+id/llProduct"
@@ -65,7 +65,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="Autofill"/>
+                tools:ignore="Autofill" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/iBtnAddedProducts"
@@ -78,8 +78,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:src="@android:drawable/presence_online"
-                android:visibility="gone"
-        />
+                android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/iBtnMlKit"
@@ -91,8 +90,7 @@
                 android:layout_marginEnd="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@android:drawable/ic_menu_camera"
-        />
+                android:src="@android:drawable/ic_menu_camera" />
 
     </LinearLayout>
 
@@ -109,7 +107,7 @@
             android:src="@drawable/ic_add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llProduct"
-            android:contentDescription="Add a product"/>
+            android:contentDescription="Add a product" />
 
     <Spinner
             android:id="@+id/spCategory"
@@ -120,7 +118,7 @@
             android:layoutMode="clipBounds"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iBtnAddProduct"
-            tools:listitem="@layout/category_item_spinner"/>
+            tools:listitem="@layout/category_item_spinner" />
 
     <EditText
             android:id="@+id/edProductPrice"
@@ -136,10 +134,12 @@
             app:layout_constraintEnd_toStartOf="@+id/iBtnAddProduct"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llProduct"
-            tools:ignore="Autofill"/>
+            tools:ignore="Autofill" />
 
     <LinearLayout
-            android:id="@+id/totalPriceLayout" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/totalPriceLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/total"
                 android:textColor="@color/textColorBlack"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
         <TextView
                 tools:text="dfg"
@@ -163,7 +163,7 @@
                 android:layout_marginStart="2dp"
                 android:textColor="@color/textColorBlack"
                 android:textStyle="bold|italic"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
     </LinearLayout>
 
 
@@ -178,7 +178,7 @@
             android:focusable="true"
             android:clickable="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/totalPriceLayout"/>
+            app:layout_constraintTop_toTopOf="@+id/totalPriceLayout" />
 
     <View
             android:id="@+id/dividerTop"
@@ -187,7 +187,7 @@
             android:layout_marginTop="8dp"
             android:background="@color/textColorBlack"
             app:layout_constraintTop_toBottomOf="@+id/spCategory"
-            tools:layout_editor_absoluteX="16dp"/>
+            tools:layout_editor_absoluteX="16dp" />
 
     <View
             android:id="@+id/dividerBottom"
@@ -196,7 +196,7 @@
             android:layout_marginBottom="8dp"
             android:background="@color/textColorBlack"
             app:layout_constraintBottom_toTopOf="@+id/totalPriceLayout"
-            tools:layout_editor_absoluteX="16dp"/>
+            tools:layout_editor_absoluteX="16dp" />
 
     <TextView
             android:id="@+id/textView"
@@ -209,6 +209,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/spCategory"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/spCategory"
-            app:layout_constraintVertical_bias="0.111"/>
+            app:layout_constraintVertical_bias="0.111" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

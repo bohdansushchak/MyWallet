@@ -1,8 +1,8 @@
 package bohdan.sushchak.mywallet
 
 import bohdan.sushchak.mywallet.internal.formatDigitToString
-import org.junit.Test
 import org.junit.Assert.assertEquals
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
@@ -11,7 +11,7 @@ import org.junit.runners.JUnit4
 class FormatDigitToStringTest {
 
     @Test
-    fun thousandTest(){
+    fun thousandTest() {
         var expected = "1K"
         var actual = formatDigitToString(1000.0)
         assertEquals(expected, actual)
@@ -26,7 +26,7 @@ class FormatDigitToStringTest {
     }
 
     @Test
-    fun randThousandTest(){
+    fun randThousandTest() {
         var expected = "1K"
         var actual = formatDigitToString(1010.0)
         assertEquals(expected, actual)
@@ -37,7 +37,7 @@ class FormatDigitToStringTest {
     }
 
     @Test
-    fun digitTest(){
+    fun digitTest() {
         var expected = "90"
         var actual = formatDigitToString(90.0)
         assertEquals(expected, actual)

@@ -52,7 +52,7 @@ class MoreInfoItem(
             df.roundingMode = RoundingMode.CEILING
             value = "${df.format(num)} $currency"
         } catch (e: NumberFormatException) {
-           value = "$data $currency"
+            value = "$data $currency"
         }
         return value
     }

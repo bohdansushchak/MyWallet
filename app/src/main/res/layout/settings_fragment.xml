@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -20,8 +20,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_user_title"
-                    android:id="@+id/tvUser"
-            />
+                    android:id="@+id/tvUser" />
 
             <LinearLayout
                     android:layout_marginTop="10dp"
@@ -33,7 +32,7 @@
                         style="@style/TextTitle"
                         android:text="@string/tv_email_settings"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                 <TextView
                         android:textColor="@color/textColorGray"
@@ -41,7 +40,7 @@
                         style="@style/TextTitle"
                         android:id="@+id/tvUserEmail"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                 <LinearLayout
                         android:orientation="vertical"
@@ -55,7 +54,7 @@
                             android:text="@string/btn_change_email"
                             style="@style/Widget.AppCompat.Button.Colored"
                             android:layout_marginEnd="15dp"
-                            android:layout_gravity="end|center_vertical"/>
+                            android:layout_gravity="end|center_vertical" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -69,7 +68,7 @@
                         style="@style/TextTitle"
                         android:text="@string/tv_password_settings"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                 <TextView
                         android:textColor="@color/textColorGray"
@@ -78,7 +77,7 @@
                         android:text="**********"
                         android:id="@+id/tvUserPassword"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                 <LinearLayout
                         android:orientation="vertical"
@@ -92,7 +91,7 @@
                             android:text="@string/btn_reset_password"
                             style="@style/Widget.AppCompat.Button.Colored"
                             android:layout_marginEnd="15dp"
-                            android:layout_gravity="end|center_vertical"/>
+                            android:layout_gravity="end|center_vertical" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -107,7 +106,7 @@
                         style="@style/TextTitle"
                         android:text="@string/tv_email_verification"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                 <TextView
                         android:textColor="@color/textColorGray"
@@ -115,7 +114,8 @@
                         style="@style/TextTitle"
                         android:id="@+id/tvEmailVerification"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
+
                 <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
@@ -128,7 +128,7 @@
                             android:text="@string/btn_verify_email"
                             style="@style/Widget.AppCompat.Button.Colored"
                             android:layout_marginEnd="15dp"
-                            android:layout_gravity="end|center_vertical"/>
+                            android:layout_gravity="end|center_vertical" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -146,27 +146,25 @@
                         android:text="@string/btn_sign_out"
                         style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_marginEnd="15dp"
-                        android:layout_gravity="end"
-                />
+                        android:layout_gravity="end" />
             </LinearLayout>
 
 
-            <View
-                    style="@style/ViewSeparator"
-            />
+            <View style="@style/ViewSeparator" />
         </LinearLayout>
 
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
             <TextView
                     style="@style/TextViewSettingsCategoryStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_currency"
-                    android:id="@+id/tv_currency"
-            />
+                    android:id="@+id/tv_currency" />
+
             <EditText
                     android:id="@+id/edCurrency"
                     android:layout_width="match_parent"
@@ -178,8 +176,8 @@
                     android:maxLines="1"
                     android:maxLength="5"
                     android:inputType="text"
-                    android:hint="@string/ed_hint_enter_currency"
-            />
+                    android:hint="@string/ed_hint_enter_currency" />
+
             <Button
                     android:id="@+id/btnSaveCurrency"
                     android:layout_width="wrap_content"
@@ -188,35 +186,34 @@
                     android:layout_marginEnd="15dp"
                     android:layout_gravity="end"
                     android:text="@string/btn_save_currency"
-                    style="@style/Widget.AppCompat.Button.Colored"/>
+                    style="@style/Widget.AppCompat.Button.Colored" />
 
-            <View
-                    style="@style/ViewSeparator"
-            />
+            <View style="@style/ViewSeparator" />
         </LinearLayout>
 
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
             <TextView
                     style="@style/TextViewSettingsCategoryStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_category_categories"
-                    android:id="@+id/tv_categories"
-            />
+                    android:id="@+id/tv_categories" />
+
             <FrameLayout
                     android:id="@+id/frameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-            >
+                    android:layout_marginTop="15dp">
+
                 <TextView
                         android:id="@+id/tvNoCategories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/TextViewStyleListIsEmpty"/>
+                        style="@style/TextViewStyleListIsEmpty" />
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewCategory"
@@ -225,7 +222,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/category_item_spinner"
-                        android:background="#fff"/>
+                        android:background="#fff" />
 
             </FrameLayout>
 
@@ -237,11 +234,9 @@
                     android:layout_marginEnd="15dp"
                     android:layout_gravity="end"
                     android:text="@string/btn_add_category"
-                    style="@style/Widget.AppCompat.Button.Colored"/>
+                    style="@style/Widget.AppCompat.Button.Colored" />
 
-            <View
-                    style="@style/ViewSeparator"
-            />
+            <View style="@style/ViewSeparator" />
 
         </LinearLayout>
 

@@ -10,17 +10,17 @@ import bohdan.sushchak.mywallet.data.db.dao.OrderDao;
 import bohdan.sushchak.mywallet.data.db.entity.OrderEntity;
 import bohdan.sushchak.mywallet.database.helpers.OrderTestHelper;
 
-public class OrderDaoTest extends DatabaseBaseTest{
+public class OrderDaoTest extends DatabaseBaseTest {
 
     private OrderDao orderDao;
 
     @Before
-    public void initOrderDao(){
+    public void initOrderDao() {
         orderDao = db.orderDao();
     }
 
     @Test
-    public void whenInsertOrderThenReadTheSameOne(){
+    public void whenInsertOrderThenReadTheSameOne() {
         List<OrderEntity> orderEntities = OrderTestHelper.createListOfOrders(1);
         orderDao.insert(orderEntities.get(0));
 

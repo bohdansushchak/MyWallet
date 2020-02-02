@@ -8,14 +8,13 @@ import androidx.room.ColumnInfo
  * @property categoryId
  * @property count
  */
-data class CategoryCount (
+data class CategoryCount(
     @ColumnInfo(name = "category_id")
     var categoryId: Long?,
 
     @ColumnInfo(name = "count")
     var count: Int
-)
-{
+) {
     override fun toString(): String {
         return "CategoryId: $categoryId | count: $count"
     }

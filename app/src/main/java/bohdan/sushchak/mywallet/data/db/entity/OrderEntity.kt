@@ -23,7 +23,7 @@ data class OrderEntity(
     @ColumnInfo(name = "total_price")
     var price: Double
 
-): Parcelable {
+) : Parcelable {
 
     @Ignore
     constructor(parcel: Parcel) : this(
@@ -62,7 +62,7 @@ data class OrderEntity(
         }
 
         @Ignore
-        fun fromDocument(doc: DocumentSnapshot): OrderEntity{
+        fun fromDocument(doc: DocumentSnapshot): OrderEntity {
             val orderId = doc["id"].toString().toLong()
             val title = doc["title"].toString()
             val date = doc["date"].toString().toLong()

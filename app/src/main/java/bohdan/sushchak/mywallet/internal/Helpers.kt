@@ -50,7 +50,7 @@ fun convertOrdersByDate(orders: List<OrderEntity>): List<OrdersByDateGroup> {
 }
 
 fun formatDigitToString(value: Double): String {
-    var str : String
+    var str: String
     val num = multipleOfTen(value)
     var endIndicator = ""
     var numForRem = 1.0
@@ -74,9 +74,8 @@ fun formatDigitToString(value: Double): String {
         "${value.div(numForRem).roundToInt()}"
     else value.div(numForRem).format(1)
 
-    if(str.contains(".0", true))
-    {
-       val indEnd = str.indexOf('.')
+    if (str.contains(".0", true)) {
+        val indEnd = str.indexOf('.')
         str = str.substring(0, indEnd)
     }
 

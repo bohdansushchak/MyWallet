@@ -6,12 +6,14 @@ import bohdan.sushchak.mywallet.data.db.entity.OrderEntity
 import bohdan.sushchak.mywallet.data.db.entity.ProductEntity
 
 data class OrderWithProducts(
-        @Embedded
-        var order: OrderEntity,
+    @Embedded
+    var order: OrderEntity,
 
-        @Relation(parentColumn = "orderId",
-                entityColumn = "order_id")
-        var products: List<ProductEntity> = listOf()
+    @Relation(
+        parentColumn = "orderId",
+        entityColumn = "order_id"
+    )
+    var products: List<ProductEntity> = listOf()
 ) {
     override fun toString(): String {
         return "${order} :{ $products }"

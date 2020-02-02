@@ -2,16 +2,16 @@ package bohdan.sushchak.mywallet
 
 import bohdan.sushchak.mywallet.internal.myMinus
 import bohdan.sushchak.mywallet.internal.myPlus
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.junit.Assert.assertEquals
 
 @RunWith(JUnit4::class)
 class DoublePlus {
 
     @Test
-    fun doubleSum(){
+    fun doubleSum() {
         val a = 0.01
         val b = 0.09
 
@@ -22,7 +22,7 @@ class DoublePlus {
     }
 
     @Test
-    fun doubleDiff1(){
+    fun doubleDiff1() {
         val a = 0.1
         val b = 0.09
 
@@ -33,7 +33,7 @@ class DoublePlus {
     }
 
     @Test
-    fun doubleDiff2(){
+    fun doubleDiff2() {
         val a = 3.99
         val b = 0.09
 

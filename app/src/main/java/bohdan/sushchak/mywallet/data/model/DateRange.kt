@@ -9,7 +9,7 @@ open class DateRange(
 ) {
 
     fun getCountOfDays(): Long {
-        if(endDate < startDate)
+        if (endDate < startDate)
             throw IllegalStateException("Should be endDate: $endDate greater than startDate: $startDate")
 
         val diff = endDate - startDate

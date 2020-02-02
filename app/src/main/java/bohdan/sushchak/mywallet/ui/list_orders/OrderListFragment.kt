@@ -48,7 +48,7 @@ class OrderListFragment : BaseFragment(), KodeinAware {
 
         bindUI()
 
-        rcViewOrders.setOnTouchListener{_, event -> recyclerTouchShowOrGoneFab(event) }
+        rcViewOrders.setOnTouchListener { _, event -> recyclerTouchShowOrGoneFab(event) }
     }
 
     private fun bindUI() = launch {
@@ -66,7 +66,8 @@ class OrderListFragment : BaseFragment(), KodeinAware {
     private fun initButtonCreateOrder(list: List<CategoryEntity>) {
         fabCreateOrder.setOnClickListener {
 
-            val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
+            val navigationController =
+                Navigation.findNavController(activity!!, R.id.nav_host_fragment)
 
             if (list.isNotEmpty())
                 navigationController.navigate(R.id.actionCreateOrder)
@@ -141,12 +142,18 @@ class OrderListFragment : BaseFragment(), KodeinAware {
 
                 if (downY < upY && fabCreateOrder.visibility == View.GONE) {
                     val animMoveDown =
-                        AnimationUtils.loadAnimation(context, R.anim.move_from_bottom_to_current_position)
+                        AnimationUtils.loadAnimation(
+                            context,
+                            R.anim.move_from_bottom_to_current_position
+                        )
                     fabCreateOrder.startAnimation(animMoveDown)
                     fabCreateOrder.visibility = View.VISIBLE
                 } else if (downY > upY && fabCreateOrder.visibility == View.VISIBLE) {
                     val animMoveDown =
-                        AnimationUtils.loadAnimation(context, R.anim.move_from_current_position_to_bottom)
+                        AnimationUtils.loadAnimation(
+                            context,
+                            R.anim.move_from_current_position_to_bottom
+                        )
                     fabCreateOrder.startAnimation(animMoveDown)
                     fabCreateOrder.visibility = View.GONE
                 }

@@ -53,13 +53,13 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
 
     private fun bindUI() = launch {
         viewModel.firebaseUser.observe(this@AuthorizationActivity, Observer {
-            progressBar_loading.visibility = View.GONE
+            progressBar_loading.visibility = View.INVISIBLE
             viewModel.databasesCheck()
         })
 
         viewModel.signInError.observe(this@AuthorizationActivity, Observer { error ->
             showAlert(error)
-            progressBar_loading.visibility = View.GONE
+            progressBar_loading.visibility = View.INVISIBLE
         })
 
         viewModel.syncType.observe(this@AuthorizationActivity, Observer {
@@ -120,7 +120,7 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
                 authorizationType = AuthorizationType.SIGN_IN
                 btnSendEmail.setText(R.string.btn_log_in)
                 tvClickBackLogin.setText(R.string.tv_click_to_register)
-                etRepeatPasswordLayout.visibility = View.GONE
+                etRepeatPasswordLayout.visibility = View.INVISIBLE
             }
         }
     }

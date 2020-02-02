@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +18,7 @@
             android:maxLength="20"
             android:ems="10"
             android:inputType="textPersonName"
-            tools:ignore="Autofill"/>
+            tools:ignore="Autofill" />
 
     <TextView
             android:layout_width="wrap_content"
@@ -31,7 +30,7 @@
             android:text="@string/tv_pick_a_color"
             android:textColor="@color/textColorBlack"
             android:textStyle="bold"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewColors"
@@ -40,7 +39,7 @@
             android:overScrollMode="never"
             android:nestedScrollingEnabled="false"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp" />
 
     <LinearLayout
             android:layout_marginTop="10dp"
@@ -55,7 +54,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="10dp"
                 android:text="@string/btn_text_cancel"
-                style="@style/Widget.AppCompat.Button.Colored"/>
+                style="@style/Widget.AppCompat.Button.Colored" />
 
         <Button
                 android:id="@+id/btnSave"
@@ -64,7 +63,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="10dp"
                 android:text="@string/btn_text_save"
-                style="@style/Widget.AppCompat.Button.Colored"/>
+                style="@style/Widget.AppCompat.Button.Colored" />
     </LinearLayout>
 
 </LinearLayout>

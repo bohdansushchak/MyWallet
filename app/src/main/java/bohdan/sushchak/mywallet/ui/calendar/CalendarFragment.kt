@@ -108,7 +108,8 @@ class CalendarFragment : BaseFragment(), KodeinAware {
             showPopupEditRemove(view,
                 edit = {},
                 remove = {
-                    showDialog(title = R.string.d_remove_order, msg = R.string.d_remove_order_are_you_sure,
+                    showDialog(title = R.string.d_remove_order,
+                        msg = R.string.d_remove_order_are_you_sure,
                         yes = {
                             viewModel.removeOrder(orders[position])
                         })

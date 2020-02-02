@@ -22,13 +22,20 @@ import org.jetbrains.anko.textColor
  *
  * @param categoryEntities
  */
-class CategoryAdapter(private val context: Context,
-                      categoryEntities: List<CategoryEntity>):
+class CategoryAdapter(
+    private val context: Context,
+    categoryEntities: List<CategoryEntity>
+) :
     RecyclerAdapterClick<CategoryAdapter.CategoryViewHolder, CategoryEntity>(categoryEntities) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.CategoryViewHolder {
-        return CategoryViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.category_item_spinner, parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): CategoryAdapter.CategoryViewHolder {
+        return CategoryViewHolder(
+            LayoutInflater.from(context)
+                .inflate(R.layout.category_item_spinner, parent, false)
+        )
     }
 
     /**
@@ -62,7 +69,7 @@ class CategoryAdapter(private val context: Context,
          *
          * @param category object of CategoryEntity
          */
-        fun bind(category: CategoryEntity){
+        fun bind(category: CategoryEntity) {
             tvCategory.text = category.categoryTitle
             tvCategory.textColor = category.color
         }

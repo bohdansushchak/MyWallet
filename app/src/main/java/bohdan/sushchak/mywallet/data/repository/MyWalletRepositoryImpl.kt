@@ -105,7 +105,10 @@ class MyWalletRepositoryImpl(
     //endregion
 
     //region OrderEntity
-    override suspend fun createOrderWithProducts(orderEntity: OrderEntity, productsEntity: List<ProductEntity>) {
+    override suspend fun createOrderWithProducts(
+        orderEntity: OrderEntity,
+        productsEntity: List<ProductEntity>
+    ) {
         withContext(Dispatchers.IO) {
             val idsMap = orderDao.insertOrderWithProducts(productDao, orderEntity, productsEntity)
 
@@ -121,7 +124,10 @@ class MyWalletRepositoryImpl(
         }
     }
 
-    override suspend fun updateOrderWithProducts(orderEntity: OrderEntity, productsEntity: List<ProductEntity>) {
+    override suspend fun updateOrderWithProducts(
+        orderEntity: OrderEntity,
+        productsEntity: List<ProductEntity>
+    ) {
         withContext(Dispatchers.IO) {
             apiDatabase.removeOrder(orderEntity)
             orderDao.removeById(orderEntity.orderId!!)
@@ -173,8 +179,9 @@ class MyWalletRepositoryImpl(
 
             val totalPriceForCategories = categoryDao.getTotalPriceCategories(startDate, endDate)
                 ?: listOf()
-            val totalPriceCategoryNotSet = categoryDao.getTotalPriceCategoryNotSet(startDate, endDate)
-                ?: listOf()
+            val totalPriceCategoryNotSet =
+                categoryDao.getTotalPriceCategoryNotSet(startDate, endDate)
+                    ?: listOf()
 
             categoryPriceAllList.addAll(totalPriceForCategories)
             categoryPriceAllList.addAll(totalPriceCategoryNotSet)
@@ -232,7 +239,10 @@ class MyWalletRepositoryImpl(
         }
     }
 
-    override suspend fun synchronizeDatabases(syncType: SyncType, observer: (text: String) -> Unit) {
+    override suspend fun synchronizeDatabases(
+        syncType: SyncType,
+        observer: (text: String) -> Unit
+    ) {
         return withContext(Dispatchers.IO) {
             if (syncType == SyncType.LOCAL_LESS) {
                 pullDatabase(observer)
@@ -257,11 +267,12 @@ class MyWalletRepositoryImpl(
 
             val orders = apiDatabase.getOrders()
             orders.forEach {
-                observer.invoke("Order: ${it.order.title} products: ${it.products.joinToString(
-                    separator = ", ",
-                    prefix = "[",
-                    postfix = "]"
-                ) { product -> product.title }}"
+                observer.invoke(
+                    "Order: ${it.order.title} products: ${it.products.joinToString(
+                        separator = ", ",
+                        prefix = "[",
+                        postfix = "]"
+                    ) { product -> product.title }}"
                 )
                 delay(30L)
             }
@@ -305,7 +316,10 @@ class MyWalletRepositoryImpl(
 
             val newMetaDataEntity = currentMetaData?.let {
                 it.copy(databaseVersion = it.databaseVersion!! + 1)
-            } ?: MetaDataEntity(databaseVersion = 1, userFirebaseId = FirebaseAuth.getInstance().currentUser!!.uid)
+            } ?: MetaDataEntity(
+                databaseVersion = 1,
+                userFirebaseId = FirebaseAuth.getInstance().currentUser!!.uid
+            )
 
             if (version > 1) {
                 newMetaDataEntity.databaseVersion = version

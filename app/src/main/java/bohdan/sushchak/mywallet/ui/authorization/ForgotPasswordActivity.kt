@@ -46,7 +46,7 @@ class ForgotPasswordActivity : BaseActivity(), KodeinAware {
         }
 
         viewModel.resetPasswordResult.observe(this@ForgotPasswordActivity, Observer { result ->
-            progressBar_loading.visibility = View.GONE
+            progressBar_loading.visibility = View.INVISIBLE
             if (result["title"] != null && result["msg"] != null)
                 showAlertDialog(result["title"]!!, result["msg"]!!)
         })

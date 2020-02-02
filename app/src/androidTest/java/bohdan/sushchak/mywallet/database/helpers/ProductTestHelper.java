@@ -22,7 +22,7 @@ public final class ProductTestHelper {
         return productEntityList;
     }
 
-    public static boolean productsAreIdentical(ProductEntity productEntity1, ProductEntity productEntity2) throws NullPointerException{
+    public static boolean productsAreIdentical(ProductEntity productEntity1, ProductEntity productEntity2) throws NullPointerException {
         return productEntity1.getProductId().equals(productEntity2.getProductId())
                 && productEntity1.getOrderId().equals(productEntity2.getOrderId())
                 && productEntity1.getPrice() == productEntity2.getPrice()

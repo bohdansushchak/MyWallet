@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   xmlns:tools="http://schemas.android.com/tools"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content"
-                                   android:background="#fff"
-                                   android:layout_marginTop="5dp"
-                                   app:cardCornerRadius="5dp">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="5dp">
 
-    <FrameLayout android:layout_width="match_parent"
-                 android:layout_height="match_parent">
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -23,7 +24,7 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:textColor="@color/textColorBlack"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
             <com.jjoe64.graphview.GraphView
                     android:id="@+id/graph"
@@ -32,7 +33,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:paddingBottom="8dp"/>
+                    android:paddingBottom="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvMoreInfo"
@@ -41,7 +42,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:visibility="gone"
-                    android:layout_marginBottom="5dp"/>
+                    android:layout_marginBottom="5dp" />
 
             <ImageButton
                     android:id="@+id/ibtnShowMoreInfo"
@@ -49,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center"
                     android:background="@drawable/ic_arrow_expand"
-                    tools:ignore="ContentDescription"/>
+                    tools:ignore="ContentDescription" />
 
         </LinearLayout>
 
@@ -61,7 +62,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/graph_legend_background"
-                android:padding="2dp"/>
+                android:padding="2dp" />
 
     </FrameLayout>
 

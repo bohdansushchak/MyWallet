@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/colorAccentLight"
-          android:width="480dp"
-          android:height="720dp"/>
+    <item
+            android:drawable="@color/colorAccentLight"
+            android:width="480dp"
+            android:height="720dp" />
 
-    <item android:drawable="@drawable/oval_logo"
-          android:height="250dp"
-          android:width="250dp"
-          android:gravity="center"/>
+    <item
+            android:drawable="@drawable/oval_logo"
+            android:height="250dp"
+            android:width="250dp"
+            android:gravity="center" />
 
-    <item android:drawable="@drawable/ic_avatar" android:gravity="center"
-          android:width="180dp"
-          android:height="180dp"/>
+    <item
+            android:drawable="@drawable/ic_avatar"
+            android:gravity="center"
+            android:width="180dp"
+            android:height="180dp" />
 
 </layer-list>

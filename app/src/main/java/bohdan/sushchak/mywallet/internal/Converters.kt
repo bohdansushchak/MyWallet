@@ -7,7 +7,7 @@ import com.github.sundeepk.compactcalendarview.domain.Event
 class Converters {
 
     @TypeConverter
-    fun dateToEvent(date: Long): Event{
+    fun dateToEvent(date: Long): Event {
         return Event(Constants.COLOR_EVENT, date)
     }
 }

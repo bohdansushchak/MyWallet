@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.SyncType
-import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -32,7 +31,7 @@ class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository)
         get() = _syncEnum
 
     val resetPasswordResult: LiveData<HashMap<String, Int>>
-    get() = _resetPasswordResult
+        get() = _resetPasswordResult
 
     fun signIn(email: String, password: String) {
         GlobalScope.launch {
@@ -53,7 +52,8 @@ class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository)
         }
         GlobalScope.launch {
             try {
-                val registerResult = Tasks.await(mAuth.createUserWithEmailAndPassword(email, password))
+                val registerResult =
+                    Tasks.await(mAuth.createUserWithEmailAndPassword(email, password))
                 registerResult.user.sendEmailVerification()
                 _firebaseUser.postValue(registerResult.user)
 
@@ -74,10 +74,10 @@ class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository)
     fun forgotPassword(email: String) {
         GlobalScope.launch(Dispatchers.IO) {
             mAuth.sendPasswordResetEmail(email).addOnSuccessListener {
-               val result = hashMapOf(
-                   "title" to R.string.d_title_check_your_email,
-                   "msg" to R.string.d_msg_check_your_email
-               )
+                val result = hashMapOf(
+                    "title" to R.string.d_title_check_your_email,
+                    "msg" to R.string.d_msg_check_your_email
+                )
                 _resetPasswordResult.postValue(result)
             }.addOnFailureListener {
                 val result = hashMapOf(

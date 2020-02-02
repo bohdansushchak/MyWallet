@@ -95,7 +95,8 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
             val categoryCount = categoryCountList.maxBy { it.count }
 
             if (categoryCount?.categoryId != null) {
-                val category = let { myWalletRepository.getCategoryById(categoryCount.categoryId!!) }
+                val category =
+                    let { myWalletRepository.getCategoryById(categoryCount.categoryId!!) }
                 _recommendCategory.postValue(category)
             }
         }
@@ -112,7 +113,8 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
         val newCategoryProductList = _categoryProductList.value ?: mutableListOf()
 
         if (!newCategoryProductList.containCategory(selectedCategory)) {
-            val categoryProductObj = CategoryWithListProducts(selectedCategory, mutableListOf(product))
+            val categoryProductObj =
+                CategoryWithListProducts(selectedCategory, mutableListOf(product))
             newCategoryProductList.add(categoryProductObj)
         } else {
             val index = newCategoryProductList.indexOfCategory(selectedCategory)
@@ -188,7 +190,8 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
         }
 
         return categorySet.map { categoryEntity ->
-            val products = productsSet.filter { it.categoryId == categoryEntity.categoryId }.toMutableList()
+            val products =
+                productsSet.filter { it.categoryId == categoryEntity.categoryId }.toMutableList()
             CategoryWithListProducts(categoryEntity = categoryEntity, products = products)
         }
     }
@@ -197,8 +200,8 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
         val products = _detectedProducts.value
 
         products?.let {
-           val productToDelete = products.find { it.product == name }
-            if(productToDelete != null){
+            val productToDelete = products.find { it.product == name }
+            if (productToDelete != null) {
                 val newProducts = products.toMutableList()
                 newProducts.remove(productToDelete)
                 _detectedProducts.postValue(newProducts)

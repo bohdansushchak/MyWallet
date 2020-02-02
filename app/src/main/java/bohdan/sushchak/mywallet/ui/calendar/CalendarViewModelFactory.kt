@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 
 class CalendarViewModelFactory(val myWalletRepository: MyWalletRepository) :
-        ViewModelProvider.NewInstanceFactory() {
+    ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

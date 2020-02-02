@@ -13,10 +13,10 @@ class CalendarViewModel(private val myWalletRepository: MyWalletRepository) : Vi
 
     //region public parameters
     val orders: LiveData<List<OrderEntity>>
-    get() = _orders
+        get() = _orders
 
     val totalPrice: LiveData<Double>
-    get() = _totalPrice
+        get() = _totalPrice
 
     val calendarDates by lazyDeferred { myWalletRepository.getEvents() }
     //endregion
@@ -34,7 +34,7 @@ class CalendarViewModel(private val myWalletRepository: MyWalletRepository) : Vi
     fun updateOrders(date: Long) {
         GlobalScope.launch {
             val orderList = myWalletRepository.getOrdersByDate(date)//1555408800000
-                                                                                    //1555408800000
+            //1555408800000
             var tPrice = 0.0
             orderList.forEach { order ->
                 tPrice += order.price

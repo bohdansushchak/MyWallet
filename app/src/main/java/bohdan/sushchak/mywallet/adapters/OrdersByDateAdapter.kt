@@ -28,9 +28,12 @@ import kotlinx.android.synthetic.main.order_item.view.*
  *
  * @param items collection of orders
  */
-class OrdersByDateAdapter(private val context: Context,
-                          items: List<OrdersByDateGroup>)
-    : ExpandableRecyclerViewAdapter<OrdersByDateAdapter.DateViewHolder, OrdersByDateAdapter.OrderViewHolder>(items) {
+class OrdersByDateAdapter(
+    private val context: Context,
+    items: List<OrdersByDateGroup>
+) : ExpandableRecyclerViewAdapter<OrdersByDateAdapter.DateViewHolder, OrdersByDateAdapter.OrderViewHolder>(
+    items
+) {
 
     var onLongClick: ((view: View, order: OrderEntity) -> Unit)? = null
     var onClick: ((view: View, order: OrderEntity) -> Unit)? = null
@@ -45,7 +48,12 @@ class OrdersByDateAdapter(private val context: Context,
         return OrderViewHolder(view)
     }
 
-    override fun onBindChildViewHolder(holder: OrderViewHolder?, flatPosition: Int, group: ExpandableGroup<*>?, childIndex: Int) {
+    override fun onBindChildViewHolder(
+        holder: OrderViewHolder?,
+        flatPosition: Int,
+        group: ExpandableGroup<*>?,
+        childIndex: Int
+    ) {
         val ordersByDateGroup = group as OrdersByDateGroup
         val order = ordersByDateGroup.orders[childIndex]
 
@@ -57,13 +65,17 @@ class OrdersByDateAdapter(private val context: Context,
             return@setOnLongClickListener (onLongClick != null)
         }
 
-        holder?.itemView?.setOnClickListener{
+        holder?.itemView?.setOnClickListener {
             onClick?.invoke(it, order)
             return@setOnClickListener
         }
     }
 
-    override fun onBindGroupViewHolder(holder: DateViewHolder?, flatPosition: Int, group: ExpandableGroup<*>?) {
+    override fun onBindGroupViewHolder(
+        holder: DateViewHolder?,
+        flatPosition: Int,
+        group: ExpandableGroup<*>?
+    ) {
         val ordersByDateGroup = group as OrdersByDateGroup
         holder?.bind(ordersByDateGroup)
     }
@@ -78,7 +90,7 @@ class OrdersByDateAdapter(private val context: Context,
             tvDate.text = formatDate(item.date, Constants.DATE_FORMAT)
 
             val inAnimation = AnimationUtils.loadAnimation(context, R.anim.collapse)
-            val outAnimation = AnimationUtils.loadAnimation(context, R.anim.expand )
+            val outAnimation = AnimationUtils.loadAnimation(context, R.anim.expand)
 
             isIndication.inAnimation = inAnimation
             isIndication.outAnimation = outAnimation
@@ -94,11 +106,11 @@ class OrdersByDateAdapter(private val context: Context,
             animateCollapse()
         }
 
-        private fun animateExpand(){
+        private fun animateExpand() {
             isIndication.showNext()
         }
 
-        private fun animateCollapse(){
+        private fun animateCollapse() {
             isIndication.showPrevious()
         }
     }

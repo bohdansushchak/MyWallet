@@ -21,9 +21,10 @@ import kotlinx.android.synthetic.main.order_item.view.*
  *
  * @param orders list of orders
  */
-class OrderAdapter(private val context: Context,
-                   orders: List<OrderEntity>)
-    : RecyclerAdapterClick<OrderAdapter.ViewHolder, OrderEntity>(orders) {
+class OrderAdapter(
+    private val context: Context,
+    orders: List<OrderEntity>
+) : RecyclerAdapterClick<OrderAdapter.ViewHolder, OrderEntity>(orders) {
 
     /**
      * method to create view holder of views
@@ -33,8 +34,10 @@ class OrderAdapter(private val context: Context,
      * @return a view holder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.order_item, parent, false))
+        return ViewHolder(
+            LayoutInflater.from(context)
+                .inflate(R.layout.order_item, parent, false)
+        )
     }
 
     /**

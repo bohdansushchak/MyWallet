@@ -44,11 +44,21 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         bohdan.sushchak.mywallet.internal.showAlertDialog(context, title, msg, yes)
     }
 
-    protected fun showDialog(title: String, msg: String, yes: (() -> Unit)? = null, cancel: (() -> Unit)? = null) {
+    protected fun showDialog(
+        title: String,
+        msg: String,
+        yes: (() -> Unit)? = null,
+        cancel: (() -> Unit)? = null
+    ) {
         bohdan.sushchak.mywallet.internal.showDialog(context, title, msg, yes, cancel)
     }
 
-    protected fun showDialog(title: Int, msg: Int, yes: (() -> Unit)? = null, cancel: (() -> Unit)? = null) {
+    protected fun showDialog(
+        title: Int,
+        msg: Int,
+        yes: (() -> Unit)? = null,
+        cancel: (() -> Unit)? = null
+    ) {
         showDialog(getString(title), getString(msg), yes, cancel)
     }
 
@@ -74,7 +84,11 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         showEntryDialog(getString(title), getString(msg), yes, cancel)
     }
 
-    protected fun showPopupEditRemove(view: View, edit: (() -> Unit)? = null, remove: (() -> Unit)? = null) {
+    protected fun showPopupEditRemove(
+        view: View,
+        edit: (() -> Unit)? = null,
+        remove: (() -> Unit)? = null
+    ) {
         val popupMenu = PopupMenu(context, view)
         val inflater = popupMenu.menuInflater
         inflater.inflate(R.menu.category_popup_menu, popupMenu.menu)
@@ -152,15 +166,21 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
         activity?.let { activity ->
             val dpd =
-                DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
-                    calendar.apply {
-                        clear()
-                        set(Calendar.YEAR, year_)
-                        set(Calendar.MONTH, monthOfYear)
-                        set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    }
-                    callBack.invoke(calendar.getOnlyDate())
-                }, year, month, day)
+                DatePickerDialog(
+                    activity,
+                    DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
+                        calendar.apply {
+                            clear()
+                            set(Calendar.YEAR, year_)
+                            set(Calendar.MONTH, monthOfYear)
+                            set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                        }
+                        callBack.invoke(calendar.getOnlyDate())
+                    },
+                    year,
+                    month,
+                    day
+                )
             minDate?.let { dpd.datePicker.minDate = it }
             maxDate?.let { dpd.datePicker.maxDate = it }
             dpd.show()

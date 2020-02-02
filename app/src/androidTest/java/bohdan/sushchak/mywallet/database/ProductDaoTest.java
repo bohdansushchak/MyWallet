@@ -23,14 +23,14 @@ public class ProductDaoTest extends DatabaseBaseTest {
     private CategoryDao categoryDao;
 
     @Before
-    public void initProductDao(){
+    public void initProductDao() {
         productDao = db.productDao();
         orderDao = db.orderDao();
         categoryDao = db.categoryDao();
     }
 
     @Test
-    public void whenInsertProductThenReadTheSameOne() throws NullPointerException{
+    public void whenInsertProductThenReadTheSameOne() throws NullPointerException {
 
         long orderId = getSomeOrderId();
         long categoryId = getSomeCategoryId();

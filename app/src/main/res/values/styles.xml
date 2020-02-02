@@ -24,7 +24,7 @@
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="HeaderTextViewStyle" >
+    <style name="HeaderTextViewStyle">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/textColorGray</item>
         <item name="android:textStyle">bold</item>

@@ -10,7 +10,7 @@ import org.junit.runners.JUnit4
 class MultipleOfTenTest {
 
     @Test
-    fun thousandTest(){
+    fun thousandTest() {
         val expected = 3
         val actual = multipleOfTen(1000.0)
 
@@ -18,7 +18,7 @@ class MultipleOfTenTest {
     }
 
     @Test
-    fun randNumberTest(){
+    fun randNumberTest() {
         val expected = 3
         val actual = multipleOfTen(1124.455)
 
@@ -26,7 +26,7 @@ class MultipleOfTenTest {
     }
 
     @Test
-    fun digitTest(){
+    fun digitTest() {
         val expected = 0
         val actual = multipleOfTen(5.2)
 
@@ -34,7 +34,7 @@ class MultipleOfTenTest {
     }
 
     @Test
-    fun numberWithZeroTest(){
+    fun numberWithZeroTest() {
         val expected = 4
         val actual = multipleOfTen(10101.2)
 
@@ -42,7 +42,7 @@ class MultipleOfTenTest {
     }
 
     @Test
-    fun negativeDigitTest(){
+    fun negativeDigitTest() {
         val expected = 2
         val actual = multipleOfTen(-101.2)
 
@@ -50,7 +50,7 @@ class MultipleOfTenTest {
     }
 
     @Test
-    fun zeroTest(){
+    fun zeroTest() {
         val expected = 0
         val actual = multipleOfTen(0.0)
 
