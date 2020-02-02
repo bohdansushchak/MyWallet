@@ -1,208 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_gravity="center_horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@drawable/bottom_sheet_bg"
-              android:gravity="center_horizontal"
-              android:orientation="vertical"
-              android:padding="8dp"
-              android:paddingBottom="15dp"
-              app:behavior_peekHeight="255dp"
-              android:maxHeight="400dp"
-              app:behavior_hideable="false"
-              app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bottom_sheet_bg"
+        android:gravity="center_horizontal"
+        android:maxHeight="280dp"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:paddingBottom="15dp"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="255dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <TextView
-                android:layout_gravity="center_vertical"
-                android:text="@string/tv_delay"
                 style="@style/TextNormalBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-        />
+                android:layout_gravity="center_vertical"
+                android:text="@string/tv_delay" />
 
         <SeekBar
-                android:max="500"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="10dp"
                 android:id="@+id/seekBarWait"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-        />
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:max="500" />
     </LinearLayout>
 
     <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
             <TextView
                     style="@style/TextHeader"
-                    android:text="@string/added_items"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-            />
+                    android:text="@string/added_items" />
 
             <androidx.recyclerview.widget.RecyclerView
-                    xmlns:tools="http://schemas.android.com/tools"
                     android:id="@+id/rlAddedItems"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    tools:listitem="@layout/added_item"
-            />
+                    android:layout_height="380dp"
+                    tools:listitem="@layout/added_item" />
 
             <Button
                     android:id="@+id/btnClearAll"
                     style="@style/Widget.AppCompat.Button.Colored"
-                    android:background="@color/colorFabRemove"
-                    android:text="@string/btn_clearAll"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="10dp"
-            />
+                    android:background="@color/colorFabRemove"
+                    android:text="@string/btn_clearAll" />
         </LinearLayout>
 
         <View
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="#000"
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
-        />
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="#000" />
 
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
             <TextView
                     style="@style/TextHeader"
-                    android:text="@string/detected_items"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-            />
+                    android:text="@string/detected_items" />
 
             <bohdan.sushchak.productsdetector.views.DetectedItem
                     android:id="@+id/detectedItemFirst"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    app:backgroundColor="@color/colorFirst"
-            />
+                    android:layout_height="wrap_content"
+                    app:backgroundColor="@color/colorFirst" />
 
             <bohdan.sushchak.productsdetector.views.DetectedItem
                     android:id="@+id/detectedItemSecond"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    app:backgroundColor="@color/colorSecond"
-            />
+                    android:layout_height="wrap_content"
+                    app:backgroundColor="@color/colorSecond" />
 
             <bohdan.sushchak.productsdetector.views.DetectedItem
                     android:id="@+id/detectedItemThird"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    app:backgroundColor="@color/colorThird"
-            />
+                    android:layout_height="wrap_content"
+                    app:backgroundColor="@color/colorThird" />
 
             <bohdan.sushchak.productsdetector.views.DetectedItem
                     android:id="@+id/detectedItemFourth"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    app:backgroundColor="@color/colorOther"
-            />
+                    android:layout_height="wrap_content"
+                    app:backgroundColor="@color/colorOther" />
 
             <bohdan.sushchak.productsdetector.views.DetectedItem
                     android:id="@+id/detectedItemFifth"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    app:backgroundColor="@color/colorOther"
-            />
+                    android:layout_height="wrap_content"
+                    app:backgroundColor="@color/colorOther" />
 
             <FrameLayout
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                 <TextView
-                        android:layout_gravity="start"
+                        style="@style/TextNormalBlack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tv_inference_time"
-                        style="@style/TextNormalBlack"
-                />
+                        android:layout_gravity="start"
+                        android:text="@string/tv_inference_time" />
 
                 <TextView
                         android:id="@+id/tvInferenceTime"
+                        style="@style/TextNormalBlack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        style="@style/TextNormalBlack"
-                />
+                        android:layout_gravity="end" />
             </FrameLayout>
 
             <FrameLayout
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                 <TextView
-                        android:layout_gravity="start"
+                        style="@style/TextNormalBlack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tv_wait_time"
-                        style="@style/TextNormalBlack"/>
+                        android:layout_gravity="start"
+                        android:text="@string/tv_wait_time" />
 
                 <TextView
                         android:id="@+id/tvWaitTime"
+                        style="@style/TextNormalBlack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        style="@style/TextNormalBlack"
-                />
+                        android:layout_gravity="end" />
             </FrameLayout>
 
             <FrameLayout
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                 <TextView
-                        android:layout_gravity="start|center_vertical"
+                        style="@style/TextNormalBlack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tv_show_accuracy"
+                        android:layout_gravity="start|center_vertical"
                         android:gravity="center_vertical"
-                        style="@style/TextNormalBlack"/>
+                        android:text="@string/tv_show_accuracy" />
 
                 <Switch
                         android:id="@+id/switchShowAccuracy"
-                        android:layout_gravity="end"
-                        android:gravity="end"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:gravity="end" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
@@ -210,12 +193,12 @@
     <Button
             android:id="@+id/btnSave"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:background="@color/colorAccent"
-            android:text="@string/btn_save"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorAccent"
+            android:text="@string/btn_save" />
 
 </LinearLayout>

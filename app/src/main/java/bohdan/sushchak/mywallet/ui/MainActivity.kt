@@ -77,11 +77,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     private fun navigationBottomUpdate(isShouldGone: Boolean?) {
 
         fun goneNavigation() {
-            if (bottom_nav.visibility == View.INVISIBLE)
+            if (bottom_nav.visibility == View.GONE)
                 return
             val anim = AnimationUtils.loadAnimation(this, R.anim.bottom_navigation_gone)
             bottom_nav.startAnimation(anim)
-            bottom_nav.visibility = View.INVISIBLE
+            bottom_nav.visibility = View.GONE
         }
 
         fun showNavigation() {
