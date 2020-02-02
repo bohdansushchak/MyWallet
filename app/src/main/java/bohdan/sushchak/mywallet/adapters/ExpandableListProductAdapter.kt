@@ -84,10 +84,11 @@ class ExpandableListProductAdapter(
         var view = convertView
         if (view == null) {
             view = LayoutInflater.from(context)
-                .inflate(R.layout.added_item, null)
+                .inflate(R.layout.product_item, null)
+            view!!
         }
 
-        val tvProductName = view!!.findViewById<TextView>(R.id.tvProductTitle)
+        val tvProductName = view.findViewById<TextView>(R.id.tvProductTitle)
         val tvProductPrice = view.findViewById<TextView>(R.id.tvProductPrice)
 
         tvProductName.text = getChild(groupPosition, childPosition).title
