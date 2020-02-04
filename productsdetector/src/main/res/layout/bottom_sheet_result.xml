@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -12,7 +13,7 @@
         android:padding="8dp"
         android:paddingBottom="15dp"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="255dp"
+        app:behavior_peekHeight="250dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
@@ -53,20 +54,20 @@
                     style="@style/TextHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="7dp"
                     android:text="@string/added_items" />
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rlAddedItems"
                     android:layout_width="match_parent"
-                    android:layout_height="380dp"
+                    android:layout_height="300dp"
                     tools:listitem="@layout/added_item" />
 
             <Button
                     android:id="@+id/btnClearAll"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="16dp"
@@ -127,7 +128,7 @@
             <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                 <TextView
@@ -148,7 +149,7 @@
             <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                 <TextView
@@ -169,7 +170,7 @@
             <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                 <TextView
@@ -194,11 +195,10 @@
             android:id="@+id/btnSave"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="16dp"
             android:background="@color/colorAccent"
             android:text="@string/btn_save" />
-
 </LinearLayout>
