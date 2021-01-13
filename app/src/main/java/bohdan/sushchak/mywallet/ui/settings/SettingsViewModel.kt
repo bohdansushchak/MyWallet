@@ -2,7 +2,7 @@ package bohdan.sushchak.mywallet.ui.settings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
@@ -76,11 +76,17 @@ class SettingsViewModel(private val myWalletRepository: MyWalletRepository) : Vi
         }
     }
 
-    fun changePassword(password: String, repeatPassword: String) {
+    fun changePassword(newPassword: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         GlobalScope.launch(Dispatchers.IO) {
-            if (password == repeatPassword)
-                mAuth.currentUser?.updatePassword(password)
-
+            mAuth.currentUser?.updatePassword(newPassword)?.addOnSuccessListener {
+                GlobalScope.launch(Dispatchers.Main) {
+                    onSuccess.invoke()
+                }
+            }?.addOnFailureListener {
+                GlobalScope.launch(Dispatchers.Main) {
+                    onFailure.invoke(it)
+                }
+            }
         }
     }
 }

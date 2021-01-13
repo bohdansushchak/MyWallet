@@ -6,6 +6,7 @@ import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import bohdan.sushchak.mywallet.internal.Constants
 import bohdan.sushchak.mywallet.internal.Constants.CURRENCY_KEY_PREF
 import bohdan.sushchak.mywallet.internal.getSavedCurrency
 import bohdan.sushchak.mywallet.ui.base.BaseFragment
+import bohdan.sushchak.mywallet.ui.dialogs.ChangePasswordDialog
 import bohdan.sushchak.mywallet.ui.dialogs.CreateCategoryDialogFragment
 import kotlinx.android.synthetic.main.settings_fragment.*
 import kotlinx.coroutines.launch
@@ -67,13 +69,8 @@ class SettingsFragment : BaseFragment(), KodeinAware {
         })
 
         viewModel.isEmailVerified.observe(this@SettingsFragment, Observer {
-            if (it) {
-                tvEmailVerification.setText(R.string.tv_email_is_verified)
-                btnVerifyEmail.isEnabled = false
-            } else {
-                tvEmailVerification.setText(R.string.tv_email_is_not_verified)
-                btnVerifyEmail.isEnabled = true
-            }
+            tvEmailVerification.setText(if (it) R.string.tv_email_is_verified else R.string.tv_email_is_not_verified)
+            btnVerifyEmail.isEnabled = !it
         })
 
         viewModel.emailVerificationResult.observe(this@SettingsFragment, Observer { result ->
@@ -97,6 +94,24 @@ class SettingsFragment : BaseFragment(), KodeinAware {
 
         btnSignOut.setOnClickListener { viewModel.signOut() }
         btnVerifyEmail.setOnClickListener { viewModel.sendEmailVerification() }
+        btnChangePassword.setOnClickListener { showChangePasswordDialog() }
+    }
+
+    private fun showChangePasswordDialog() {
+        val ft = fragmentManager?.beginTransaction()
+        val dialog = ChangePasswordDialog()
+        dialog.onResult =
+            {
+                viewModel.changePassword(it,
+                    onSuccess = {
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    },
+                    onFailure = { exp ->
+                        Toast.makeText(context, exp.toString(), Toast.LENGTH_SHORT).show()
+                    })
+            }
+        dialog.show(ft!!, "")
     }
 
     private fun addNewCategory(list: List<CategoryEntity>) {

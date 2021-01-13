@@ -35,7 +35,6 @@ class MyWalletApplication() : Application(), KodeinAware {
             )
         }
 
-        //region view models
         bind() from provider { CreateOrderViewModelFactory(instance()) }
         bind() from provider { OrderListViewModelFactory(instance()) }
         bind() from provider { SettingsViewModelFactory(instance()) }
@@ -43,6 +42,5 @@ class MyWalletApplication() : Application(), KodeinAware {
         bind() from provider { GraphViewModelFactory(instance(), instance()) }
         bind() from provider { AuthorizationViewModelFactory(instance()) }
         bind() from provider { SyncViewModelFactory(instance()) }
-        //endregion
     }
 }

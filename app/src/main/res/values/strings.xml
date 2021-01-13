@@ -39,6 +39,7 @@
     <string name="btn_text_ok">OK</string>
     <string name="btn_add_category">Add category</string>
     <string name="btn_text_save">Save</string>
+    <string name="btn_text_change">Change</string>
     <string name="btn_log_in">Log in</string>
     <string name="btn_sign_up">Sign up</string>
     <string name="btn_sign_out">Sign out</string>
@@ -92,7 +93,6 @@
     <string name="d_title_error_email_verification">Email verification error</string>
     <string name="d_msg_error_email_verification">Email verification error, please try again later</string>
 
-
     <string name="total">Total:</string>
     <string name="non_set_category">Non set</string>
 
@@ -102,6 +102,8 @@
 
     <string name="graph_title_category_by_year">Spend money for category by year</string>
     <string name="graph_title_spend_money_for_each_day_in_year">Spend money for each day in year</string>
+    <string name="password_is_empty">Password is empty</string>
+    <string name="password_mismatch">Password mismatch</string>
 
     <!--bottom navigation strings -->
     <string name="nav_order_list">Order list</string>

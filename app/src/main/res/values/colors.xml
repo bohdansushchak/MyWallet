@@ -27,6 +27,7 @@
 
     <!-- colors light-->
     <color name="textHeaderColorLight">#C5BFBF</color>
+    <color name="red">#F83F2B</color>
 
     <string-array name="colorCategoriesArray">
         <item>#F83F2B</item>
