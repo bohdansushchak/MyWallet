@@ -15,7 +15,7 @@ data class OrderEntity(
     var orderId: Long?,
 
     @ColumnInfo(name = "title")
-    var title: String,
+    var title: String?,
 
     @ColumnInfo(name = "date")
     var date: Long,

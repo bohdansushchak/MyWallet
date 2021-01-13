@@ -120,7 +120,7 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
                 authorizationType = AuthorizationType.SIGN_IN
                 btnSendEmail.setText(R.string.btn_log_in)
                 tvClickBackLogin.setText(R.string.tv_click_to_register)
-                etRepeatPasswordLayout.visibility = View.INVISIBLE
+                etRepeatPasswordLayout.visibility = View.GONE
             }
         }
     }
