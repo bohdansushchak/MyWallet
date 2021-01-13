@@ -2,9 +2,7 @@ package bohdan.sushchak.mywallet.ui.calendar
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -42,13 +40,33 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         return inflater.inflate(R.layout.calendar_fragment, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(CalendarViewModel::class.java)
-
+        setHasOptionsMenu(true)
         bindUI()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.add(Menu.NONE, 1, Menu.NONE, "Now")
+        menu.getItem(0).isVisible = true
+        menu.getItem(0).isEnabled = true
+        menu.getItem(0).icon = resources.getDrawable(R.drawable.ic_calendar_today)
+        menu.getItem(0).setShowAsAction(1)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        calendarView.setCurrentDate(Date())
+        tvMonthTitle.text = formatDate(Date(), Constants.MONTH_FORMAT)
+        return super.onOptionsItemSelected(item)
     }
 
     @SuppressLint("SetTextI18n")
@@ -71,6 +89,12 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         viewModel.totalPrice.observe(this@CalendarFragment, Observer {
             updateTotalPrice(it)
         })
+        btnPrev.setOnClickListener {
+            calendarView.scrollLeft()
+        }
+        btnNext.setOnClickListener {
+            calendarView.scrollRight()
+        }
     }
 
     private fun updateTotalPrice(totalPrice: Double) {
