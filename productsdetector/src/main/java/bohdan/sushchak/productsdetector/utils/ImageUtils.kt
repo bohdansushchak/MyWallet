@@ -5,12 +5,15 @@ import android.graphics.Matrix
 import android.os.Environment
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.math.abs
+import kotlin.math.max
+
 
 class ImageUtils {
     // This value is 2 ^ 18 - 1, and is used to clamp the RGB values before their ranges
     // are normalized to eight bits.
     companion object {
-        private val kMaxChannelValue = 262143
+        private const val kMaxChannelValue = 262143
 
         /**
          * Utility method to compute the allocated size in bytes of a YUV420SP image of the given
@@ -43,13 +46,14 @@ class ImageUtils {
          * @param filename The location to save the bitmap to.
          */
         fun saveBitmap(bitmap: Bitmap, filename: String) {
-            val root = Environment.getExternalStorageDirectory().absolutePath + File.separator + "tensorflow"
+            val root =
+                Environment.getExternalStorageDirectory().absolutePath + File.separator + "tensorflow"
             //LOGGER.i("Saving %dx%d bitmap to %s.", bitmap.width, bitmap.height, root)
             val myDir = File(root)
 
-            if (!myDir.mkdirs()) {
-             //   LOGGER.i("Make dir failed")
-            }
+//            if (!myDir.mkdirs()) {
+//             //   LOGGER.i("Make dir failed")
+//            }
 
             val file = File(myDir, filename)
             if (file.exists()) {
@@ -61,7 +65,7 @@ class ImageUtils {
                 out.flush()
                 out.close()
             } catch (e: Exception) {
-               // LOGGER.e(e, "Exception!")
+                // LOGGER.e(e, "Exception!")
             }
 
         }
@@ -91,10 +95,10 @@ class ImageUtils {
             }
         }
 
-        private fun YUV2RGB(y: Int, u: Int, v: Int): Int {
-            var y = y
-            var u = u
-            var v = v
+        private fun YUV2RGB(y1: Int, u1: Int, v1: Int): Int {
+            var y = y1
+            var u = u1
+            var v = v1
             // Adjust and check YUV values
             y = if (y - 16 < 0) 0 else y - 16
             u -= 128
@@ -135,9 +139,13 @@ class ImageUtils {
                 val pUV = uvRowStride * (j shr 1)
 
                 for (i in 0 until width) {
-                    val uv_offset = pUV + (i shr 1) * uvPixelStride
+                    val uvOffset = pUV + (i shr 1) * uvPixelStride
 
-                    out[yp++] = YUV2RGB(0xff and yData[pY + i].toInt(), 0xff and uData[uv_offset].toInt(), 0xff and vData[uv_offset].toInt())
+                    out[yp++] = YUV2RGB(
+                        0xff and yData[pY + i].toInt(),
+                        0xff and uData[uvOffset].toInt(),
+                        0xff and vData[uvOffset].toInt()
+                    )
                 }
             }
         }
@@ -167,9 +175,9 @@ class ImageUtils {
             val matrix = Matrix()
 
             if (applyRotation != 0) {
-                if (applyRotation % 90 != 0) {
-                   // LOGGER.w("Rotation of %d % 90 != 0", applyRotation)
-                }
+//                if (applyRotation % 90 != 0) {
+                // LOGGER.w("Rotation of %d % 90 != 0", applyRotation)
+//                }
 
                 // Translate so center of image is at origin.
                 matrix.postTranslate(-srcWidth / 2.0f, -srcHeight / 2.0f)
@@ -180,7 +188,7 @@ class ImageUtils {
 
             // Account for the already applied rotation, if any, and then determine how
             // much scaling is needed for each axis.
-            val transpose = (Math.abs(applyRotation) + 90) % 180 == 0
+            val transpose = (abs(applyRotation) + 90) % 180 == 0
 
             val inWidth = if (transpose) srcHeight else srcWidth
             val inHeight = if (transpose) srcWidth else srcHeight
@@ -193,7 +201,7 @@ class ImageUtils {
                 if (maintainAspectRatio) {
                     // Scale by minimum factor so that dst is filled completely while
                     // maintaining the aspect ratio. Some image may fall off the edge.
-                    val scaleFactor = Math.max(scaleFactorX, scaleFactorY)
+                    val scaleFactor = max(scaleFactorX, scaleFactorY)
                     matrix.postScale(scaleFactor, scaleFactor)
                 } else {
                     // Scale exactly to fill dst from src.

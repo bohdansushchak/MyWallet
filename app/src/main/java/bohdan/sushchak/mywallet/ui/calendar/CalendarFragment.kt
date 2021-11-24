@@ -58,7 +58,8 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         menu.add(Menu.NONE, 1, Menu.NONE, "Now")
         menu.getItem(0).isVisible = true
         menu.getItem(0).isEnabled = true
-        menu.getItem(0).icon = resources.getDrawable(R.drawable.ic_calendar_today)
+        menu.getItem(0).icon =
+            resources.getDrawable(R.drawable.ic_calendar_today, context!!.theme)
         menu.getItem(0).setShowAsAction(1)
         super.onCreateOptionsMenu(menu, inflater)
     }
