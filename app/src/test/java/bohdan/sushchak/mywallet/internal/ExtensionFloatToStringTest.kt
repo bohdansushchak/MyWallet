@@ -1,6 +1,5 @@
-package bohdan.sushchak.mywallet
+package bohdan.sushchak.mywallet.internal
 
-import bohdan.sushchak.mywallet.internal.myToString
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -8,10 +7,10 @@ import org.junit.runners.JUnit4
 
 
 @RunWith(JUnit4::class)
-class DoubleConvertToStringTest {
+class ExtensionFloatToStringTest {
 
     @Test
-    fun dotZeroTest() {
+    fun dotZeroTest1() {
         val myNumber = 1.0
         val actual = myNumber.myToString()
         val expected = "1"
@@ -20,7 +19,25 @@ class DoubleConvertToStringTest {
     }
 
     @Test
-    fun numberTest() {
+    fun dotZeroTest2() {
+        val myNumber = 1.01
+        val actual = myNumber.myToString()
+        val expected = "1.01"
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun dotZeroTest3() {
+        val myNumber = 0.01
+        val actual = myNumber.myToString()
+        val expected = "0.01"
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun floatCheck() {
         val myNumber = 1.4
         val actual = myNumber.myToString()
         val expected = "1.4"
@@ -38,10 +55,28 @@ class DoubleConvertToStringTest {
     }
 
     @Test
-    fun numberBigFloatTest() {
-        val myNumber = 1.05
+    fun numberBigFloatTest1() {
+        val myNumber = 1.000005
         val actual = myNumber.myToString()
-        val expected = "1.05"
+        val expected = "1.000005"
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun numberBigFloatTest2() {
+        val myNumber = 0.0005
+        val actual = myNumber.myToString()
+        val expected = "5.0E-4"
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun numberBigFloatTest3() {
+        val myNumber = 0.005
+        val actual = myNumber.myToString()
+        val expected = "0.005"
 
         assertEquals(expected, actual)
     }

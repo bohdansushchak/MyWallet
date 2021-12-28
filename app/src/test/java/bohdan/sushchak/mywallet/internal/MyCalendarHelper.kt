@@ -1,4 +1,4 @@
-package bohdan.sushchak.mywallet
+package bohdan.sushchak.mywallet.internal
 
 import bohdan.sushchak.mywallet.internal.dateRangeByYearAndMonth
 import org.junit.Assert.assertEquals
@@ -8,7 +8,7 @@ import org.junit.runners.JUnit4
 import java.util.*
 
 @RunWith(JUnit4::class)
-class DateRangeTest {
+class MyCalendarHelper {
 
     @Test
     fun testRange() {

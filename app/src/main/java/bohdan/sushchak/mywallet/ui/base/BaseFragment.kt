@@ -121,9 +121,6 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
             return
         }
 
-        if (mToast.view.isShown)
-            mToast.cancel()
-
         toastShow()
     }
 
@@ -168,7 +165,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
             val dpd =
                 DatePickerDialog(
                     activity,
-                    DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
+                    { _, year_, monthOfYear, dayOfMonth ->
                         calendar.apply {
                             clear()
                             set(Calendar.YEAR, year_)

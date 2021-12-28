@@ -1,13 +1,12 @@
-package bohdan.sushchak.mywallet
+package bohdan.sushchak.mywallet.internal
 
-import bohdan.sushchak.mywallet.internal.multipleOfTen
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class MultipleOfTenTest {
+class MultipleOfTen {
 
     @Test
     fun thousandTest() {

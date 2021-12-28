@@ -50,21 +50,6 @@ fun MutableList<CategoryWithListProducts>.removeProduct(product: ProductEntity) 
         this.remove(categoryToRemove!!)
 }
 
-fun Calendar.onlyDateInMillis(result: (time: Long) -> Unit) {
-    val year = this.get(Calendar.YEAR)
-    val month = this.get(Calendar.MONTH)
-    val dayOfMonth = this.get(Calendar.DAY_OF_MONTH)
-
-    val cal = Calendar.getInstance()
-    cal.clear()
-
-    cal.set(Calendar.YEAR, year)
-    cal.set(Calendar.MONTH, month)
-    cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-    result.invoke(cal.timeInMillis)
-}
-
 fun List<OrdersByDateGroup>.containDate(date: Long): Boolean {
     var isExist = false
 
@@ -79,7 +64,7 @@ fun List<OrdersByDateGroup>.containDate(date: Long): Boolean {
     return isExist
 }
 
-fun List<OrdersByDateGroup>.indexBydate(date: Long): Int {
+fun List<OrdersByDateGroup>.indexByDate(date: Long): Int {
     var index = -1
 
     this.forEachWithIndex { i, ordersByDate ->
@@ -91,7 +76,7 @@ fun List<OrdersByDateGroup>.indexBydate(date: Long): Int {
     return index
 }
 
-fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
+fun Double.format(digits: Int): String = java.lang.String.format("%.${digits}f", this)
 
 fun Double.myPlus(num: Double): Double {
     val intNumA = (this * 100).toInt()
@@ -106,9 +91,7 @@ fun Double.myMinus(num: Double): Double {
     val intNumA = (this * 100).toInt()
     val intNumB = (num * 100).toInt()
 
-    val sum = (intNumA - intNumB).toDouble() / 100
-
-    return sum
+    return (intNumA - intNumB).toDouble() / 100
 }
 
 fun Double.myToString(): String {
@@ -118,6 +101,21 @@ fun Double.myToString(): String {
         str = str.substring(0, str.length - 2)
 
     return str
+}
+
+fun Calendar.onlyDateInMillis(): Long {
+    val year = this.get(Calendar.YEAR)
+    val month = this.get(Calendar.MONTH)
+    val dayOfMonth = this.get(Calendar.DAY_OF_MONTH)
+
+    val cal = Calendar.getInstance()
+    cal.clear()
+
+    cal.set(Calendar.YEAR, year)
+    cal.set(Calendar.MONTH, month)
+    cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+    return cal.timeInMillis
 }
 
 fun Calendar.getOnlyDate(): Date {

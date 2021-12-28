@@ -41,7 +41,7 @@ fun convertOrdersByDate(orders: List<OrderEntity>): List<OrdersByDateGroup> {
             val ordersByDate = OrdersByDateGroup(order.date, mutableListOf(order))
             ordersByDateList.add(ordersByDate)
         } else {
-            val inx = ordersByDateList.indexBydate(order.date)
+            val inx = ordersByDateList.indexByDate(order.date)
             ordersByDateList[inx].orders.add(order)
         }
     }
