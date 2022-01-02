@@ -36,9 +36,11 @@ class ForgotPasswordActivity : BaseActivity(), KodeinAware {
 
     private fun bindUI() = launch {
         btnSendEmail.setOnClickListener {
-            progressBar_loading.visibility = View.VISIBLE
             val email = etEmail.text.toString().trim()
-            viewModel.forgotPassword(email)
+            if (email.isNotBlank()) {
+                progressBar_loading.visibility = View.VISIBLE
+                viewModel.forgotPassword(email)
+            }
         }
 
         tvClickBackLogin.setOnClickListener {

@@ -36,6 +36,7 @@ android {
         sourceCompatibility = "8"
     }
     packagingOptions {
+        exclude 'README.txt'
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'

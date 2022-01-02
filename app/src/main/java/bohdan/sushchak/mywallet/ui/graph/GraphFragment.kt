@@ -102,10 +102,15 @@ class GraphFragment : BaseFragment(), KodeinAware {
         }
 
         tvDateTo.setOnClickListener {
+            var maxDate = dateLimit.biggestDate
+            if (maxDate < dateLimit.endDate) {
+                maxDate = dateLimit.endDate
+            }
+
             pickDate(
                 dateLimit.endDate,
                 minDate = dateLimit.startDate,
-                maxDate = dateLimit.biggestDate
+                maxDate = maxDate
             ) { pickedDate ->
                 if (pickedDate.time < dateLimit.startDate)
                     makeToast(R.string.t_to_date_cant_be_less_than_from_date)
