@@ -22,6 +22,7 @@
     <style name="EditTextStyle">
         <item name="android:backgroundTint">@color/colorAccent</item>
         <item name="android:maxLines">1</item>
+        <item name="android:minHeight">@dimen/inputMinHeight</item>
     </style>
 
     <style name="HeaderTextViewStyle">

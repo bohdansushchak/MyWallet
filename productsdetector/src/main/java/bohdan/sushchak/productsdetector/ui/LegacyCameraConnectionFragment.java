@@ -164,6 +164,6 @@ public class LegacyCameraConnectionFragment extends Fragment {
             Camera.getCameraInfo(i, ci);
             if (ci.facing == CameraInfo.CAMERA_FACING_BACK) return i;
         }
-        return -1; // No camera found
+        return -1;
     }
 }

@@ -15,7 +15,6 @@ import android.util.Size
 import android.view.View
 import android.widget.SeekBar
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.productsdetector.R
 import bohdan.sushchak.productsdetector.model.AddedProduct
@@ -26,6 +25,7 @@ import bohdan.sushchak.productsdetector.utils.ImageUtils
 import bohdan.sushchak.productsdetector.utils.ProductAdapter
 import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.bottom_sheet_result.*
+import kotlinx.android.synthetic.main.camera_connection_fragment.*
 import kotlin.math.roundToInt
 
 const val PREF_WAIT_KEY = "waitkey"
@@ -49,11 +49,6 @@ class DetectionActivity : CameraActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
 
-        setSupportActionBar(myToolbar as Toolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-
         classifier = ClassifierQuantizedMobileNet(this)
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this@DetectionActivity)
@@ -61,6 +56,10 @@ class DetectionActivity : CameraActivity() {
         initSeekBar()
         initShowAccuracySwitch()
         initAddedProductView()
+
+        btnBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initAddedProductView() {
@@ -76,7 +75,7 @@ class DetectionActivity : CameraActivity() {
         }
 
         btnClearAll.setOnClickListener {
-            if(addedProducts.size > 0){
+            if (addedProducts.size > 0) {
                 dialogShow(
                     R.string.d_title_remove_items,
                     R.string.d_content_remove_items,
@@ -89,8 +88,11 @@ class DetectionActivity : CameraActivity() {
         }
 
         btnSave.setOnClickListener {
-            if(addedProducts.size > 0){
-                dialogShow(R.string.d_title_save_result, R.string.d_content_save_result, yes = { saveResult() })
+            if (addedProducts.size > 0) {
+                dialogShow(
+                    R.string.d_title_save_result,
+                    R.string.d_content_save_result,
+                    yes = { saveResult() })
             } else {
                 Toast.makeText(this, R.string.t_nothing_to_save, Toast.LENGTH_SHORT).show()
             }
@@ -282,7 +284,12 @@ class DetectionActivity : CameraActivity() {
         detectedItemFifth.showAccuracy = isVisible
     }
 
-    private fun dialogShow(title: Int, content: Int, yes: (() -> Unit), cancel: (() -> Unit)? = null) {
+    private fun dialogShow(
+        title: Int,
+        content: Int,
+        yes: (() -> Unit),
+        cancel: (() -> Unit)? = null
+    ) {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle(title)
         alertDialog.setMessage(content)

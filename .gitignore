@@ -13,3 +13,6 @@
 .externalNativeBuild
 app/google-services.json
 app/release/output.json
+*.apk
+.idea/deploymentTargetDropDown.xml
+.idea/misc.xml

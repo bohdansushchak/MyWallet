@@ -11,4 +11,6 @@
     <integer name="config_activityShortDur">150</integer>
     <integer name="config_activityDefaultDur">220</integer>
 
+    <dimen name="inputMinHeight">48dp</dimen>
+
 </resources>

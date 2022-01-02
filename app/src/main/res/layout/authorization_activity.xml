@@ -142,7 +142,8 @@
                 android:text="@string/btn_log_in"
                 app:layout_constraintEnd_toEndOf="@+id/cardLogin"
                 app:layout_constraintStart_toStartOf="@+id/cardLogin"
-                app:layout_constraintTop_toBottomOf="@+id/cardLogin" />
+                app:layout_constraintTop_toBottomOf="@+id/cardLogin"
+                tools:ignore="TextContrastCheck" />
 
         <TextView
                 android:id="@+id/tvClickBackLogin"

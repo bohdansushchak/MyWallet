@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -10,36 +10,24 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#00000000"
+            android:background="#ffffffff"
             android:orientation="vertical">
 
         <FrameLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/black"
-        >
+                android:background="@android:color/white" />
 
-            <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/myToolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/semiTransparent">
-
-                <ImageButton
-                        android:id="@+id/iBtnClose"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-
-                <TextView
-                        android:gravity="center_horizontal"
-                        android:textSize="18sp"
-                        android:text="MyWallet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-            </androidx.appcompat.widget.Toolbar>
-        </FrameLayout>
+        <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                app:srcCompat="?android:attr/actionModeCloseDrawable"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck,ImageContrastCheck" />
 
     </RelativeLayout>
 
