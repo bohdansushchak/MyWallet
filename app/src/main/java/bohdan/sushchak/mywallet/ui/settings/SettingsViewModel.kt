@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.ui.settings
 
+import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,8 @@ import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.db.entity.CategoryEntity
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.lazyDeferred
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
@@ -56,7 +59,13 @@ class SettingsViewModel(private val myWalletRepository: MyWalletRepository) : Vi
         }
     }
 
-    fun signOut() {
+    fun signOut(activity: Activity) {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(activity.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
+        mGoogleSignInClient.signOut()
         mAuth.signOut()
     }
 

@@ -27,6 +27,7 @@ class SplashActivity : BaseActivity(), KodeinAware {
         super.onCreate(savedInstanceState)
 
         val user = FirebaseAuth.getInstance().currentUser
+
         if (user == null) {
             startActivity<AuthorizationActivity>()
             finish()

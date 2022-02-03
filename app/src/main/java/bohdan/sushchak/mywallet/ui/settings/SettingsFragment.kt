@@ -92,7 +92,7 @@ class SettingsFragment : BaseFragment(), KodeinAware {
             }
         }
 
-        btnSignOut.setOnClickListener { viewModel.signOut() }
+        btnSignOut.setOnClickListener { viewModel.signOut(activity!!) }
         btnVerifyEmail.setOnClickListener { viewModel.sendEmailVerification() }
         btnChangePassword.setOnClickListener { showChangePasswordDialog() }
     }

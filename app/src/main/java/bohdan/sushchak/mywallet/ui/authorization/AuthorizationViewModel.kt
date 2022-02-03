@@ -1,17 +1,27 @@
 package bohdan.sushchak.mywallet.ui.authorization
 
+import android.app.Activity
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.mywallet.R
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.SyncType
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository) : ViewModel() {
 
@@ -40,6 +50,36 @@ class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository)
 
                 _firebaseUser.postValue(signInResult.user)
             } catch (e: Exception) {
+                _signInError.postValue(e.message)
+            }
+        }
+    }
+
+    fun googleSignIn(activity: Activity) {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(activity.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
+
+        val signInIntent: Intent = mGoogleSignInClient.signInIntent
+        activity.startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    fun googleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        GlobalScope.launch {
+            try {
+                val account = completedTask.getResult(ApiException::class.java)
+
+                if (account != null) {
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    val signInResult = Tasks.await(mAuth.signInWithCredential(credential))
+
+                    _firebaseUser.postValue(signInResult.user)
+                    Log.d("TAG", account.toString())
+                }
+
+            } catch (e: ApiException) {
                 _signInError.postValue(e.message)
             }
         }

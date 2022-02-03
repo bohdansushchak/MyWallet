@@ -12,6 +12,7 @@ import bohdan.sushchak.mywallet.internal.SyncType
 import bohdan.sushchak.mywallet.ui.MainActivity
 import bohdan.sushchak.mywallet.ui.base.BaseActivity
 import bohdan.sushchak.mywallet.ui.sync.SyncActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import kotlinx.android.synthetic.main.authorization_activity.*
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.startActivity
@@ -19,19 +20,22 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 
+
 enum class AuthorizationType {
     SIGN_IN,
     SIGN_UP
 }
 
+const val RC_SIGN_IN = 1001
+
 class AuthorizationActivity : BaseActivity(), KodeinAware {
+
     override val kodein by closestKodein()
 
     private val viewModelFactory: AuthorizationViewModelFactory by instance()
     var authorizationType = AuthorizationType.SIGN_IN
 
     private lateinit var viewModel: AuthorizationViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,6 +111,10 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
             }
             progressBar_loading.visibility = View.VISIBLE
         }
+
+        btnGoogleSignIn.setOnClickListener {
+            viewModel.googleSignIn(this)
+        }
     }
 
     private fun initAuthorizationTypeChange() {
@@ -116,11 +124,13 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
                 btnSendEmail.setText(R.string.btn_sign_up)
                 tvClickBackLogin.setText(R.string.tv_click_to_log_in)
                 etRepeatPasswordLayout.visibility = View.VISIBLE
+                btnGoogleSignIn.visibility = View.GONE
             } else {
                 authorizationType = AuthorizationType.SIGN_IN
                 btnSendEmail.setText(R.string.btn_log_in)
                 tvClickBackLogin.setText(R.string.tv_click_to_register)
                 etRepeatPasswordLayout.visibility = View.GONE
+                btnGoogleSignIn.visibility = View.VISIBLE
             }
         }
     }
@@ -139,5 +149,14 @@ class AuthorizationActivity : BaseActivity(), KodeinAware {
         }
 
         return false
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            viewModel.googleSignInResult(task)
+        }
     }
 }
