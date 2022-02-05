@@ -102,8 +102,7 @@
 
     <string name="graph_title_category_by_year">Spend money for category by year</string>
     <string name="graph_title_spend_money_for_each_day_in_year">Spend money for each day in year</string>
-    <string name="password_is_empty">Password is empty</string>
-    <string name="password_mismatch">Password mismatch</string>
+
 
     <!--bottom navigation strings -->
     <string name="nav_order_list">Order list</string>
@@ -111,5 +110,15 @@
     <string name="nav_graph">Graph</string>
     <string name="nav_settings">Settings</string>
 
+    <!--validations -->
+    <string name="email_is_empty">E-mail is empty</string>
+    <string name="email_is_invalid">E-mail is not correct</string>
+
+    <string name="password_is_empty">Password is empty</string>
+    <string name="password_is_short">Password should contains at least 6 symbols</string>
+    <string name="password_should_uppercase">Password should contains one uppercase char</string>
+    <string name="password_should_lowercase">Password should contains one lowercase char</string>
+    <string name="password_should_number">Password should contains one number</string>
+    <string name="password_mismatch">Passwords mismatch</string>
 
 </resources>

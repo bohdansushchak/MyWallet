@@ -12,7 +12,7 @@ import kotlin.math.roundToInt
 
 fun parseDate(date: String, patter: String): Date {
 
-    val format = SimpleDateFormat(patter);
+    val format = SimpleDateFormat(patter)
     return format.parse(date)
 }
 

@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.4362808842652796" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15704154002026344" />
-        <entry key="app/src/main/res/layout/authorization_activity.xml" value="0.15704154002026344" />
+        <entry key="app/src/main/res/layout/authorization_activity.xml" value="0.25" />
         <entry key="app/src/main/res/layout/change_password_dialog.xml" value="0.2421875" />
         <entry key="app/src/main/res/layout/color_item.xml" value="0.2421875" />
         <entry key="productsdetector/src/main/res/layout/activity_camera.xml" value="0.25" />
