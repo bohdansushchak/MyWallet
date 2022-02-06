@@ -61,9 +61,11 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         btnSaveOrder.setOnClickListener { saveOrder() }
         tvOrderDate.setOnClickListener {
             pickDate(
-                viewModel.orderDate,
+                viewModel.orderDate.value!!.time,
                 maxDate = Calendar.getInstance().time.time
-            ) { setDate(it) }
+            ) {
+                viewModel.setOrderDate(it)
+            }
         }
 
         context?.let { hideKeyboardIfFocusLost(it, edProductPrice, edProductTitle) }
@@ -73,9 +75,6 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
 
     @SuppressLint("SetTextI18n", "RestrictedApi")
     private fun bindUI() = launch {
-        val calendar = Calendar.getInstance()
-        setDate(calendar.getOnlyDate())
-
         edProductPrice.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
         initTextWatcher(edProductTitle)
 
@@ -110,6 +109,10 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             iBtnAddedProducts.setOnClickListener {
                 showDetectedItems(detectedProducts)
             }
+        })
+
+        viewModel.orderDate.observe(this@CreateOrderFragment, Observer {
+            tvOrderDate.text = formatDate(it, Constants.DATE_FORMAT)
         })
 
         iBtnMlKit.setOnClickListener {
@@ -233,6 +236,7 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
             showEntryDialog(
                 R.string.d_order_title,
                 R.string.d_order_title_please_enter,
+                initialMsg = viewModel.initOrder?.title,
                 yes = { strMsg ->
                     viewModel.saveOrder(strMsg)
                     fragmentManager?.popBackStack()
@@ -311,11 +315,5 @@ class CreateOrderFragment : BaseFragment(), KodeinAware {
         false
     } catch (e: Exception) {
         true
-    }
-
-    private fun setDate(date: Date) {
-        tvOrderDate.text = formatDate(date, Constants.DATE_FORMAT)
-        viewModel.orderDate = date.time
-
     }
 }

@@ -44,6 +44,7 @@ fun showEntryDialog(
     context: Context?,
     title: String,
     msg: String,
+    initialMsg: String?,
     yes: ((str: String) -> Unit)? = null,
     cancel: (() -> Unit)? = null
 ) {
@@ -52,6 +53,8 @@ fun showEntryDialog(
     entryDialogBuilder.setMessage(msg)
 
     val input = EditText(context)
+    input.setText(initialMsg ?: "")
+
     val lp = LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.MATCH_PARENT,
         LinearLayout.LayoutParams.MATCH_PARENT

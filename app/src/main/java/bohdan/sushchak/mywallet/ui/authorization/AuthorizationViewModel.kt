@@ -76,10 +76,9 @@ class AuthorizationViewModel(private val myWalletRepository: MyWalletRepository)
                     val signInResult = Tasks.await(mAuth.signInWithCredential(credential))
 
                     _firebaseUser.postValue(signInResult.user)
-                    Log.d("TAG", account.toString())
                 }
 
-            } catch (e: ApiException) {
+            } catch (e: Exception) {
                 _signInError.postValue(e.message)
             }
         }

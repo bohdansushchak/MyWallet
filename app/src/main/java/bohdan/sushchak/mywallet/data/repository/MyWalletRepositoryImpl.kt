@@ -154,7 +154,6 @@ class MyWalletRepositoryImpl(
 
     override suspend fun getOrders(): LiveData<List<OrderEntity>> {
         return withContext(Dispatchers.IO) {
-            //Log.d("version: ", apiDatabase.getVersionOfDatabase().toString())
             return@withContext orderDao.getOrders()
         }
     }

@@ -16,6 +16,7 @@ import bohdan.sushchak.productsdetector.model.AddedProduct
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 const val ZERO = 0.0
 
@@ -39,13 +40,15 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     val detectedProducts: LiveData<List<AddedProduct>>
         get() = _detectedProducts
 
-    var orderDate: Long = 0
+    val orderDate: LiveData<Date>
+        get() = _orderDate
 
     var orderSavingType = OrderSavingType.CREATE
     var initOrder: OrderEntity? = null
     //endregion
 
     private val _totalPrice by lazy { MutableLiveData<Double>() }
+    private val _orderDate by lazy { MutableLiveData<Date>() }
     private val _productList by lazy { MutableLiveData<MutableList<ProductEntity>>() }
     private val _recommendCategory by lazy { MutableLiveData<CategoryEntity>() }
     private val _categoryProductList by lazy { MutableLiveData<MutableList<CategoryWithListProducts>>() }
@@ -55,6 +58,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     init {
         _categoryProductList.value = mutableListOf()
         _totalPrice.value = ZERO
+        _orderDate.value = Calendar.getInstance().getOnlyDate()
 
         myWalletRepository.onActivityResultConsumer { requestCode, intent ->
             if (requestCode != DETECTION_PRODUCTS_CODE) {
@@ -84,6 +88,7 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
             _productList.postValue(products.toMutableList())
             _categoryProductList.postValue(groupedProducts.toMutableList())
             _totalPrice.postValue(order.price)
+            _orderDate.postValue(Date(order.date))
         }
     }
 
@@ -149,12 +154,12 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
     }
 
     fun saveOrder(title: String) {
-        if (orderDate == 0L) throw IllegalArgumentException("Order date can't be 0")
+        if (_orderDate.value == null) throw IllegalArgumentException("Order date can't be null")
         GlobalScope.launch(Dispatchers.IO) {
             val order = OrderEntity(
                 orderId = initOrder?.orderId,
                 title = title,
-                date = orderDate,
+                date = _orderDate.value!!.time,
                 price = totalPrice.value ?: ZERO
             )
 
@@ -207,6 +212,10 @@ class CreateOrderViewModel(private val myWalletRepository: MyWalletRepository) :
                 _detectedProducts.postValue(newProducts)
             }
         }
+    }
+
+    fun setOrderDate(date: Date) {
+        _orderDate.postValue(date)
     }
 }
 

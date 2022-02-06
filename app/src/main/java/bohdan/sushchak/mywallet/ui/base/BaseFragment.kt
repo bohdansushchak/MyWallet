@@ -69,19 +69,21 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     protected fun showEntryDialog(
         title: String,
         msg: String,
+        initialMsg: String?,
         yes: ((str: String) -> Unit)? = null,
         cancel: (() -> Unit)? = null
     ) {
-        bohdan.sushchak.mywallet.internal.showEntryDialog(context, title, msg, yes, cancel)
+        bohdan.sushchak.mywallet.internal.showEntryDialog(context, title, msg, initialMsg, yes, cancel)
     }
 
     protected fun showEntryDialog(
         title: Int,
         msg: Int,
+        initialMsg: String?,
         yes: ((str: String) -> Unit)? = null,
         cancel: (() -> Unit)? = null
     ) {
-        showEntryDialog(getString(title), getString(msg), yes, cancel)
+        showEntryDialog(getString(title), getString(msg), initialMsg, yes, cancel)
     }
 
     protected fun showPopupEditRemove(
