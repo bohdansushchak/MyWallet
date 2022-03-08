@@ -1,5 +1,6 @@
 package bohdan.sushchak.mywallet.ui.graph
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +11,7 @@ import bohdan.sushchak.mywallet.data.model.DateRange
 import bohdan.sushchak.mywallet.data.model.MoneyByDate
 import bohdan.sushchak.mywallet.data.repository.MyWalletRepository
 import bohdan.sushchak.mywallet.internal.Constants
-import bohdan.sushchak.mywallet.internal.getDayOfYear
+import bohdan.sushchak.mywallet.internal.getDayOfTime
 import bohdan.sushchak.mywallet.internal.label_formatter.BarLabelFormatter
 import bohdan.sushchak.mywallet.internal.label_formatter.LineLabelFormatter
 import bohdan.sushchak.mywallet.internal.myPlus
@@ -178,11 +179,11 @@ class GraphViewModel(
             val dataPoints: MutableList<DataPoint> = mutableListOf()
             var sumOfTotalPrices = 0.0
             val minDateInList = listMoneyByDate.minBy { it.date }?.date ?: 0
-            val dayOfYearForMinDate = getDayOfYear(minDateInList)
+            val dayOfYearForMinDate = getDayOfTime(minDateInList)
             val countOfDays = _dateLimit.getCountOfDays().toDouble()
 
             listMoneyByDate.forEach { moneyByDate ->
-                val day = getDayOfYear(moneyByDate.date) - dayOfYearForMinDate + 2
+                val day = getDayOfTime(moneyByDate.date) - dayOfYearForMinDate + 2
                 sumOfTotalPrices = sumOfTotalPrices.myPlus(moneyByDate.totalPrice)
                 val dataPoint = DataPoint(day.toDouble(), sumOfTotalPrices)
                 dataPoints.add(dataPoint)
@@ -193,7 +194,7 @@ class GraphViewModel(
                 titleResId = R.string.graph_title_growing_line,
                 seriesList = listOf(lineGraphSeries),
                 maxX = if (countOfDays + 2 >= 5) countOfDays + 2 else 5.0,
-                maxY = listMoneyByDate.maxBy { it.totalPrice }?.totalPrice?.times(1.1) ?: 0.0,
+                maxY = sumOfTotalPrices.times(1.1),
                 labelFormatter = LineLabelFormatter()
             )
             return@async graphItem
@@ -204,11 +205,11 @@ class GraphViewModel(
         return GlobalScope.async {
             val dataPoints: MutableList<DataPoint> = mutableListOf()
             val minDateInList = listMoneyByDate.minBy { it.date }?.date ?: 0
-            val dayOfYearForMinDate = getDayOfYear(minDateInList)
+            val dayOfYearForMinDate = getDayOfTime(minDateInList)
             val countOfDays = _dateLimit.getCountOfDays().toDouble()
 
             listMoneyByDate.forEach { moneyByDate ->
-                val day = getDayOfYear(moneyByDate.date) - dayOfYearForMinDate + 2
+                val day = getDayOfTime(moneyByDate.date) - dayOfYearForMinDate + 2
                 val dataPoint = DataPoint(day.toDouble(), moneyByDate.totalPrice)
                 dataPoints.add(dataPoint)
             }
@@ -226,7 +227,12 @@ class GraphViewModel(
     }
 
     private fun getLineGraphSeries(listDataPoint: List<DataPoint>): LineGraphSeries<DataPoint> {
-        val lineGraphSeries = LineGraphSeries<DataPoint>(listDataPoint.toTypedArray())
+        val sorted = listDataPoint.toTypedArray()
+        sorted.sortedBy {
+            it.x
+        }
+
+        val lineGraphSeries = LineGraphSeries<DataPoint>(sorted)
         lineGraphSeries.setAnimated(true)
         lineGraphSeries.isDrawDataPoints = true
         lineGraphSeries.dataPointsRadius = 5f

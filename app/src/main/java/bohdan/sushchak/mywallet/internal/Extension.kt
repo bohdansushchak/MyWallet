@@ -95,12 +95,7 @@ fun Double.myMinus(num: Double): Double {
 }
 
 fun Double.myToString(): String {
-    var str = this.toString()
-
-    if (str.length > 2 && str.last() == '0')
-        str = str.substring(0, str.length - 2)
-
-    return str
+    return format(2).replace('.', ',')
 }
 
 fun Calendar.onlyDateInMillis(): Long {

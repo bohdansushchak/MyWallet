@@ -83,7 +83,7 @@
     <string name="d_title_no_categories">No category</string>
     <string name="d_msg_no_categories">Please add a one category</string>
     <string name="d_title_max_categories">Max categories</string>
-    <string name="d_msg_max_categories">You can have only 10 categories</string>
+    <string name="d_msg_max_categories">You can have only 30 categories</string>
     <string name="d_msg_check_your_email">Check your email to reset password to your account</string>
     <string name="d_title_check_your_email">Check your email</string>
     <string name="d_title_error_reset">Error</string>

@@ -146,6 +146,7 @@ class CalendarFragment : BaseFragment(), KodeinAware {
         val date = Calendar.getInstance().getOnlyDate()
         viewModel.updateOrders(date = date.time)
 
+        calendarView.setLocale(TimeZone.getDefault(), Locale.ENGLISH)
         tvMonthTitle.text = formatDate(date, Constants.MONTH_FORMAT)
 
         calendarView.setListener(object : CompactCalendarView.CompactCalendarViewListener {

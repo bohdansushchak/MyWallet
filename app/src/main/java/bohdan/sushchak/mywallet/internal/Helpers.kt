@@ -10,15 +10,8 @@ import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-fun parseDate(date: String, patter: String): Date {
-
-    val format = SimpleDateFormat(patter)
-    return format.parse(date)
-}
-
 fun formatDate(date: Date?, patter: String): String {
-
-    val sdf = SimpleDateFormat(patter)
+    val sdf = SimpleDateFormat(patter, Locale.ENGLISH)
     return sdf.format(date)
 }
 
@@ -28,7 +21,7 @@ fun formatDate(date: Long, patter: String): String {
     dateClass.time = date
 
     */
-    val sdf = SimpleDateFormat(patter)
+    val sdf = SimpleDateFormat(patter, Locale.ENGLISH)
     return sdf.format(date)
 }
 

@@ -45,9 +45,11 @@ private fun getLastDayOfMonth(month: Int, year: Int): Int {
     } else throw InvalidParameterException("wrong mount number")
 }
 
-fun getDayOfYear(dateMilliseconds: Long): Int {
+fun getDayOfTime(dateMilliseconds: Long): Int {
     val cal = Calendar.getInstance()
     val date = Date(dateMilliseconds)
     cal.time = date
-    return cal.get(Calendar.DAY_OF_YEAR)
+    val days = (cal.get(Calendar.YEAR) - 1900) * 366
+    var dayOfCurrYear = cal.get(Calendar.DAY_OF_YEAR)
+    return days + dayOfCurrYear
 }

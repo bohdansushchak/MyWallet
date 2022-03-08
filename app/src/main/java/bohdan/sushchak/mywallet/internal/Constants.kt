@@ -14,7 +14,7 @@ object Constants {
 
     const val DEFAULT_CATEGORY_COLOR = Color.GRAY
 
-    const val MAX_CATEGORIES = 10
+    const val MAX_CATEGORIES = 30
 
     const val CURRENCY_KEY_PREF = "currency"
 
