@@ -24,11 +24,10 @@ class SyncViewModel(private val repository: MyWalletRepository) : ViewModel() {
         GlobalScope.launch(Dispatchers.IO) {
             val sync = syncType ?: repository.databasesCompare()
             _syncType.postValue(sync)
+            repository.clearDatabase()
             repository.synchronizeDatabases(sync) { _syncText.postValue(it) }
 
             _syncType.postValue(SyncType.EQUALS)
         }
     }
-
-
 }

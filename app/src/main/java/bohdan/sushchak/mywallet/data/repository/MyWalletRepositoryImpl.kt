@@ -336,4 +336,8 @@ class MyWalletRepositoryImpl(
     override fun onActivityResultConsumer(onActivityResult: (requestCode: Int, data: Intent?) -> Unit) {
         this.onActivityResult = onActivityResult
     }
+
+    override suspend fun clearDatabase() {
+        myWalletDatabase.clearAllTables()
+    }
 }

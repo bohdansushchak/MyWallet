@@ -60,13 +60,16 @@ class SettingsViewModel(private val myWalletRepository: MyWalletRepository) : Vi
     }
 
     fun signOut(activity: Activity) {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(activity.getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
-        mGoogleSignInClient.signOut()
-        mAuth.signOut()
+        GlobalScope.launch(Dispatchers.IO) {
+            myWalletRepository.clearDatabase()
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(activity.getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+            val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
+            mGoogleSignInClient.signOut()
+            mAuth.signOut()
+        }
     }
 
     fun sendEmailVerification() {

@@ -68,4 +68,6 @@ interface MyWalletRepository {
     fun onActivityResultProvider(requestCode: Int, data: Intent?)
 
     fun onActivityResultConsumer(onActivityResult: (requestCode: Int, data: Intent?) -> Unit)
+
+    suspend fun clearDatabase()
 }
